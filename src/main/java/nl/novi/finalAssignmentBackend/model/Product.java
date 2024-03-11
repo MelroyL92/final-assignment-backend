@@ -1,18 +1,12 @@
-package nl.novi.finalAssignmentBackend.entities;
+package nl.novi.finalAssignmentBackend.model;
 
 
-import jakarta.persistence.*;
 
 
-@Entity
-@Table(name = "Products")
-public class Product {
+public abstract class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private Integer price;
 
     private Integer originalStock;
