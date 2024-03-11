@@ -17,6 +17,9 @@ public abstract class Product {
 
     private Integer amountSold;
 
+    private String yearOfRelease;
+
+
 
 
     public Product() {
@@ -24,15 +27,23 @@ public abstract class Product {
     }
 
 
-    public Product(Long id, Integer price, Integer originalStock, String description, String name, Integer amountSold){
+    public Product(Long id, Integer price, Integer originalStock, String description, String name, Integer amountSold, String yearOfRelease){
         this.id = id;
         this.price = price;
         this.originalStock = originalStock;
         this.description = description;
         this.name = name;
         this.amountSold = amountSold;
+        this.yearOfRelease = yearOfRelease;
     }
 
+    public String getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(String yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
 
     public Long getId() {
         return id;
