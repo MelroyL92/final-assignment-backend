@@ -1,9 +1,9 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
+// geen id of entity gezien er nooit een instantie gemaakt zal worden van de productklasse!
 
-
-public abstract class Product {
+public abstract class ProductModel {
 
     private Integer price;
 
@@ -20,12 +20,12 @@ public abstract class Product {
 
 
 
-    public Product() {
+    public ProductModel() {
 
     }
 
 
-    public Product(Integer price, Integer originalStock, String description, String name, Integer amountSold, String yearOfRelease){
+    public ProductModel(Integer price, Integer originalStock, String description, String name, Integer amountSold, String yearOfRelease){
         this.price = price;
         this.originalStock = originalStock;
         this.description = description;
