@@ -5,7 +5,8 @@ package nl.novi.finalAssignmentBackend.model;
 
 public abstract class ProductModel {
 
-    private Integer price;
+
+    private Integer sellingPrice;
 
     private Integer originalStock;
 
@@ -17,6 +18,7 @@ public abstract class ProductModel {
 
     private String yearOfRelease;
 
+    private Integer purchasePrice;
 
 
 
@@ -25,14 +27,6 @@ public abstract class ProductModel {
     }
 
 
-    public ProductModel(Integer price, Integer originalStock, String description, String name, Integer amountSold, String yearOfRelease){
-        this.price = price;
-        this.originalStock = originalStock;
-        this.description = description;
-        this.name = name;
-        this.amountSold = amountSold;
-        this.yearOfRelease = yearOfRelease;
-    }
 
     public String getYearOfRelease() {
         return yearOfRelease;
@@ -42,12 +36,20 @@ public abstract class ProductModel {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setSellingPrice(Integer price) {
+        this.sellingPrice = price;
+    }
+
+    public Integer getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(Integer purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public Integer getOriginalStock() {
