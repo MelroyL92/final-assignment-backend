@@ -13,6 +13,8 @@ package nl.novi.finalAssignmentBackend.model;
 
         private String playtime;
 
+
+
         public String getPlaytime() {
             return playtime;
         }
