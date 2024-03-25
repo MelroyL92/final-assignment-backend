@@ -28,14 +28,9 @@ public class MovieService {
         return movieRepository.findAll().stream().map(movieMapper:: fromEntity).collect(Collectors.toList());
     }
 
-    public Movie getMoviesbyId(Long id) {
-        Optional<Movie> specificMovie = movieRepository.findById(id);
-        if (specificMovie.isEmpty()) {
-            throw new RuntimeException();
-            // exceptions enzo ook hierin verwerken
-        } else {
-            return specificMovie.get();
-        }
+    public MovieModel getMovieById(Long id) {
+            Movie movie = movieRepository.findById(id).orElseThrow(() -> new RuntimeException());
+            return movieMapper.fromEntity(movie);
     }
 
 }

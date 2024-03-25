@@ -26,17 +26,18 @@ public class MovieDTOMapper {
 
     public MovieModel createMovie(MovieInputDto dto) {
         var movie = new MovieModel();
-        movie.setName(movie.getName());
-        movie.setType(movie.getType());
-        movie.setSellingPrice(movie.getSellingPrice());
-        movie.setPurchasePrice(movie.getSellingPrice());
-        movie.setGenre(movie.getGenre());
-        movie.setDirector(movie.getDirector());
-        movie.setPlaytime(movie.getPlaytime());
-        movie.setYearOfRelease(movie.getYearOfRelease());
-        movie.setAmountSold(movie.getAmountSold());
-        movie.setDescription(movie.getDescription());
-        movie.setOriginalStock(movie.getOriginalStock());
+        movie.setId(dto.getId());
+        movie.setName(dto.getName());
+        movie.setType(dto.getType());
+        movie.setSellingPrice(dto.getSellingPrice());
+        movie.setPurchasePrice(dto.getSellingPrice());
+        movie.setGenre(dto.getGenre());
+        movie.setDirector(dto.getDirector());
+        movie.setPlaytime(dto.getPlaytime());
+        movie.setYearOfRelease(dto.getYearOfRelease());
+        movie.setAmountSold(dto.getAmountSold());
+        movie.setDescription(dto.getDescription());
+        movie.setOriginalStock(dto.getOriginalStock());
         return movie;
     }
 }

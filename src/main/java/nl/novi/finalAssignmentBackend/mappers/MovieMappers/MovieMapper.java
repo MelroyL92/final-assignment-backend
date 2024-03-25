@@ -24,6 +24,7 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         model.setDescription(entity.getDescription());
         model.setSellingPrice(entity.getSellingPrice());
         model.setYearOfRelease(entity.getYearOfRelease());
+        model.setOriginalStock(entity.getOriginalStock());
         return model;
     }
 
@@ -44,6 +45,7 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         entity.setDescription(model.getDescription());
         entity.setSellingPrice(model.getSellingPrice());
         entity.setYearOfRelease(model.getYearOfRelease());
+        entity.setOriginalStock(model.getOriginalStock());
         // Map other fields as needed
         return entity;
     }

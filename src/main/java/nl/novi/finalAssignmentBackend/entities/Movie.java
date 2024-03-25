@@ -5,7 +5,7 @@ import nl.novi.finalAssignmentBackend.model.ProductModel;
 
 
 @Entity
-@Table(name = "Movies")
+@Table(name = "movies")
 public class Movie extends Product {
 
     @Id
