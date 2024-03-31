@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 public abstract class Product {
 
 
-        @NotNull()
+
         @Min(1)
         @Max(500)
         private Integer sellingPrice;
@@ -26,8 +26,7 @@ public abstract class Product {
         private Integer amountSold;
 
         @NotNull()
-        @Min(1970)
-        @Max(2100)
+        @NotBlank(message = "please fill in a valid year of release")
         @Column(name = "year_of_release")
         private String yearOfRelease;
 
@@ -45,14 +44,14 @@ public abstract class Product {
         }
 
         public Integer getSellingPrice() {
-            return sellingPrice;
+        return sellingPrice;
         }
 
-        public void setPrice(Integer sellingPrice) {
-            this.sellingPrice = sellingPrice;
-        }
+        public void setSellingPrice(Integer sellingPrice) {
+        this.sellingPrice = sellingPrice;
+     }
 
-        public Integer getPurchasePrice() {
+    public Integer getPurchasePrice() {
             return purchasePrice;
         }
 
