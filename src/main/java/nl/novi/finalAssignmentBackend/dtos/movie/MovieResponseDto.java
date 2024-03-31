@@ -51,4 +51,6 @@ public class MovieResponseDto extends productResponseDto {
     public Long getId() {
         return id;
     }
+
+
 }
