@@ -8,23 +8,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovieDTOMapper {
 
-    public MovieResponseDto toMovieDto(MovieModel movie) {
-        MovieResponseDto dto = new MovieResponseDto();
-        dto.setId(movie.getId());
-        dto.setDirector(movie.getDirector());
-        dto.setName(movie.getName());
-        dto.setGenre(movie.getGenre());
-        dto.setType(movie.getType());
-        dto.setPlaytime(movie.getPlaytime());
-        dto.setDescription(movie.getDescription());
-        dto.setSellingPrice(movie.getSellingPrice());
-        dto.setYearOfRelease(movie.getYearOfRelease());
-        dto.setOriginalStock(movie.getOriginalStock());
-        return dto;
+
+    public MovieResponseDto toMovieDto(MovieModel movie){
+        return toMovieDto(movie, new MovieResponseDto());
+    }
+
+    public <D extends MovieResponseDto> D toMovieDto(MovieModel movie, D target) {
+        target.setId(movie.getId());
+        target.setDirector(movie.getDirector());
+        target.setName(movie.getName());
+        target.setGenre(movie.getGenre());
+        target.setType(movie.getType());
+        target.setPlaytime(movie.getPlaytime());
+        target.setDescription(movie.getDescription());
+        target.setSellingPrice(movie.getSellingPrice());
+        target.setYearOfRelease(movie.getYearOfRelease());
+        target.setOriginalStock(movie.getOriginalStock());
+        return target;
     }
 
 
-    public MovieModel createMovie(MovieInputDto dto) {
+    public MovieModel createMovieModel(MovieInputDto dto) {
         var movie = new MovieModel();
         movie.setId(dto.getId());
         movie.setName(dto.getName());

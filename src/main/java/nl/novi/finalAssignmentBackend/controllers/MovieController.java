@@ -1,14 +1,14 @@
-package nl.novi.finalAssignmentBackend.Controller;
+package nl.novi.finalAssignmentBackend.controllers;
 
 import nl.novi.finalAssignmentBackend.Service.MovieService;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
-import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
-import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +43,13 @@ public class MovieController {
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
-   // @PostMapping
-
-
-
-
-
+    @PostMapping("")
+    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody MovieInputDto movieInputDto){
+        var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
+        var newMovie = movieService.createMovie(movieModel);
+        var movieDto = movieDTOMapper.toMovieDto(newMovie);
+        return ResponseEntity.created(URI.create("/movies/" + newMovie.getId()))
+                .body(movieDto);
+    }
 
 }
