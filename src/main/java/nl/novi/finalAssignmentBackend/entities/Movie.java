@@ -18,6 +18,10 @@ public class Movie extends Product {
 
     private String playtime;
 
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
+
 
     public String getPlaytime() {
         return playtime;

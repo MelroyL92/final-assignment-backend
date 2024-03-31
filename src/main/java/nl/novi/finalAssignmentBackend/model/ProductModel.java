@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.model;
 
 // geen id of entity gezien er nooit een instantie gemaakt zal worden van de productklasse!
 
+
 public abstract class ProductModel {
 
 
@@ -40,8 +41,8 @@ public abstract class ProductModel {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer price) {
-        this.sellingPrice = price;
+    public void setSellingPrice(Integer sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public Integer getPurchasePrice() {
