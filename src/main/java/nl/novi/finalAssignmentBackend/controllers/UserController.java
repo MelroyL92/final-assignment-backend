@@ -1,13 +1,27 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
-public class Usercontroller {
+import nl.novi.finalAssignmentBackend.Service.UserService;
+import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
+import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-    @CrossOrigin
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
+@CrossOrigin
     @RestController
     @RequestMapping(value = "/users")
     public class UserController {
 
-        /*TODO inject userService*/
+        private final UserService userService;
+
+        public UserController(UserService userService) {
+            this.userService = userService;
+        }
+
 
         @GetMapping(value = "")
         public ResponseEntity<List<UserDto>> getUsers() {
@@ -28,7 +42,8 @@ public class Usercontroller {
         }
 
         @PostMapping(value = "")
-        public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
+        public ResponseEntity<UserDto> createCustomer(@RequestBody UserDto dto) {
+            ;
 
             String newUsername = userService.createUser(dto);
             userService.addAuthority(newUsername, "ROLE_USER");
@@ -40,7 +55,7 @@ public class Usercontroller {
         }
 
         @PutMapping(value = "/{username}")
-        public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
+        public ResponseEntity<UserDto> updateCustomer(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
             userService.updateUser(username, dto);
 
@@ -48,7 +63,7 @@ public class Usercontroller {
         }
 
         @DeleteMapping(value = "/{username}")
-        public ResponseEntity<Object> deleteKlant(@PathVariable("username") String username) {
+        public ResponseEntity<Object> deleteCustomer(@PathVariable("username") String username) {
             userService.deleteUser(username);
             return ResponseEntity.noContent().build();
         }
@@ -65,8 +80,7 @@ public class Usercontroller {
                 String authorityName = (String) fields.get("authority");
                 userService.addAuthority(username, authorityName);
                 return ResponseEntity.noContent().build();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 throw new BadRequestException();
             }
         }

@@ -1,8 +1,11 @@
 package nl.novi.finalAssignmentBackend.entities;
 
+import jakarta.persistence.*;
+import org.springframework.context.annotation.Configuration;
+
 import java.io.Serializable;
 
-/*TODO annotatie*/
+@Entity
 @IdClass(AuthorityKey.class)
 @Table(name = "authorities")
 public class Authority implements Serializable {

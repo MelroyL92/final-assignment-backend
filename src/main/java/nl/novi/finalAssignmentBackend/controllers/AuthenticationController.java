@@ -1,12 +1,34 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
+import nl.novi.finalAssignmentBackend.dtos.AuthenticationRequest;
+import nl.novi.finalAssignmentBackend.dtos.AuthenticationResponse;
+import nl.novi.finalAssignmentBackend.utils.JwtUtil;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 
 @CrossOrigin
 @RestController
 public class AuthenticationController {
 
-    /*TODO inject authentionManager, userDetailService en jwtUtil*/
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
+
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
+
+
 
     /*
          Deze methode geeft de principal (basis user gegevens) terug van de ingelogde gebruiker
