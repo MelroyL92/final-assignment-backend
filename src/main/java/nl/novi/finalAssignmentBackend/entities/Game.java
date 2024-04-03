@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "Games")
+@Table(name = "games")
 public class Game extends Product {
 
     @Id
@@ -13,6 +13,11 @@ public class Game extends Product {
     private String publisher;
     @Column(name = "play_duration")
     private String playDuration;
+
+
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
 
 
     public Long getId() {
