@@ -33,5 +33,11 @@ public class MovieService {
             return movieMapper.fromEntity(movie);
     }
 
+    public MovieModel createMovie (MovieModel movieModel){
+       Movie movie = movieMapper.toEntity(movieModel);
+       movie = movieRepository.save(movie);
+       return movieMapper.fromEntity(movie);
+    }
+
 
 }
