@@ -4,11 +4,13 @@ package nl.novi.finalAssignmentBackend.Service;
 import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.MovieRepository;
 import nl.novi.finalAssignmentBackend.entities.Movie;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,20 +26,45 @@ public class MovieService {
     }
 
 
-    public List<MovieModel> getMovies(){
-        return movieRepository.findAll().stream().map(movieMapper:: fromEntity).collect(Collectors.toList());
+    public List<MovieModel> getMovies() {
+        return movieRepository.findAll().stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
     public MovieModel getMovieById(Long id) {
         Movie movie = movieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + id));
-            return movieMapper.fromEntity(movie);
+        return movieMapper.fromEntity(movie);
     }
 
-    public MovieModel createMovie (MovieModel movieModel){
-       Movie movie = movieMapper.toEntity(movieModel);
-       movie = movieRepository.save(movie);
-       return movieMapper.fromEntity(movie);
+    public MovieModel createMovie(MovieModel movieModel) {
+        Movie movie = movieMapper.toEntity(movieModel);
+        movie = movieRepository.save(movie);
+        return movieMapper.fromEntity(movie);
     }
 
+    public MovieModel updateMovie(Long id, MovieModel movieModel) {
+        Optional<Movie> movieFound = movieRepository.findById(id);
+        if (movieFound.isPresent()) {
 
+            Movie existingMovie = movieFound.get();
+            existingMovie.setOriginalStock(movieModel.getOriginalStock());
+            existingMovie.setType(movieModel.getType());
+            existingMovie.setName(movieModel.getName());
+            existingMovie.setDirector(movieModel.getDirector());
+            existingMovie.setGenre(movieModel.getGenre());
+            existingMovie.setDescription(movieModel.getDescription());
+            existingMovie.setAmountSold(movieModel.getAmountSold());
+            existingMovie.setPlaytime(movieModel.getPlaytime());
+            existingMovie.setSellingPrice(movieModel.getSellingPrice());
+            existingMovie.setPurchasePrice(movieModel.getPurchasePrice());
+            existingMovie.setYearOfRelease(movieModel.getYearOfRelease());
+            existingMovie = movieRepository.save(existingMovie);
+            return movieMapper.fromEntity(existingMovie);
+        } else {
+            throw new RecordNotFoundException("Movie with ID " + id + " does not exist");
+        }
+    }
+
+    public void deleteMovie(Long id){
+        movieRepository.deleteById(id);
+    }
 }

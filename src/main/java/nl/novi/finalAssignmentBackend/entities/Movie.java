@@ -1,6 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
-import nl.novi.finalAssignmentBackend.model.ProductModel;
+import jakarta.validation.constraints.NotBlank;
 
 
 
@@ -12,10 +12,16 @@ public class Movie extends Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "please fill in the genre for this Movie")
     private String genre;
+
+    @NotBlank(message = "please fill in the type of the movie")
     private String type;
+
+    @NotBlank(message = "please fill in the director of the movie")
     private String director;
 
+    @NotBlank(message = "please fill in the playtime of the movie")
     private String playtime;
 
     @ManyToOne
