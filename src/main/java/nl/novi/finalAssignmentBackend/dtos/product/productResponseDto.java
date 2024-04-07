@@ -16,14 +16,14 @@ public class productResponseDto {
 
 
 
-    private String yearOfRelease;
+    private Integer yearOfRelease;
 
 
-    public String getYearOfRelease() {
+    public Integer getYearOfRelease() {
         return yearOfRelease;
     }
 
-    public void setYearOfRelease(String yearOfRelease) {
+    public void setYearOfRelease(Integer yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
     }
 

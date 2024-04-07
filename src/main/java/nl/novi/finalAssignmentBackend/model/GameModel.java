@@ -43,4 +43,3 @@ public class GameModel extends ProductModel {
         this.playDuration = playDuration;
     }
 }
-

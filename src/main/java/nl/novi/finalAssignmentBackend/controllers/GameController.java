@@ -13,8 +13,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
 @RequestMapping("/games")
+@RestController
+
 public class GameController {
 
     private final GameDTOMapper gameDTOMapper;
@@ -27,7 +28,7 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GameResponseDto>>getAllgames(){
+    public ResponseEntity<List<GameResponseDto>>getAllGames(){
         var games = gameService.getGames();
         var gameDTO = games.stream().map(gameDTOMapper::toGameDto).collect(Collectors.toList());
         return new ResponseEntity<>(gameDTO, HttpStatus.OK);

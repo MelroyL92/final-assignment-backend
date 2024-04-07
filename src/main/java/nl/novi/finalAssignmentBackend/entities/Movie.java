@@ -1,31 +1,23 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 
 
 @Entity
-@Table(name = "movies")
+@Table(name = "Movies")
 public class Movie extends Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "please fill in the genre for this Movie")
     private String genre;
-
-    @NotBlank(message = "please fill in the type of the movie")
     private String type;
-
-    @NotBlank(message = "please fill in the director of the movie")
     private String director;
 
-    @NotBlank(message = "please fill in the playtime of the movie")
     private String playtime;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id")
     private ShoppingList shoppingList;
 
 

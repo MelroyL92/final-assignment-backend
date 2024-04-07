@@ -3,7 +3,6 @@ package nl.novi.finalAssignmentBackend.model;
 
 // geen id of entity gezien er nooit een instantie gemaakt zal worden van de productklasse!
 
-
 public abstract class ProductModel {
 
 
@@ -17,7 +16,15 @@ public abstract class ProductModel {
 
     private Integer amountSold;
 
-    private String yearOfRelease;
+    private Integer yearOfRelease;
+
+    public Integer getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(Integer yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
 
     private Integer purchasePrice;
 
@@ -29,20 +36,14 @@ public abstract class ProductModel {
 
 
 
-    public String getYearOfRelease() {
-        return yearOfRelease;
-    }
 
-    public void setYearOfRelease(String yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
-    }
 
     public Integer getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    public void setSellingPrice(Integer price) {
+        this.sellingPrice = price;
     }
 
     public Integer getPurchasePrice() {

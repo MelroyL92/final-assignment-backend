@@ -1,14 +1,13 @@
 package nl.novi.finalAssignmentBackend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @MappedSuperclass
 public abstract class Product {
 
 
-
+        @NotNull()
         @Min(1)
         @Max(500)
         private Integer sellingPrice;
@@ -27,32 +26,33 @@ public abstract class Product {
         private Integer amountSold;
 
         @NotNull()
-        @NotBlank(message = "please fill in a valid year of release")
+        @Min(1970)
+        @Max(2100)
         @Column(name = "year_of_release")
-        private String yearOfRelease;
+        private Integer yearOfRelease;
 
         private Integer purchasePrice;
 
 
 
 
-        public String getYearOfRelease() {
+        public Integer getYearOfRelease() {
             return yearOfRelease;
         }
 
-        public void setYearOfRelease(String yearOfRelease) {
+        public void setYearOfRelease(Integer yearOfRelease) {
             this.yearOfRelease = yearOfRelease;
         }
 
         public Integer getSellingPrice() {
-        return sellingPrice;
+            return sellingPrice;
         }
 
         public void setSellingPrice(Integer sellingPrice) {
-        this.sellingPrice = sellingPrice;
-     }
+            this.sellingPrice = sellingPrice;
+        }
 
-    public Integer getPurchasePrice() {
+        public Integer getPurchasePrice() {
             return purchasePrice;
         }
 
