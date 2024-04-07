@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.*;
 
 @MappedSuperclass

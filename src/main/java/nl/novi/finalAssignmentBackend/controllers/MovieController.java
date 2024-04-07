@@ -1,14 +1,16 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import nl.novi.finalAssignmentBackend.Service.MovieService;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
+import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,10 +21,12 @@ public class MovieController {
 
     private final MovieDTOMapper movieDTOMapper;
     private final MovieService movieService;
+    private final HttpServletRequest request;
 
-    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService) {
+    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService, HttpServletRequest request) {
         this.movieDTOMapper = movieDTOMapper;
         this.movieService = movieService;
+        this.request = request;
     }
 
 
@@ -44,12 +48,25 @@ public class MovieController {
     }
 
     @PostMapping("")
-    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody MovieInputDto movieInputDto){
+    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
         var newMovie = movieService.createMovie(movieModel);
         var movieDto = movieDTOMapper.toMovieDto(newMovie);
-        return ResponseEntity.created(URI.create("/movies/" + newMovie.getId()))
-                .body(movieDto);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, movieDto.getId())).body(movieDto);
+
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<MovieResponseDto>updateMovie(@PathVariable Long id,@RequestBody MovieInputDto movieInputDto) {
+        var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
+        var movieDto = movieDTOMapper.toMovieDto(updateMovie);
+        return new ResponseEntity<>(movieDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object>deleteMovie(@PathVariable Long id){
+        movieService.deleteMovie(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

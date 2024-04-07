@@ -1,7 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.Serializable;
 
