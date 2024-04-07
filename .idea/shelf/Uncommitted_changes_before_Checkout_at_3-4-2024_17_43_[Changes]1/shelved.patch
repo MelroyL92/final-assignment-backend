@@ -1,0 +1,401 @@
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n\txsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n\t<modelVersion>4.0.0</modelVersion>\r\n\t<parent>\r\n\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t<artifactId>spring-boot-starter-parent</artifactId>\r\n\t\t<version>3.2.3</version>\r\n\t\t<relativePath/>\r\n\t</parent>\r\n\t<groupId>nl.novi</groupId>\r\n\t<artifactId>finalAssignmentBackend</artifactId>\r\n\t<version>0.0.1-SNAPSHOT</version>\r\n\t<name>finalAssignmentBackend</name>\r\n\t<description>Demo project for Spring Boot</description>\r\n\t<properties>\r\n\t\t<java.version>21</java.version>\r\n\t</properties>\r\n\t<dependencies>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.data</groupId>\r\n\t\t\t<artifactId>spring-data-jpa</artifactId>\r\n\t\t\t<version>3.2.2</version>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.postgresql</groupId>\r\n\t\t\t<artifactId>postgresql</artifactId>\r\n\t\t\t<version>42.7.2</version>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-test</artifactId>\r\n\t\t\t<scope>test</scope>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-data-jpa</artifactId>\r\n\t\t</dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-validation</artifactId>\r\n\t\t</dependency>\r\n    </dependencies>\r\n\r\n\t<build>\r\n\t\t<plugins>\r\n\t\t\t<plugin>\r\n\t\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t\t<artifactId>spring-boot-maven-plugin</artifactId>\r\n\t\t\t</plugin>\r\n\t\t</plugins>\r\n\t</build>\r\n\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	
++++ b/pom.xml	
+@@ -44,6 +44,32 @@
+ 			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter-validation</artifactId>
+ 		</dependency>
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-starter-security</artifactId>
++		</dependency>
++		<dependency>
++		<groupId>io.jsonwebtoken</groupId>
++		<artifactId>jjwt-api</artifactId>
++		<version>0.11.5</version>
++		</dependency>
++		<dependency>
++		<groupId>io.jsonwebtoken</groupId>
++		<artifactId>jjwt-impl</artifactId>
++		<version>0.11.5</version>
++		<scope>runtime</scope>
++		</dependency>
++		<dependency>
++		<groupId>io.jsonwebtoken</groupId>
++		<artifactId>jjwt-jackson</artifactId>
++		<version>0.11.5</version>
++		<scope>runtime</scope>
++		</dependency>
++		<dependency>
++			<groupId>org.hibernate</groupId>
++			<artifactId>hibernate-core</artifactId>
++			<version>6.3.1.Final</version>
++		</dependency>
+     </dependencies>
+ 
+ 	<build>
+Index: .idea/dataSources.xml
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/dataSources.xml	
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
++    <data-source source="LOCAL" name="finalAssignmentBackend@localhost" uuid="74a9c23c-0c83-4500-87f8-41ce2d4b00ee">
++      <driver-ref>postgresql</driver-ref>
++      <synchronize>true</synchronize>
++      <imported>true</imported>
++      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
++      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
++      <jdbc-url>jdbc:postgresql://localhost:5432/finalAssignmentBackend</jdbc-url>
++      <jdbc-additional-properties>
++        <property name="com.intellij.clouds.kubernetes.db.host.port" />
++        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
++        <property name="com.intellij.clouds.kubernetes.db.container.port" />
++      </jdbc-additional-properties>
++      <working-dir>$ProjectFileDir$</working-dir>
++    </data-source>
++  </component>
++</project>
+\ No newline at end of file
+Index: src/main/java/nl/novi/finalAssignmentBackend/controllers/MovieController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package nl.novi.finalAssignmentBackend.controllers;\r\n\r\nimport nl.novi.finalAssignmentBackend.Service.MovieService;\r\nimport nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;\r\nimport nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;\r\nimport nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.net.URI;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\n\r\n@RequestMapping(\"/movies\")\r\n@RestController\r\npublic class MovieController {\r\n\r\n    private final MovieDTOMapper movieDTOMapper;\r\n    private final MovieService movieService;\r\n\r\n    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService) {\r\n        this.movieDTOMapper = movieDTOMapper;\r\n        this.movieService = movieService;\r\n    }\r\n\r\n\r\n    @GetMapping\r\n    public ResponseEntity<List<MovieResponseDto>>getAllMovies(){\r\n        var movies = movieService.getMovies();\r\n        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDto).collect(Collectors.toList());\r\n        return new ResponseEntity<>(albumDTO, HttpStatus.OK);\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    public ResponseEntity<MovieResponseDto>getMovieById(@PathVariable Long id){\r\n        var movie = movieService.getMovieById(id);\r\n        if (movie == null) {\r\n            return new ResponseEntity<>(HttpStatus.NOT_FOUND);\r\n        }\r\n        var movieDTO = movieDTOMapper.toMovieDto(movie);\r\n        return new ResponseEntity<>(movieDTO, HttpStatus.OK);\r\n    }\r\n\r\n    @PostMapping(\"\")\r\n    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody MovieInputDto movieInputDto){\r\n        var movieModel = movieDTOMapper.createMovieModel(movieInputDto);\r\n        var newMovie = movieService.createMovie(movieModel);\r\n        var movieDto = movieDTOMapper.toMovieDto(newMovie);\r\n        return ResponseEntity.created(URI.create(\"/movies/\" + newMovie.getId()))\r\n                .body(movieDto);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/nl/novi/finalAssignmentBackend/controllers/MovieController.java b/src/main/java/nl/novi/finalAssignmentBackend/controllers/MovieController.java
+--- a/src/main/java/nl/novi/finalAssignmentBackend/controllers/MovieController.java	
++++ b/src/main/java/nl/novi/finalAssignmentBackend/controllers/MovieController.java	
+@@ -1,14 +1,16 @@
+ package nl.novi.finalAssignmentBackend.controllers;
+ 
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.validation.Valid;
+ import nl.novi.finalAssignmentBackend.Service.MovieService;
+ import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
+ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
++import nl.novi.finalAssignmentBackend.helper.UrlHelper;
+ import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
+ 
+-import java.net.URI;
+ import java.util.List;
+ import java.util.stream.Collectors;
+ 
+@@ -19,10 +21,12 @@
+ 
+     private final MovieDTOMapper movieDTOMapper;
+     private final MovieService movieService;
++    private final HttpServletRequest request;
+ 
+-    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService) {
++    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService, HttpServletRequest request) {
+         this.movieDTOMapper = movieDTOMapper;
+         this.movieService = movieService;
++        this.request = request;
+     }
+ 
+ 
+@@ -44,12 +48,19 @@
+     }
+ 
+     @PostMapping("")
+-    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody MovieInputDto movieInputDto){
++    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
+         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
+         var newMovie = movieService.createMovie(movieModel);
+         var movieDto = movieDTOMapper.toMovieDto(newMovie);
+-        return ResponseEntity.created(URI.create("/movies/" + newMovie.getId()))
+-                .body(movieDto);
++        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, movieDto.getId())).body(movieDto);
++
++    }
++
++    @PutMapping("{id}")
++    public ResponseEntity<MovieResponseDto>updateMovie(@PathVariable Long id,@RequestBody MovieInputDto movieInputDto) {
++        var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
++        var movieDto = movieDTOMapper.toMovieDto(updateMovie);
++        return new ResponseEntity<>(movieDto, HttpStatus.OK);
+     }
+ 
+ }
+Index: src/main/java/nl/novi/finalAssignmentBackend/entities/Game.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package nl.novi.finalAssignmentBackend.entities;\r\nimport jakarta.persistence.*;\r\n\r\n\r\n@Entity\r\n@Table(name = \"Games\")\r\npublic class Game extends Product {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private Long id;\r\n    private String platform;\r\n    private String publisher;\r\n    @Column(name = \"play_duration\")\r\n    private String playDuration;\r\n\r\n\r\n    public Long getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(Long id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getPlatform() {\r\n        return platform;\r\n    }\r\n\r\n    public void setPlatform(String platform) {\r\n        this.platform = platform;\r\n    }\r\n\r\n    public String getPublisher() {\r\n        return publisher;\r\n    }\r\n\r\n    public void setPublisher(String publisher) {\r\n        this.publisher = publisher;\r\n    }\r\n\r\n    public String getPlayDuration() {\r\n        return playDuration;\r\n    }\r\n\r\n    public void setPlayDuration(String playDuration) {\r\n        this.playDuration = playDuration;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/nl/novi/finalAssignmentBackend/entities/Game.java b/src/main/java/nl/novi/finalAssignmentBackend/entities/Game.java
+--- a/src/main/java/nl/novi/finalAssignmentBackend/entities/Game.java	
++++ b/src/main/java/nl/novi/finalAssignmentBackend/entities/Game.java	
+@@ -14,6 +14,9 @@
+     @Column(name = "play_duration")
+     private String playDuration;
+ 
++    @ManyToOne
++    @JoinColumn(name = "shopping_list_id")
++    private ShoppingList shoppingList;
+ 
+     public Long getId() {
+         return id;
+Index: src/main/java/nl/novi/finalAssignmentBackend/Service/MovieService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package nl.novi.finalAssignmentBackend.Service;\r\n\r\n\r\nimport jakarta.persistence.EntityNotFoundException;\r\nimport nl.novi.finalAssignmentBackend.Repository.MovieRepository;\r\nimport nl.novi.finalAssignmentBackend.entities.Movie;\r\nimport nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;\r\nimport nl.novi.finalAssignmentBackend.model.MovieModel;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\n@Service\r\npublic class MovieService {\r\n\r\n    private final MovieRepository movieRepository;\r\n    private final MovieMapper movieMapper;\r\n\r\n\r\n    public MovieService(MovieRepository movieRepository, MovieMapper movieMapper) {\r\n        this.movieRepository = movieRepository;\r\n        this.movieMapper = movieMapper;\r\n    }\r\n\r\n\r\n    public List<MovieModel> getMovies(){\r\n        return movieRepository.findAll().stream().map(movieMapper:: fromEntity).collect(Collectors.toList());\r\n    }\r\n\r\n    public MovieModel getMovieById(Long id) {\r\n        Movie movie = movieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(\"Movie not found with id: \" + id));\r\n            return movieMapper.fromEntity(movie);\r\n    }\r\n\r\n    public MovieModel createMovie (MovieModel movieModel){\r\n       Movie movie = movieMapper.toEntity(movieModel);\r\n       movie = movieRepository.save(movie);\r\n       return movieMapper.fromEntity(movie);\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/nl/novi/finalAssignmentBackend/Service/MovieService.java b/src/main/java/nl/novi/finalAssignmentBackend/Service/MovieService.java
+--- a/src/main/java/nl/novi/finalAssignmentBackend/Service/MovieService.java	
++++ b/src/main/java/nl/novi/finalAssignmentBackend/Service/MovieService.java	
+@@ -4,11 +4,13 @@
+ import jakarta.persistence.EntityNotFoundException;
+ import nl.novi.finalAssignmentBackend.Repository.MovieRepository;
+ import nl.novi.finalAssignmentBackend.entities.Movie;
++import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+ import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
+ import nl.novi.finalAssignmentBackend.model.MovieModel;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
++import java.util.Optional;
+ import java.util.stream.Collectors;
+ 
+ @Service
+@@ -24,20 +26,42 @@
+     }
+ 
+ 
+-    public List<MovieModel> getMovies(){
+-        return movieRepository.findAll().stream().map(movieMapper:: fromEntity).collect(Collectors.toList());
++    public List<MovieModel> getMovies() {
++        return movieRepository.findAll().stream().map(movieMapper::fromEntity).collect(Collectors.toList());
+     }
+ 
+     public MovieModel getMovieById(Long id) {
+         Movie movie = movieRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + id));
+-            return movieMapper.fromEntity(movie);
++        return movieMapper.fromEntity(movie);
+     }
+ 
+-    public MovieModel createMovie (MovieModel movieModel){
+-       Movie movie = movieMapper.toEntity(movieModel);
+-       movie = movieRepository.save(movie);
+-       return movieMapper.fromEntity(movie);
++    public MovieModel createMovie(MovieModel movieModel) {
++        Movie movie = movieMapper.toEntity(movieModel);
++        movie = movieRepository.save(movie);
++        return movieMapper.fromEntity(movie);
+     }
+ 
+-
++    public MovieModel updateMovie(long id, MovieModel movieModel) {
++        Optional<Movie> movieFound = movieRepository.findById(id);
++        if (movieFound.isPresent()) {
++            // not sure if there is a better way for doing this? Now I have to do this for each of them. Maybe a loop to make it easier?)
++            // also... writing in english somehow because coding is too
++            Movie existingMovie = movieFound.get();
++            existingMovie.setOriginalStock(movieModel.getOriginalStock());
++            existingMovie.setType(movieModel.getType());
++            existingMovie.setName(movieModel.getName());
++            existingMovie.setDirector(movieModel.getDirector());
++            existingMovie.setGenre(movieModel.getGenre());
++            existingMovie.setDescription(movieModel.getDescription());
++            existingMovie.setAmountSold(movieModel.getAmountSold());
++            existingMovie.setPlaytime(movieModel.getPlaytime());
++            existingMovie.setSellingPrice(movieModel.getSellingPrice());
++            existingMovie.setPurchasePrice(movieModel.getPurchasePrice());
++            existingMovie.setYearOfRelease(movieModel.getYearOfRelease());
++            existingMovie = movieRepository.save(existingMovie);
++            return movieMapper.fromEntity(existingMovie);
++        } else {
++            throw new RecordNotFoundException("Movie with ID " + id + " does not exist");
++        }
++    }
+ }
+Index: .idea/uiDesigner.xml
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/uiDesigner.xml	
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"corretto-21\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -1,3 +1,4 @@
++<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+   <component name="MavenProjectsManager">
+@@ -6,6 +7,7 @@
+         <option value="$PROJECT_DIR$/pom.xml" />
+       </list>
+     </option>
++    <option name="workspaceImportForciblyTurnedOn" value="true" />
+   </component>
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+Index: src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDtp.java
+===================================================================
+diff --git a/src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDtp.java b/src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDto.java
+rename from src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDtp.java
+rename to src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDto.java
+--- a/src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDtp.java	
++++ b/src/main/java/nl/novi/finalAssignmentBackend/dtos/game/GameResponseDto.java	
+@@ -2,7 +2,7 @@
+ 
+ import nl.novi.finalAssignmentBackend.dtos.product.productResponseDto;
+ 
+-public class GameResponseDtp extends productResponseDto {
++public class GameResponseDto extends productResponseDto {
+     private Long id;
+     private String platform;
+     private String publisher;
