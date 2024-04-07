@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
@@ -9,11 +10,18 @@ public class Game extends Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "please fill in the platform the game can be played on")
     private String platform;
+
+    @NotBlank(message = "please fill in the name of the publisher")
     private String publisher;
     @Column(name = "play_duration")
     private String playDuration;
 
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
 
     @ManyToOne
     @JoinColumn(name = "shopping_list_id")
