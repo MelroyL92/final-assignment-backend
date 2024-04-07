@@ -40,4 +40,3 @@ public class GameResponseDto extends productResponseDto {
     public void setPlayDuration(String playDuration) {
         this.playDuration = playDuration;
     }
-}

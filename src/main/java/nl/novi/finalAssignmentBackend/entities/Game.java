@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
-@Table(name = "Games")
+@Table(name = "games")
 public class Game extends Product {
 
     @Id
@@ -22,6 +22,11 @@ public class Game extends Product {
     @ManyToOne
     @JoinColumn(name = "shopping_list_id")
     private ShoppingList shoppingList;
+
+    @ManyToOne
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
+
 
     public Long getId() {
         return id;
