@@ -23,7 +23,8 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
     private GameMapper gameMapper;
     private MovieMapper movieMapper;
 
-
+    // I should probably add  something for the movie/game here? But perhaps also just in the service, because i want to keep this simple...
+    //but then should i do: model.setGames(shoppingList.getGames())? and then do the rest of the logic in the service? something to think about
     @Override
     public ShoppingListModel fromEntity(ShoppingList shoppingList) {
        if(shoppingList == null) {
@@ -34,6 +35,7 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
        model.setSubtotal(shoppingList.getSubtotal());
        model.setId(shoppingList.getId());
        model.setType(shoppingList.getType());
+
        return model;
     }
 

@@ -47,19 +47,17 @@ public class ShoppingListService {
     }
 
 
+
+    // stil a big questionmark? Doesnt make much sense at the moment
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
-        // Retrieve shopping list entity
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
 
-        // Retrieve game entity
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
-        // Associate game with shopping list
         shoppingList.getGames().add(game);
 
-        // Update database
         shoppingListRepository.save(shoppingList);
     }
 
