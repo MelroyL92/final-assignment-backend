@@ -1,19 +1,21 @@
-package nl.novi.finalAssignmentBackend.model;
+package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
 
+import nl.novi.finalAssignmentBackend.model.GameModel;
+import nl.novi.finalAssignmentBackend.model.MovieModel;
 
 import java.util.List;
 
-public class ShoppingListModel {
-
+public class ShoppingListResponseDto {
 
     private Long id;
     private String type;
     private Integer subtotal;
 
 
-   List<MovieModel> movieModel;
+    List<MovieModel> movieModel;
 
-   List<GameModel> gameModel;
+    List<GameModel> gameModel;
+
 
     public Long getId() {
         return id;
