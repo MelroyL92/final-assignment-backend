@@ -14,11 +14,11 @@ public class ShoppingList {
     private Integer subtotal;
 
 
-    @OneToMany(mappedBy = "shoppingList")
-    List<Movie> movies;
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL)
+    private List<Movie> movies;
 
-    @OneToMany(mappedBy = "shoppingList")
-    List<Game> games;
+    @OneToMany(mappedBy = "shoppingList",cascade = CascadeType.ALL)
+    private List<Game> games;
 
     public Long getId() {
         return id;
@@ -42,5 +42,21 @@ public class ShoppingList {
 
     public void setSubtotal(Integer subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }

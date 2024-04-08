@@ -1,6 +1,9 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
+import nl.novi.finalAssignmentBackend.entities.Game;
+import nl.novi.finalAssignmentBackend.entities.Movie;
+
 import java.util.List;
 
 public class ShoppingListModel {
@@ -11,9 +14,26 @@ public class ShoppingListModel {
     private Integer subtotal;
 
 
-   List<MovieModel> movieModel;
+    private List<Game> games;
+    private List<Movie> movies;
 
-   List<GameModel> gameModel;
+
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 
     public Long getId() {
         return id;
@@ -39,19 +59,4 @@ public class ShoppingListModel {
         this.subtotal = subtotal;
     }
 
-    public List<MovieModel> getMovieModel() {
-        return movieModel;
-    }
-
-    public void setMovieModel(List<MovieModel> movieModel) {
-        this.movieModel = movieModel;
-    }
-
-    public List<GameModel> getGameModel() {
-        return gameModel;
-    }
-
-    public void setGameModel(List<GameModel> gameModel) {
-        this.gameModel = gameModel;
-    }
 }
