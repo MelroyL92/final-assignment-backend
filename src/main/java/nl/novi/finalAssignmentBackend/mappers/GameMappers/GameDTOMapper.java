@@ -3,8 +3,12 @@ package nl.novi.finalAssignmentBackend.mappers.GameMappers;
 
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class GameDTOMapper {
@@ -26,6 +30,15 @@ public class GameDTOMapper {
             return target;
         }
 
+        public List<GameResponseDto> toGameDTOs(List<GameModel>gameModels){
+            List<GameResponseDto> result = new ArrayList<>();
+            for (GameModel gameModel: gameModels){
+                result.add(toGameDto(gameModel));
+            }
+
+            return result;
+        }
+
 
         public GameModel createGameModel(GameInputDto dto) {
             var game = new GameModel();
@@ -42,5 +55,6 @@ public class GameDTOMapper {
             game.setPublisher(dto.getPublisher());
             return game;
         }
+
 }
 

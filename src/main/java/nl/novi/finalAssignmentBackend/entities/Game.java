@@ -15,7 +15,8 @@ public class Game extends Product {
     private String playDuration;
 
     @ManyToOne
-    ShoppingList shoppingList;
+    @JoinColumn(name = "shopping_list_id")
+    private ShoppingList shoppingList;
 
 
     public Long getId() {
@@ -49,4 +50,6 @@ public class Game extends Product {
     public void setPlayDuration(String playDuration) {
         this.playDuration = playDuration;
     }
+
+
 }

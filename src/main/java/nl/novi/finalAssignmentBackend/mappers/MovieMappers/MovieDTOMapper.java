@@ -45,24 +45,3 @@ public class MovieDTOMapper {
         return movie;
     }
 }
-//    Twee soorten mappers maken? 1 voor de dto en 1 voor de vertaling van het model naar de entiteit?
-
-    //    sellingPrice;
-    //
-    //    originalStock;
-    //
-    //    description;
-    //
-    //    name;
-    //
-    //    amountSold;
-    //
-    //    yearOfRelease;
-    //
-    //    purchasePrice;
-    //    genre;
-    //    type;
-    //    director;
-    //
-    //    playtime;
-

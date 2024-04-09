@@ -1,8 +1,9 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
+import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 
-    public class MovieModel extends ProductModel {
+public class MovieModel extends ProductModel {
 
 
         private Long id;
@@ -13,7 +14,17 @@ package nl.novi.finalAssignmentBackend.model;
 
         private String playtime;
 
-        public String getPlaytime() {
+        private ShoppingList shoppingList;
+
+        public ShoppingList getShoppingList() {
+        return shoppingList;
+        }
+
+        public void setShoppingList(ShoppingList shoppingList) {
+        this.shoppingList = shoppingList;
+         }
+
+    public String getPlaytime() {
             return playtime;
         }
 
