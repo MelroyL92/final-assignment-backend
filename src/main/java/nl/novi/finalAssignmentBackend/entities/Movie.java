@@ -18,7 +18,11 @@ public class Movie extends Product {
     private String playtime;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id")
+    @JoinTable(
+            name = "shopping_list_movies",
+            joinColumns = @JoinColumn(name = "movies_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
+    )
     private ShoppingList shoppingList;
 
 

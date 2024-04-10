@@ -7,6 +7,7 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
+import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,12 @@ public class MovieController {
         }
         var movieDTO = movieDTOMapper.toMovieDto(movie);
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/genre")
+    public List<MovieModel> getMoviesByGenre(@RequestParam String genre) {
+        List<MovieModel> movies = movieService.getMoviesByGenre(genre);
+        return ResponseEntity.ok(movies).getBody();
     }
 
     @PostMapping("")

@@ -33,6 +33,7 @@ public class ShoppingListController{
     public ResponseEntity<List<ShoppingListResponseDto>>getAllShoppinglists(){
         var shoppingList = shoppingListService.getShoppingList();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
+
         return new ResponseEntity<>(shoppingListDTO, HttpStatus.OK);
     }
 

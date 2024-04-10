@@ -15,7 +15,11 @@ public class Game extends Product {
     private String playDuration;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id")
+    @JoinTable(
+            name = "shopping_list_games",
+            joinColumns = @JoinColumn(name = "games_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
+    )
     private ShoppingList shoppingList;
 
 

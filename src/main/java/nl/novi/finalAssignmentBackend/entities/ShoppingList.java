@@ -2,6 +2,7 @@ package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,11 +15,11 @@ public class ShoppingList {
     private Integer subtotal;
 
 
-    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL)
-    private List<Movie> movies;
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Movie> movies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shoppingList",cascade = CascadeType.ALL)
-    private List<Game> games;
+    @OneToMany(mappedBy = "shoppingList",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Game> games = new ArrayList<>();
 
     public Long getId() {
         return id;
