@@ -1,5 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
 
+import nl.novi.finalAssignmentBackend.entities.Game;
+import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 
@@ -12,9 +14,9 @@ public class ShoppingListResponseDto {
     private Integer subtotal;
 
 
-    List<MovieModel> movieModel;
+    List<Movie> movies;
 
-    List<GameModel> gameModel;
+    List<Game> games;
 
 
     public Long getId() {
@@ -41,19 +43,20 @@ public class ShoppingListResponseDto {
         this.subtotal = subtotal;
     }
 
-    public List<MovieModel> getMovieModel() {
-        return movieModel;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
-    public void setMovieModel(List<MovieModel> movieModel) {
-        this.movieModel = movieModel;
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 
-    public List<GameModel> getGameModel() {
-        return gameModel;
+    public List<Game> getGames() {
+        return games;
     }
 
-    public void setGameModel(List<GameModel> gameModel) {
-        this.gameModel = gameModel;
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }
+

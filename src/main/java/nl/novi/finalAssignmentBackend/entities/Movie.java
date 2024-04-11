@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "Movies")
+@Table(name = "movies")
 public class Movie extends Product {
 
     @Id
@@ -18,11 +18,7 @@ public class Movie extends Product {
     private String playtime;
 
     @ManyToOne
-    @JoinTable(
-            name = "shopping_list_movies",
-            joinColumns = @JoinColumn(name = "movies_id"),
-            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
-    )
+    @JoinColumn(name = "shopping_list_movies")
     private ShoppingList shoppingList;
 
 

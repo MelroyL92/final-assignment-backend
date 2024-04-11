@@ -1,19 +1,12 @@
 package nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper;
 
 
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.mappers.EntityMapper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
-import nl.novi.finalAssignmentBackend.model.GameModel;
-import nl.novi.finalAssignmentBackend.model.MovieModel;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component

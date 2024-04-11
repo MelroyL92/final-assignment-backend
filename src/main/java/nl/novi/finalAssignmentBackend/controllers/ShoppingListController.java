@@ -37,6 +37,16 @@ public class ShoppingListController{
         return new ResponseEntity<>(shoppingListDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ShoppingListResponseDto>getShoppingListById(@PathVariable Long id) {
+        var shoppingList = shoppingListService.getShoppingListById(id);
+        if (shoppingList == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(shoppingList);
+        return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<ShoppingListResponseDto>createShoppingList(@RequestBody ShoppingListInputDto shoppingListInputDto){
         var shoppingListModel = shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto);

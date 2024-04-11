@@ -48,7 +48,7 @@ public class ShoppingListService {
 
 
 
-    // stil a big questionmark? Doesnt make much sense at the moment
+    // stil a big questionmark? Doesnt make much sense at the moment/ also after it works make sure it goes through the dto to not give unwanted information back to the client!
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));

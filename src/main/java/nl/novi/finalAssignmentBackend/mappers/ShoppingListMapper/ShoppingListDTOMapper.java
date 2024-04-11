@@ -23,6 +23,8 @@ public class ShoppingListDTOMapper {
         target.setId(shoppingList.getId());
         target.setSubtotal(shoppingList.getSubtotal());
         target.setType(shoppingList.getType());
+        target.setGames(shoppingList.getGames());
+        target.setMovies(shoppingList.getMovies());
         return target;
     }
 
@@ -32,6 +34,8 @@ public class ShoppingListDTOMapper {
         shoppingList.setId(dto.getId());
         shoppingList.setType(dto.getType());
         shoppingList.setSubtotal(dto.getSubtotal());
+        shoppingList.setMovies(dto.getMovies());
+        shoppingList.setGames(dto.getGames());
         return shoppingList;
     }
 }

@@ -18,7 +18,9 @@ public class ShoppingListModel {
     private List<Movie> movies;
 
 
-
+    public List<Movie> getMovies() {
+        return this.movies;
+    }
     public List<Game> getGames() {
         return games;
     }
@@ -27,9 +29,7 @@ public class ShoppingListModel {
         this.games = games;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
+
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
