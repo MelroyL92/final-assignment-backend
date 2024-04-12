@@ -3,6 +3,9 @@ package nl.novi.finalAssignmentBackend.model;
 
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameModel extends ProductModel {
 
 
@@ -11,16 +14,15 @@ public class GameModel extends ProductModel {
     private String publisher;
     private String playDuration;
 
-    public ShoppingList getShoppingList() {
+    private List<ShoppingList> shoppingList = new ArrayList<>();
+
+    public List<ShoppingList> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(ShoppingList shoppingList) {
+    public void setShoppingList(List<ShoppingList> shoppingList) {
         this.shoppingList = shoppingList;
     }
-
-    private ShoppingList shoppingList;
-
 
     public Long getId() {
         return id;

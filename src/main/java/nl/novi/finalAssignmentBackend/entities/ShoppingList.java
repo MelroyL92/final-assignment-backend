@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,10 +17,16 @@ public class ShoppingList {
     private Integer subtotal;
 
 
-    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "shopping_list_movies",
+            joinColumns = @JoinColumn(name = "shopping_list_id"),
+            inverseJoinColumns = @JoinColumn(name = "movies_id")
+    )
     private List<Movie> movies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shoppingList",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToMany(mappedBy = "shoppingList")
     private List<Game> games = new ArrayList<>();
 
     public Long getId() {

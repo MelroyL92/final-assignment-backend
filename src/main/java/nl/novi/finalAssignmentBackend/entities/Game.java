@@ -1,5 +1,9 @@
 package nl.novi.finalAssignmentBackend.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -14,9 +18,13 @@ public class Game extends Product {
     @Column(name = "play_duration")
     private String playDuration;
 
-    @ManyToOne
-    @JoinColumn(name = "shopping_list_games")
-    private ShoppingList shoppingList;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "game_shopping_list",
+            joinColumns = @JoinColumn(name = "games_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
+    )
+    private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
     public Long getId() {
@@ -51,5 +59,11 @@ public class Game extends Product {
         this.playDuration = playDuration;
     }
 
+    public List<ShoppingList> getShoppingList() {
+        return shoppingList;
+    }
 
+    public void setShoppingList(List<ShoppingList> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
 }

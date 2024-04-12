@@ -1,6 +1,8 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -17,9 +19,16 @@ public class Movie extends Product {
 
     private String playtime;
 
-    @ManyToOne
-    @JoinColumn(name = "shopping_list_movies")
-    private ShoppingList shoppingList;
+    public List<ShoppingList> getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(List<ShoppingList> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
+    @ManyToMany(mappedBy = "movies")
+   private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
     public String getPlaytime() {

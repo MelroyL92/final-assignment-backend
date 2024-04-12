@@ -48,7 +48,7 @@ public class ShoppingListService {
 
 
 
-    // stil a big questionmark? Doesnt make much sense at the moment/ also after it works make sure it goes through the dto to not give unwanted information back to the client!
+    // Smaller questionmark. Works but only if i put a jsonIgnore
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
@@ -56,7 +56,11 @@ public class ShoppingListService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
-        shoppingList.getGames().add(game);
+//         List<ShoppingList> shoppingLists = game.getShoppingList();
+//         game.setShoppingList(shoppingLists);
+
+        game.getShoppingList().add(shoppingList);
+
 
         shoppingListRepository.save(shoppingList);
     }
