@@ -18,12 +18,7 @@ public class Game extends Product {
     @Column(name = "play_duration")
     private String playDuration;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "game_shopping_list",
-            joinColumns = @JoinColumn(name = "games_id"),
-            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
-    )
+    @ManyToMany(mappedBy = "games")
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
@@ -59,11 +54,4 @@ public class Game extends Product {
         this.playDuration = playDuration;
     }
 
-    public List<ShoppingList> getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(List<ShoppingList> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
 }

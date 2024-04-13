@@ -16,13 +16,6 @@ public class GameModel extends ProductModel {
 
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
-    public List<ShoppingList> getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(List<ShoppingList> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
 
     public Long getId() {
         return id;

@@ -8,6 +8,7 @@ import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMapper;
+import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
@@ -56,11 +57,7 @@ public class ShoppingListService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
-//         List<ShoppingList> shoppingLists = game.getShoppingList();
-//         game.setShoppingList(shoppingLists);
-
-        game.getShoppingList().add(shoppingList);
-
+        shoppingList.getGames().add(game);
 
         shoppingListRepository.save(shoppingList);
     }

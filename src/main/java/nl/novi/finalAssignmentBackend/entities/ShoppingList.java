@@ -25,8 +25,13 @@ public class ShoppingList {
     )
     private List<Movie> movies = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "shoppingList")
+
+    @ManyToMany
+    @JoinTable(
+            name = "shopping_list_game",
+            joinColumns = @JoinColumn(name = "shopping_list_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
     private List<Game> games = new ArrayList<>();
 
     public Long getId() {
