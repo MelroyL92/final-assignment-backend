@@ -35,6 +35,15 @@ public class GameService {
         return gameMapper.fromEntity(game);
     }
 
+    public List<GameModel>getGamesByPlatform(String platform){
+        List<Game>games = gameRepository.findByPlatformContainingIgnoreCase(platform);
+
+        if (games.isEmpty()) {
+            throw new RecordNotFoundException("No games found for platform: " + platform);
+        }
+        return games.stream().map(gameMapper::fromEntity).collect(Collectors.toList());
+    }
+
     public GameModel createGame (GameModel gameModel){
         Game game = gameMapper.toEntity(gameModel);
         game = gameRepository.save(game);

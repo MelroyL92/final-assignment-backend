@@ -46,6 +46,8 @@ public class SpringSecurityConfig {
 
 
     // Authorizatie met jwt
+    // authorisatie toevoegen!!!!!
+    //requestMatchers allemaal toevoegen voor alle endpoints!
     @Bean
     protected SecurityFilterChain filter (HttpSecurity http) throws Exception {
 

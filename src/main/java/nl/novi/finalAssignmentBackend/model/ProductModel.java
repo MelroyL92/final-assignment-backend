@@ -1,7 +1,6 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
-// geen id of entity gezien er nooit een instantie gemaakt zal worden van de productklasse!
 
 public abstract class ProductModel {
 

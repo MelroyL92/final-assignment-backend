@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.ShoppingListService;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListInputDto;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
-import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class ShoppingListController{
     }
 
     @GetMapping
-    public ResponseEntity<List<ShoppingListResponseDto>>getAllShoppinglists(){
+    public ResponseEntity<List<ShoppingListResponseDto>>getAllShoppingLists(){
         var shoppingList = shoppingListService.getShoppingList();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
 

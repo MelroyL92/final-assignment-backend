@@ -3,7 +3,6 @@ package nl.novi.finalAssignmentBackend.mappers.GameMappers;
 
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
-import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.stereotype.Component;
 

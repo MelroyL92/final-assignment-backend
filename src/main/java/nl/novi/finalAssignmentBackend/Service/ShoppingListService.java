@@ -8,13 +8,10 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
-import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMapper;
-import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +20,13 @@ public class ShoppingListService {
 
     private final ShoppingListMapper shoppingListMapper;
     private final ShoppingListRepository shoppingListRepository;
-    private final GameMapper gameMapper;
     private final GameRepository gameRepository;
     private final MovieRepository movieRepository;
 
 
-    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameMapper gameMapper, GameRepository gameRepository, MovieRepository movieRepository) {
+    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
-        this.gameMapper = gameMapper;
         this.gameRepository = gameRepository;
         this.movieRepository = movieRepository;
     }
@@ -100,10 +95,6 @@ public class ShoppingListService {
         shoppingListRepository.save(shoppingList);
         updateSubtotal(shoppingListId);
     }
-
-
-
-
 }
 
 

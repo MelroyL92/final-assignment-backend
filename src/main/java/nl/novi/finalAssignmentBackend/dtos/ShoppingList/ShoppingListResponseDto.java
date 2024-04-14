@@ -2,8 +2,7 @@ package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
 
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
-import nl.novi.finalAssignmentBackend.model.GameModel;
-import nl.novi.finalAssignmentBackend.model.MovieModel;
+
 
 import java.util.List;
 

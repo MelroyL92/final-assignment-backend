@@ -48,6 +48,7 @@ public class MovieController {
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
+    // what to return when a non valid param is entered?
     @GetMapping("/genre")
     public List<MovieModel> getMoviesByGenre(@RequestParam String genre) {
         List<MovieModel> movies = movieService.getMoviesByGenre(genre);

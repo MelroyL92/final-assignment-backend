@@ -36,10 +36,12 @@ public class MovieService {
     }
 
     public List<MovieModel> getMoviesByGenre(String genre) {
-        List<Movie> movies = movieRepository.findByGenreIgnoreCase(genre);
-        return movies.stream()
-                .map(movieMapper::fromEntity)
-                .collect(Collectors.toList());
+        List<Movie> movies = movieRepository.findByGenreContainingIgnoreCase(genre);
+
+        if(movies.isEmpty()){
+            throw new RecordNotFoundException("no movies found for genre " + genre);
+        }
+        return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
 

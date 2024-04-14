@@ -15,6 +15,7 @@ public class ShoppingListDTOMapper {
     private GameDTOMapper gameDTOMapper;
     private MovieDTOMapper movieDTOMapper;
 
+    // in the mapper i still need to fix it so that customers dont get shown everyfield of the games and the movies.
     public ShoppingListResponseDto toShoppingListDto(ShoppingListModel shoppingList){
         return toShoppingListDto(shoppingList, new ShoppingListResponseDto());
     }
