@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.ShoppingListService;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListInputDto;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
 import org.springframework.http.HttpStatus;
@@ -56,10 +57,15 @@ public class ShoppingListController{
 
     }
 
-    // game wordt wel toegevoegd, maar is niet te zien in postman dus ergens gaat er iets fout
     @PostMapping("/{shoppingListId}/games/{gameId}")
     public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId) {
         shoppingListService.addGameToShoppingList(shoppingListId, gameId);
         return ResponseEntity.ok("Game successfully added to shopping list");
+    }
+
+    @PostMapping("/{shoppingListId}/movies/{movieId}")
+    public ResponseEntity<String>addMovieToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long movieId){
+        shoppingListService.addMovieToShoppingList(shoppingListId,movieId);
+        return ResponseEntity.ok("Movie successfully added to shopping list");
     }
 }

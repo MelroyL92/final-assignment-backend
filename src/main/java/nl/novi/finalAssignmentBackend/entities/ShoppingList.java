@@ -17,7 +17,7 @@ public class ShoppingList {
     private Integer subtotal;
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany()
     @JoinTable(
             name = "shopping_list_movies",
             joinColumns = @JoinColumn(name = "shopping_list_id"),
