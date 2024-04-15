@@ -13,7 +13,13 @@ public class ShoppingList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String type;
-    private Integer subtotal;
+    private Double subtotal;
+
+    // nieuwe code inclusief getters en setters
+    private Boolean packaging;
+    private Double packagingCost;
+    private Boolean atHomeDelivery;
+    private Integer deliveryCost;
 
 
     @ManyToMany()
@@ -49,12 +55,36 @@ public class ShoppingList {
         this.type = type;
     }
 
-    public Integer getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Integer subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Boolean getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(Boolean packaging) {
+        this.packaging = packaging;
+    }
+
+    public Boolean getAtHomeDelivery() {
+        return atHomeDelivery;
+    }
+
+    public void setAtHomeDelivery(Boolean atHomeDelivery) {
+        this.atHomeDelivery = atHomeDelivery;
+    }
+
+    public Integer getDeliveryCost() {
+        return deliveryCost;
+    }
+
+    public void setDeliveryCost(Integer cost) {
+        this.deliveryCost = cost;
     }
 
     public List<Movie> getMovies() {
@@ -72,4 +102,13 @@ public class ShoppingList {
     public void setGames(List<Game> games) {
         this.games = games;
     }
+
+    public Double getPackagingCost() {
+        return packagingCost;
+    }
+
+    public void setPackagingCost(Double packagingCost) {
+        this.packagingCost = packagingCost;
+    }
 }
+

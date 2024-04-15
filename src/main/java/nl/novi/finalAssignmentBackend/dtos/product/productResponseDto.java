@@ -5,7 +5,7 @@ package nl.novi.finalAssignmentBackend.dtos.product;
 
 
 public class productResponseDto {
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
     private Integer originalStock;
 
@@ -27,11 +27,11 @@ public class productResponseDto {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 

@@ -30,6 +30,10 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
        model.setType(shoppingList.getType());
        model.setGames(shoppingList.getGames());
        model.setMovies(shoppingList.getMovies());
+       model.setDeliverCost(shoppingList.getDeliveryCost());
+       model.setPackaging(shoppingList.getPackaging());
+       model.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
+       model.setPackagingCost(shoppingList.getPackagingCost());
 
        return model;
     }
@@ -45,6 +49,10 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
         entity.setType(shoppingListModel.getType());
         entity.setGames(shoppingListModel.getGames());
         entity.setMovies(shoppingListModel.getMovies());
+        entity.setDeliveryCost(shoppingListModel.getDeliverCost());
+        entity.setPackaging(shoppingListModel.getPackaging());
+        entity.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
+        entity.setPackagingCost(shoppingListModel.getPackagingCost());
         return entity;
     }
 }

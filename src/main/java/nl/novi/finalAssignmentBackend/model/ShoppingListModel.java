@@ -11,12 +11,40 @@ public class ShoppingListModel {
 
     private Long id;
     private String type;
-    private Integer subtotal;
+    private Double subtotal;
 
+    private Boolean packaging;
+    private Boolean atHomeDelivery;
+    private Integer deliveryCost;
+
+    private Double packagingCost;
 
     private List<Game> games;
     private List<Movie> movies;
 
+    public Boolean getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(Boolean packaging) {
+        this.packaging = packaging;
+    }
+
+    public Boolean getAtHomeDelivery() {
+        return atHomeDelivery;
+    }
+
+    public void setAtHomeDelivery(Boolean atHomeDelivery) {
+        this.atHomeDelivery = atHomeDelivery;
+    }
+
+    public Integer getDeliverCost() {
+        return deliveryCost;
+    }
+
+    public void setDeliverCost(Integer deliverCost) {
+        this.deliveryCost = deliverCost;
+    }
 
     public List<Movie> getMovies() {
         return this.movies;
@@ -51,12 +79,19 @@ public class ShoppingListModel {
         this.type = type;
     }
 
-    public Integer getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Integer subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 
+    public Double getPackagingCost() {
+        return packagingCost;
+    }
+
+    public void setPackagingCost(Double packagingCost) {
+        this.packagingCost = packagingCost;
+    }
 }

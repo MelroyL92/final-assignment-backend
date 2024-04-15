@@ -26,6 +26,10 @@ public class ShoppingListDTOMapper {
         target.setType(shoppingList.getType());
         target.setGames(shoppingList.getGames());
         target.setMovies(shoppingList.getMovies());
+        target.setDeliveryCost(shoppingList.getDeliverCost());
+        target.setPackaging(shoppingList.getPackaging());
+        target.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
+        target.setPackagingCost(shoppingList.getPackagingCost());
         return target;
     }
 
@@ -37,6 +41,10 @@ public class ShoppingListDTOMapper {
         shoppingList.setSubtotal(dto.getSubtotal());
         shoppingList.setMovies(dto.getMovies());
         shoppingList.setGames(dto.getGames());
+        shoppingList.setDeliverCost(dto.getDeliveryCost());
+        shoppingList.setPackaging(dto.getPackaging());
+        shoppingList.setAtHomeDelivery(dto.getAtHomeDelivery());
+        shoppingList.setPackagingCost(dto.getPackagingCost());
         return shoppingList;
     }
 }

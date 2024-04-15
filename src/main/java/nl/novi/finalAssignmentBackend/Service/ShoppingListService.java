@@ -8,11 +8,13 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMapper;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +25,15 @@ public class ShoppingListService {
     private final GameRepository gameRepository;
     private final MovieRepository movieRepository;
 
+    private final ShoppingListHelpers shoppingListHelpers;
 
-    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository) {
+
+    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository, ShoppingListHelpers shoppingListHelpers) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
         this.movieRepository = movieRepository;
+        this.shoppingListHelpers = shoppingListHelpers;
     }
 
 
@@ -49,24 +54,6 @@ public class ShoppingListService {
 
 
 
-    public void updateSubtotal(Long shoppingListId){
-        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
-                .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
-
-        Integer subtotal = 0;
-
-        for (Game game : shoppingList.getGames()){
-            subtotal += game.getSellingPrice();
-        }
-
-        for (Movie movie: shoppingList.getMovies()){
-            subtotal += movie.getSellingPrice();
-        }
-
-        shoppingList.setSubtotal(subtotal);
-        shoppingListRepository.save(shoppingList);
-    }
-
 
     // the entire game gets saved because thats what we need to be able to acces
     // but i do need to make sure that when a client gets acces to it it goes through the dto
@@ -80,7 +67,8 @@ public class ShoppingListService {
         shoppingList.getGames().add(game);
 
         shoppingListRepository.save(shoppingList);
-        updateSubtotal(shoppingListId);
+        shoppingListHelpers.updateSubtotal(shoppingListId);
+        shoppingListHelpers.calculateDeliveryCost(shoppingListId);
     }
 
     public void addMovieToShoppingList(Long shoppingListId, Long movieId){
@@ -93,7 +81,9 @@ public class ShoppingListService {
 
         shoppingList.getMovies().add(movie);
         shoppingListRepository.save(shoppingList);
-        updateSubtotal(shoppingListId);
+        shoppingListHelpers.updateSubtotal(shoppingListId);
+        shoppingListHelpers.calculateDeliveryCost(shoppingListId);
+        shoppingListHelpers.calculatePackagingCost(shoppingListId);
     }
 }
 
