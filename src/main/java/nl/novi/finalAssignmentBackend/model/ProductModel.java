@@ -1,12 +1,11 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
-// geen id of entity gezien er nooit een instantie gemaakt zal worden van de productklasse!
 
 public abstract class ProductModel {
 
 
-    private Integer sellingPrice;
+    private Double sellingPrice;
 
     private Integer originalStock;
 
@@ -26,7 +25,7 @@ public abstract class ProductModel {
         this.yearOfRelease = yearOfRelease;
     }
 
-    private Integer purchasePrice;
+    private Double purchasePrice;
 
 
 
@@ -38,19 +37,19 @@ public abstract class ProductModel {
 
 
 
-    public Integer getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer price) {
+    public void setSellingPrice(Double price) {
         this.sellingPrice = price;
     }
 
-    public Integer getPurchasePrice() {
+    public Double getPurchasePrice() {
         return purchasePrice;
     }
 
-    public void setPurchasePrice(Integer purchasePrice) {
+    public void setPurchasePrice(Double purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
 

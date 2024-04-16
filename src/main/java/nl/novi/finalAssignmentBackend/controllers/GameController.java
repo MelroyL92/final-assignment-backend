@@ -5,6 +5,7 @@ import nl.novi.finalAssignmentBackend.Service.GameService;
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
+import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,13 @@ public class GameController {
         }
         var gameDto =gameDTOMapper.toGameDto(game);
         return new ResponseEntity<>(gameDto,HttpStatus.OK);
+    }
+
+    // what to return when a non valid param is entered?
+    @GetMapping("/platform")
+    public List<GameModel>getGamesByGenre(@RequestParam String platform){
+        List<GameModel>games=gameService.getGamesByPlatform(platform);
+        return ResponseEntity.ok(games).getBody();
     }
 
     @PostMapping("")

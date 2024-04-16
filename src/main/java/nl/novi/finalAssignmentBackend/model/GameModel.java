@@ -1,6 +1,11 @@
 package nl.novi.finalAssignmentBackend.model;
 
 
+import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameModel extends ProductModel {
 
 
@@ -9,6 +14,7 @@ public class GameModel extends ProductModel {
     private String publisher;
     private String playDuration;
 
+    private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
     public Long getId() {

@@ -1,9 +1,12 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
-@Table(name = "Games")
+@Table(name = "games")
 public class Game extends Product {
 
     @Id
@@ -14,8 +17,8 @@ public class Game extends Product {
     @Column(name = "play_duration")
     private String playDuration;
 
-    @ManyToOne
-    ShoppingList shoppingList;
+    @ManyToMany(mappedBy = "games")
+    private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
     public Long getId() {
@@ -49,4 +52,5 @@ public class Game extends Product {
     public void setPlayDuration(String playDuration) {
         this.playDuration = playDuration;
     }
+
 }

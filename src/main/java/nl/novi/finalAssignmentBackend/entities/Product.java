@@ -10,7 +10,7 @@ public abstract class Product {
         @NotNull()
         @Min(1)
         @Max(500)
-        private Integer sellingPrice;
+        private Double sellingPrice;
 
         @Column(name = "original_stock")
         private Integer originalStock;
@@ -31,7 +31,7 @@ public abstract class Product {
         @Column(name = "year_of_release")
         private Integer yearOfRelease;
 
-        private Integer purchasePrice;
+        private Double purchasePrice;
 
 
 
@@ -44,19 +44,19 @@ public abstract class Product {
             this.yearOfRelease = yearOfRelease;
         }
 
-        public Integer getSellingPrice() {
+        public Double getSellingPrice() {
             return sellingPrice;
         }
 
-        public void setSellingPrice(Integer sellingPrice) {
+        public void setSellingPrice(Double sellingPrice) {
             this.sellingPrice = sellingPrice;
         }
 
-        public Integer getPurchasePrice() {
+        public Double getPurchasePrice() {
             return purchasePrice;
         }
 
-        public void setPurchasePrice(Integer purchasePrice) {
+        public void setPurchasePrice(Double purchasePrice) {
             this.purchasePrice = purchasePrice;
         }
 
