@@ -39,6 +39,10 @@ public class ShoppingList {
     )
     private List<Game> games = new ArrayList<>();
 
+    // is this relation made correctly???
+    @ManyToMany(mappedBy = "shoppingList")
+    private List<Invoice>invoices = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -110,5 +114,6 @@ public class ShoppingList {
     public void setPackagingCost(Double packagingCost) {
         this.packagingCost = packagingCost;
     }
+
 }
 
