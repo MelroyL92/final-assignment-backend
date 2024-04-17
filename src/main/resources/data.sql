@@ -32,4 +32,8 @@ INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, de
 INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, description, name, platform, play_duration, publisher, year_of_release) VALUES (100, 130, 10,30, 'Star Trek: Infinite is a 4X grand strategy video game. Players take control of one of four Star Trek civilizations interstellar civilization on the galactic stage and are tasked with exploring, colonizing, and engaging minor nations and other major civilizations with diplomacy, trade, or warfare.', 'Star Trek Infinite','PC', '10 hours', 'Nimble Giant Entertainment',2023);
 
 INSERT INTO shopping_list (type, subtotal, at_home_delivery, packaging) VALUES ('shoppinglist', 0, true, true);
-INSERT INTO invoices (date_ordered, order_confirmation, status, delivery_date) VALUES ('16-04-2024', true, 'being processed', '25-04-2024')
+INSERT INTO invoices (date_ordered, order_confirmation, status, delivery_date) VALUES ('16-04-2024', true, 'being processed', '25-04-2024');
+
+
+INSERT INTO users (username, password, enabled, apikey, email) VALUES ('melroy', '$2a$12$46LxSceN4XVxVXbePOrWquxu5cMk056uKhnVAWbNKgYN6d4u23TJG', true, '', 'melroy_lingsma@live.nl');
+INSERT INTO authorities (username, authority) VALUES ('melroy', 'ROLE_ADMIN');

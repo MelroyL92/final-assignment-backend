@@ -31,7 +31,7 @@ public class MovieController {
     }
 
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<MovieResponseDto>>getAllMovies(){
         var movies = movieService.getMovies();
         var albumDTO = movies.stream().map(movieDTOMapper::toMovieDto).collect(Collectors.toList());

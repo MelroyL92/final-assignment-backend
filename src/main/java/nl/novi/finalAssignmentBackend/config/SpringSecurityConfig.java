@@ -58,15 +58,29 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                .requestMatchers("/**").permitAll()
+//                .requestMatchers("/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                /*TODO voeg de antmatchers toe voor admin(post en delete) en user (overige)*/
+                .requestMatchers(HttpMethod.GET, "/games/**").hasAnyRole("ADMIN","USER")  // toegevoegd
+                .requestMatchers(HttpMethod.GET, "movies/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.GET, "shoppinglists/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.GET, "invoices/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers(HttpMethod.POST,"/games").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/invoices").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/shoppinglists").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/games").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/movies").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/invoices").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/movies").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/games").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/invoices").hasRole("ADMIN")
                 .requestMatchers("/authenticated").authenticated()
-                .requestMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
+                .requestMatchers("/authenticate").permitAll()
                 .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegd. */
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

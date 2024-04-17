@@ -56,15 +56,31 @@ public class ShoppingListController{
 
     }
 
-    @PostMapping("/{shoppingListId}/games/{gameId}")
+    @PutMapping("/{shoppingListId}/games/{gameId}")
     public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId) {
         shoppingListService.addGameToShoppingList(shoppingListId, gameId);
         return ResponseEntity.ok("Game successfully added to shopping list");
     }
 
-    @PostMapping("/{shoppingListId}/movies/{movieId}")
+    @PutMapping("/{shoppingListId}/movies/{movieId}")
     public ResponseEntity<String>addMovieToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long movieId){
         shoppingListService.addMovieToShoppingList(shoppingListId,movieId);
         return ResponseEntity.ok("Movie successfully added to shopping list");
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ShoppingListResponseDto>UpdateShoppingList(@PathVariable Long id, @RequestBody ShoppingListInputDto shoppingListInputDto){
+        var updateShoppingList = shoppingListService.updateShoppingList(id, shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto));
+        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(updateShoppingList);
+        return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id){
+        shoppingListService.deleteShoppingList(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }

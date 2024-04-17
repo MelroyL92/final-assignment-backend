@@ -66,4 +66,11 @@ public class InvoiceModel {
         this.shoppingList = shoppingList;
     }
 
+    public Double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
+    }
 }

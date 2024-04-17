@@ -8,13 +8,14 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMapper;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,21 @@ public class ShoppingListService {
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
+    public ShoppingListModel updateShoppingList(Long id, ShoppingListModel shoppingListModel){
+        Optional<ShoppingList> shoppingListFound = shoppingListRepository.findById(id);
+        if (shoppingListFound.isPresent()) {
+            ShoppingList excistingShoppingList = shoppingListFound.get();
+            excistingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
+            excistingShoppingList.setType(shoppingListModel.getType());
+            excistingShoppingList.setPackaging(excistingShoppingList.getPackaging());
+            excistingShoppingList = shoppingListRepository.save(excistingShoppingList);
+            return shoppingListMapper.fromEntity(excistingShoppingList);
+        } else {
+            throw new RecordNotFoundException("shopping list with id " + id + " not found");
+        }
+
+    }
+
 
 
 
@@ -84,6 +100,10 @@ public class ShoppingListService {
         shoppingListHelpers.updateSubtotal(shoppingListId);
         shoppingListHelpers.calculateDeliveryCost(shoppingListId);
         shoppingListHelpers.calculatePackagingCost(shoppingListId);
+    }
+
+    public void deleteShoppingList(Long id){
+        shoppingListRepository.deleteById(id);
     }
 }
 

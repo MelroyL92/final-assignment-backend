@@ -13,6 +13,7 @@ public class InvoiceResponseDto {
     private String status;
     private String deliveryDate;
 
+    private Double profit;
 
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
@@ -64,4 +65,11 @@ public class InvoiceResponseDto {
         this.shoppingList = shoppingList;
     }
 
+    public Double getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Double profit) {
+        this.profit = profit;
+    }
 }
