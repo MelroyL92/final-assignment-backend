@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.invoice;
 
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ public class InvoiceResponseDto {
     private String deliveryDate;
 
     private Double profit;
+
+    private User user;
 
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
@@ -71,5 +74,13 @@ public class InvoiceResponseDto {
 
     public void setProfit(Double profit) {
         this.profit = profit;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

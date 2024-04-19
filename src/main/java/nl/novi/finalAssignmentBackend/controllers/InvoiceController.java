@@ -62,7 +62,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/{invoiceId}/shoppinglists/{shoppingListId}")
-    public ResponseEntity<String>addShoppingListToInvoice(@PathVariable long invoiceId, @PathVariable Long shoppingListId){
+    public ResponseEntity<String>addShoppingListToInvoice(@PathVariable Long invoiceId, @PathVariable Long shoppingListId){
         invoiceService.addShoppingListToInvoice(invoiceId,shoppingListId);
         return ResponseEntity.ok("the shopping list has been added to the invoice");
     }

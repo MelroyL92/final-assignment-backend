@@ -2,7 +2,9 @@ package nl.novi.finalAssignmentBackend.dtos.user;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.finalAssignmentBackend.entities.Authority;
-
+import nl.novi.finalAssignmentBackend.entities.Invoice;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class UserDto {
@@ -11,6 +13,9 @@ public class UserDto {
     public Boolean enabled;
     public String apikey;
     public String email;
+
+    private List<Invoice>invoice = new ArrayList<>();
+
     @JsonSerialize
     public Set<Authority> authorities;
 
@@ -61,5 +66,6 @@ public class UserDto {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+
 }
 

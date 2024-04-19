@@ -24,12 +24,12 @@ public class MovieResponseDto extends productResponseDto {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+   public void setGenre(String genre) {
+       this.genre = genre;
+   }
 
-    public String getType() {
-        return type;
+   public String getType() {
+       return type;
     }
 
     public void setType(String type) {

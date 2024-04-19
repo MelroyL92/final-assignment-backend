@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.model;
 
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,15 @@ public class InvoiceModel {
 
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -73,4 +83,9 @@ public class InvoiceModel {
     public void setProfit(Double profit) {
         this.profit = profit;
     }
+
+
+
+
+
 }

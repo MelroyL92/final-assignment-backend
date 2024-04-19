@@ -43,7 +43,7 @@ import java.util.Map;
 
         @PostMapping(value = "")
         public ResponseEntity<UserDto> createCustomer(@RequestBody UserDto dto) {
-            ;
+
 
             String newUsername = userService.createUser(dto);
             userService.addAuthority(newUsername, "ROLE_USER");
@@ -61,6 +61,13 @@ import java.util.Map;
 
             return ResponseEntity.noContent().build();
         }
+
+        @PutMapping("/{username}/invoices/{invoiceId}")
+        public ResponseEntity<String>addUserToInvoice(@PathVariable String username, @PathVariable  Long invoiceId) {
+            userService.addInvoiceToUser(username, invoiceId);
+            return ResponseEntity.ok("the invoice with id " + invoiceId + " has been assigned to user " + username);
+        }
+
 
         @DeleteMapping(value = "/{username}")
         public ResponseEntity<Object> deleteCustomer(@PathVariable("username") String username) {

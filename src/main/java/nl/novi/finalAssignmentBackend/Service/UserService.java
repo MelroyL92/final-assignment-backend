@@ -1,10 +1,13 @@
 package nl.novi.finalAssignmentBackend.Service;
 
 
+import nl.novi.finalAssignmentBackend.Repository.InvoiceRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
 import nl.novi.finalAssignmentBackend.entities.Authority;
+import nl.novi.finalAssignmentBackend.entities.Invoice;
 import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +24,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final InvoiceRepository invoiceRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InvoiceRepository invoiceRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.invoiceRepository = invoiceRepository;
     }
 
 
@@ -118,6 +123,22 @@ public class UserService {
         user.setEmail(userDto.getEmail());
 
         return user;
+    }
+
+    public void addInvoiceToUser(String username, Long invoiceId){
+        User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(()-> new RecordNotFoundException("invoice with id " + invoiceId + " does not exist."));
+
+       invoice.setUser(user);
+       invoiceRepository.save(invoice);
+
+//        user.setInvoice(invoice);
+//        userRepository.save(user);
+//        user.getInvoice().add(invoice);
+//        invoice.getUser().getInvoice().add(invoice);
+//          invoice.setUser(invoice.getUser());
+
+
     }
 
 }

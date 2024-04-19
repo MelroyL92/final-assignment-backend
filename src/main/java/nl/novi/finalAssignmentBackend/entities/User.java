@@ -2,7 +2,9 @@ package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,8 +29,10 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
 
 
-    // Deze 3 variabelen zijn niet verplicht.
-    // Je mag ook een "String banaan;" toevoegen, als je dat graag wilt.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Invoice>invoice=new ArrayList<>();
+
+
     @Column(nullable = false)
     private boolean enabled = true;
 
@@ -63,5 +67,4 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
-
 }

@@ -19,7 +19,6 @@ public class Invoice {
     private String deliveryDate;
     private Double profit;
 
-    // is this relation made correctly???
     @ManyToMany()
     @JoinTable(
             name = "invoice_shopping_list",
@@ -28,6 +27,10 @@ public class Invoice {
     )
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
+    // this one still needs to be checked better
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private User user;
 // Something to think about: maybe make a attribute for profit to only be shown to the admin so he/she can see what profit gets made on each order
 
     public Long getOrderNumber() {
@@ -85,4 +88,12 @@ public class Invoice {
     public void setShoppingList(List<ShoppingList> shoppingList) {
         this.shoppingList = shoppingList;
     }
+
+   public User getUser() {
+       return user;
+   }
+
+   public void setUser(User user) {
+       this.user = user;
+   }
 }

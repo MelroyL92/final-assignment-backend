@@ -1,5 +1,7 @@
 package nl.novi.finalAssignmentBackend.model;
 
+import nl.novi.finalAssignmentBackend.entities.Invoice;
+
 public class UserModel {
 
     private int id;
@@ -7,6 +9,8 @@ public class UserModel {
     private String email;
     private String password;
     private String BirthYear;
+
+    private Invoice invoice;
 
     public int getId() {
         return id;
@@ -47,4 +51,5 @@ public class UserModel {
     public void setBirthYear(String birthYear) {
         BirthYear = birthYear;
     }
+
 }

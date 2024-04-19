@@ -21,6 +21,7 @@ public class InvoiceMapper implements EntityMapper<InvoiceModel, Invoice> {
         model.setDateOrdered(entity.getDateOrdered());
         model.setShoppingList(entity.getShoppingList());
         model.setProfit(entity.getProfit());
+        model.setUser(entity.getUser());
         return model;
     }
 
@@ -38,6 +39,7 @@ public class InvoiceMapper implements EntityMapper<InvoiceModel, Invoice> {
         entity.setOrderNumber(model.getOrderNumber());
         entity.setShoppingList(model.getShoppingList());
         entity.setProfit(model.getProfit());
+        entity.setUser(model.getUser());
         return entity;
     }
 }
