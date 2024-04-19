@@ -5,7 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.ShoppingListService;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListInputDto;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
+import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,20 +20,22 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/shoppinglists")
-public class ShoppingListController{
+public class ShoppingListController {
 
     private final ShoppingListDTOMapper shoppingListDTOMapper;
     private final ShoppingListService shoppingListService;
     private final HttpServletRequest request;
+    private final GameDTOMapper gameDTOMapper;
 
-    public ShoppingListController(ShoppingListDTOMapper shoppingListDTOMapper, ShoppingListService shoppingListService, HttpServletRequest request) {
+    public ShoppingListController(ShoppingListDTOMapper shoppingListDTOMapper, ShoppingListService shoppingListService, HttpServletRequest request, GameDTOMapper gameDTOMapper) {
         this.shoppingListDTOMapper = shoppingListDTOMapper;
         this.shoppingListService = shoppingListService;
         this.request = request;
+        this.gameDTOMapper = gameDTOMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<ShoppingListResponseDto>>getAllShoppingLists(){
+    public ResponseEntity<List<ShoppingListResponseDto>> getAllShoppingLists() {
         var shoppingList = shoppingListService.getShoppingList();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
 
@@ -38,7 +43,7 @@ public class ShoppingListController{
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ShoppingListResponseDto>getShoppingListById(@PathVariable Long id) {
+    public ResponseEntity<ShoppingListResponseDto> getShoppingListById(@PathVariable Long id) {
         var shoppingList = shoppingListService.getShoppingListById(id);
         if (shoppingList == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,6 +51,24 @@ public class ShoppingListController{
         var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(shoppingList);
         return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
     }
+
+        @GetMapping("/{shoppingListId}/games/{gameId}")
+        public ResponseEntity<List<GameResponseDto>>searchGameFromShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId){
+            var gameInList = shoppingListService.getGameFromShoppingList(shoppingListId, gameId);
+            if(gameInList == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(gameInList,HttpStatus.OK);
+        }
+
+        @GetMapping("{shoppingListId}/movies/{movieId}")
+        public ResponseEntity<List<MovieResponseDto>>searchMovieFromShoppingList(@PathVariable Long shoppingListId, @PathVariable Long movieId){
+            var movieInList = shoppingListService.getMovieFromShoppingList(shoppingListId, movieId);
+             if (movieInList == null){
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          }
+             return new ResponseEntity<>(movieInList,HttpStatus.OK);
+        }
 
     @PostMapping("")
     public ResponseEntity<ShoppingListResponseDto>createShoppingList(@RequestBody ShoppingListInputDto shoppingListInputDto){
@@ -55,6 +78,7 @@ public class ShoppingListController{
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, shoppingListDto.getId())).body(shoppingListDto);
 
     }
+
 
     @PutMapping("/{shoppingListId}/games/{gameId}")
     public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId) {
