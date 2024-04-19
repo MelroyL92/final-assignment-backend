@@ -41,9 +41,8 @@ public class ShoppingListService {
     private final MovieMapper movieMapper; // toegevoegd
 
 
-
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository,
-                               ShoppingListHelpers shoppingListHelpers, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper,MovieDTOMapper movieDTOMapper) {
+                               ShoppingListHelpers shoppingListHelpers, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
@@ -56,24 +55,24 @@ public class ShoppingListService {
     }
 
 
-    public List<ShoppingListModel> getShoppingList(){
+    public List<ShoppingListModel> getShoppingList() {
         return shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());
     }
 
-    public ShoppingListModel getShoppingListById(Long id){
+    public ShoppingListModel getShoppingListById(Long id) {
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Shoppinglist not found with id: " + id));
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
-    public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel){
+    public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel) {
         ShoppingList shoppingList = shoppingListMapper.toEntity(shoppingListModel);
         shoppingList = shoppingListRepository.save(shoppingList);
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
     public List<GameResponseDto> getGameFromShoppingList(Long gameId, Long shoppingListId) {
-        Optional<ShoppingList>shoppingLists = shoppingListRepository.findById(shoppingListId);
-        if(shoppingLists.isEmpty()) {
+        Optional<ShoppingList> shoppingLists = shoppingListRepository.findById(shoppingListId);
+        if (shoppingLists.isEmpty()) {
             throw new RecordNotFoundException("The requested game within the list does not exist");
         } else {
             var gamesInList = shoppingLists.get().getGames();
@@ -90,7 +89,7 @@ public class ShoppingListService {
         }
     }
 
-    public List<MovieResponseDto>getMovieFromShoppingList(Long movieId, Long shoppingListId) {
+    public List<MovieResponseDto> getMovieFromShoppingList(Long movieId, Long shoppingListId) {
         Optional<ShoppingList> shoppingLists = shoppingListRepository.findById(shoppingListId);
         if (shoppingLists.isEmpty()) {
             throw new RecordNotFoundException("The requested movie within the list does not exist");
@@ -109,7 +108,7 @@ public class ShoppingListService {
         }
     }
 
-    public ShoppingListModel updateShoppingList(Long id, ShoppingListModel shoppingListModel){
+    public ShoppingListModel updateShoppingList(Long id, ShoppingListModel shoppingListModel) {
         Optional<ShoppingList> shoppingListFound = shoppingListRepository.findById(id);
         if (shoppingListFound.isPresent()) {
             ShoppingList excistingShoppingList = shoppingListFound.get();
@@ -140,7 +139,7 @@ public class ShoppingListService {
         shoppingListHelpers.calculateDeliveryCost(shoppingListId);
     }
 
-    public void addMovieToShoppingList(Long shoppingListId, Long movieId){
+    public void addMovieToShoppingList(Long shoppingListId, Long movieId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
 
@@ -155,8 +154,49 @@ public class ShoppingListService {
         shoppingListHelpers.calculatePackagingCost(shoppingListId);
     }
 
-    public void deleteShoppingList(Long id){
+    public void deleteShoppingList(Long id) {
         shoppingListRepository.deleteById(id);
+    }
+
+    public void deleteGameWithinShoppingList(Long gameId, Long shoppingListId) {
+
+        Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
+        if (optionalShoppingList.isEmpty()) {
+            throw new RecordNotFoundException("shoppingList with id " + shoppingListId + " does not exist");
+        }
+
+        ShoppingList shoppingList = optionalShoppingList.get();
+        List<Game> gameInList = shoppingList.getGames();
+
+        Optional<Game> optionalGame = gameInList.stream().filter(game -> game.getId().equals(gameId)).findFirst();
+
+        if (optionalGame.isPresent()) {
+            Game gameToDelete = optionalGame.get();
+            gameInList.remove(gameToDelete);
+            shoppingListRepository.save(shoppingList);
+        } else {
+            throw new RecordNotFoundException("the game you requested to delete with id " + gameId + " does not exist");
+        }
+    }
+
+    public void deleteMovieWithinShoppingList(Long movieId, Long shoppingListId) {
+        Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
+        if (optionalShoppingList.isEmpty()) {
+            throw new RecordNotFoundException("shoppingList with id " + shoppingListId + " does not exist");
+        }
+
+        ShoppingList shoppingList = optionalShoppingList.get();
+        List<Movie> movieInList = shoppingList.getMovies();
+
+        Optional<Movie> optionalMovie = movieInList.stream().filter(movie -> movie.getId().equals(movieId)).findFirst();
+
+        if (optionalMovie.isPresent()) {
+            Movie movieToDelete = optionalMovie.get();
+            movieInList.remove(movieToDelete);
+            shoppingListRepository.save(shoppingList);
+        } else {
+            throw new RecordNotFoundException("the movie you requested to delete with id " + movieId + " does not exist");
+        }
     }
 }
 

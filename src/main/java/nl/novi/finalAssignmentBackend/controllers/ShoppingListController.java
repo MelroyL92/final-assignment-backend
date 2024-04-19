@@ -8,7 +8,6 @@ import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
-import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +24,11 @@ public class ShoppingListController {
     private final ShoppingListDTOMapper shoppingListDTOMapper;
     private final ShoppingListService shoppingListService;
     private final HttpServletRequest request;
-    private final GameDTOMapper gameDTOMapper;
 
-    public ShoppingListController(ShoppingListDTOMapper shoppingListDTOMapper, ShoppingListService shoppingListService, HttpServletRequest request, GameDTOMapper gameDTOMapper) {
+    public ShoppingListController(ShoppingListDTOMapper shoppingListDTOMapper, ShoppingListService shoppingListService, HttpServletRequest request) {
         this.shoppingListDTOMapper = shoppingListDTOMapper;
         this.shoppingListService = shoppingListService;
         this.request = request;
-        this.gameDTOMapper = gameDTOMapper;
     }
 
     @GetMapping
@@ -102,6 +99,18 @@ public class ShoppingListController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id){
         shoppingListService.deleteShoppingList(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{shoppingListId}/games/{gameId}")
+    public ResponseEntity<Object>deleteGameFromShoppingList(@PathVariable Long shoppingListId,@PathVariable Long gameId){
+        shoppingListService.deleteGameWithinShoppingList(gameId, shoppingListId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{shoppingListId}/movies/{movieId}")
+    public ResponseEntity<Object>removieMovieFromWishlist(@PathVariable Long shoppingListId, @PathVariable Long movieId){
+        shoppingListService.deleteMovieWithinShoppingList(shoppingListId,movieId);
         return ResponseEntity.noContent().build();
     }
 
