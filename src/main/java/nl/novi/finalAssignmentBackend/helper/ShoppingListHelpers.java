@@ -60,9 +60,13 @@ public class ShoppingListHelpers {
     }
 
     public void calculatePackagingCost(Long shoppingListId) {
-        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(() -> new EntityNotFoundException("Shopping list not found, so the packaging cant be calculated"));
+
+        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(() -> new EntityNotFoundException("Shopping list not found. The packaging cant be calculated"));
         int amount = shoppingList.getGames().size() + shoppingList.getMovies().size();
         double packagingCost = 0.40 * amount;
+
+        packagingCost = Math.round(packagingCost * 100.0) / 100.0;
+
         shoppingList.setPackagingCost(packagingCost);
         shoppingListRepository.save(shoppingList);
     }

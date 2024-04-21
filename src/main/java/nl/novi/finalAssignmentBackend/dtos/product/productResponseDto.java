@@ -13,7 +13,7 @@ public class productResponseDto {
 
     private String name;
 
-
+    private Integer currentStock;
 
 
     private Integer yearOfRelease;
@@ -59,5 +59,11 @@ public class productResponseDto {
         this.name = name;
     }
 
+    public Integer getCurrentStock() {
+        return currentStock;
+    }
 
+    public void setCurrentStock(Integer currentStock) {
+        this.currentStock = currentStock;
+    }
 }

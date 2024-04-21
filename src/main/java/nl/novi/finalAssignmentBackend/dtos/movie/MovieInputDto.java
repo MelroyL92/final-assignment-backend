@@ -9,15 +9,15 @@ public class MovieInputDto extends Product {
     private String type;
     private String director;
 
-    private String playtime;
+    private Integer playtimeInMin;
 
 
-    public String getPlaytime() {
-        return playtime;
+    public Integer getPlaytimeInMin() {
+        return playtimeInMin;
     }
 
-    public void setPlaytime(String playtime) {
-        this.playtime = playtime;
+    public void setPlaytimeInMin(Integer playtimeInMin) {
+        this.playtimeInMin = playtimeInMin;
     }
 
     public String getGenre() {

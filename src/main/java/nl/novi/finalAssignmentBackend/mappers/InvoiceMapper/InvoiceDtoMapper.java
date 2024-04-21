@@ -22,8 +22,8 @@ public class InvoiceDtoMapper {
         target.setOrderNumber(invoice.getOrderNumber());
         target.setOrderConfirmation(invoice.getOrderConfirmation());
         target.setShoppingList(invoice.getShoppingList());
-        target.setProfit(invoice.getProfit());
         target.setUser(invoice.getUser());
+        target.setTotalPrice(invoice.getTotalPrice());
         return target;
     }
 
@@ -37,6 +37,7 @@ public class InvoiceDtoMapper {
         invoice.setShoppingList(dto.getShoppingList());
         invoice.setProfit(dto.getProfit());
         invoice.setUser(dto.getUser());
+        invoice.setTotalPrice(dto.getProfit());
         return invoice;
     }
 

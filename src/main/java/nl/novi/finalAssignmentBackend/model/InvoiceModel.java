@@ -16,6 +16,8 @@ public class InvoiceModel {
 
     private Double profit;
 
+    private Double totalPrice;
+
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
     private User user;
@@ -84,8 +86,11 @@ public class InvoiceModel {
         this.profit = profit;
     }
 
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
 
-
-
-
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

@@ -32,14 +32,11 @@ public class ShoppingListService {
     private final ShoppingListRepository shoppingListRepository;
     private final GameRepository gameRepository;
     private final MovieRepository movieRepository;
-
     private final ShoppingListHelpers shoppingListHelpers;
-    private final GameDTOMapper gameDTOMapper; // toegevoegd
-    private final GameMapper gameMapper; // toegevoegd
-
+    private final GameDTOMapper gameDTOMapper;
+    private final GameMapper gameMapper;
     private final MovieDTOMapper movieDTOMapper;
-    private final MovieMapper movieMapper; // toegevoegd
-
+    private final MovieMapper movieMapper;
 
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository,
                                ShoppingListHelpers shoppingListHelpers, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
@@ -48,9 +45,9 @@ public class ShoppingListService {
         this.gameRepository = gameRepository;
         this.movieRepository = movieRepository;
         this.shoppingListHelpers = shoppingListHelpers;
-        this.gameDTOMapper = gameDTOMapper; // toegevoegd
-        this.gameMapper = gameMapper; // toegevoegd
-        this.movieMapper = movieMapper; // toegevoegd
+        this.gameDTOMapper = gameDTOMapper;
+        this.gameMapper = gameMapper;
+        this.movieMapper = movieMapper;
         this.movieDTOMapper = movieDTOMapper;
     }
 
@@ -123,8 +120,8 @@ public class ShoppingListService {
 
     }
 
-    // the entire game gets saved because thats what we need to be able to acces
-    // but i do need to make sure that when a client gets acces to it it goes through the dto
+//     the entire game gets saved because thats what we need to be able to acces
+//     but i do need to make sure that when a client gets acces to it it goes through the dto
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
@@ -134,9 +131,10 @@ public class ShoppingListService {
 
         shoppingList.getGames().add(game);
 
-        shoppingListRepository.save(shoppingList);
         shoppingListHelpers.updateSubtotal(shoppingListId);
         shoppingListHelpers.calculateDeliveryCost(shoppingListId);
+        shoppingListHelpers.calculatePackagingCost(shoppingListId);
+        shoppingListRepository.save(shoppingList);
     }
 
     public void addMovieToShoppingList(Long shoppingListId, Long movieId) {
@@ -146,13 +144,16 @@ public class ShoppingListService {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
 
-
         shoppingList.getMovies().add(movie);
-        shoppingListRepository.save(shoppingList);
+
+
         shoppingListHelpers.updateSubtotal(shoppingListId);
         shoppingListHelpers.calculateDeliveryCost(shoppingListId);
         shoppingListHelpers.calculatePackagingCost(shoppingListId);
+        shoppingListRepository.save(shoppingList);
     }
+
+
 
     public void deleteShoppingList(Long id) {
         shoppingListRepository.deleteById(id);
@@ -178,7 +179,7 @@ public class ShoppingListService {
             throw new RecordNotFoundException("the game you requested to delete with id " + gameId + " does not exist");
         }
     }
-
+    
     public void deleteMovieWithinShoppingList(Long movieId, Long shoppingListId) {
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
         if (optionalShoppingList.isEmpty()) {

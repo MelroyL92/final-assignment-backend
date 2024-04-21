@@ -20,11 +20,14 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         model.setDirector(entity.getDirector());
         model.setGenre(entity.getGenre());
         model.setType(entity.getType());
-        model.setPlaytime(entity.getPlaytime());
+        model.setPlaytimeInMin(entity.getPlaytimeInMin());
         model.setDescription(entity.getDescription());
         model.setSellingPrice(entity.getSellingPrice());
         model.setYearOfRelease(entity.getYearOfRelease());
         model.setOriginalStock(entity.getOriginalStock());
+        model.setAmountSold(entity.getAmountSold());
+        model.setPurchasePrice(entity.getPurchasePrice());
+        model.setCurrentStock(entity.getCurrentStock());
         return model;
     }
 
@@ -43,12 +46,14 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         entity.setDirector(model.getDirector());
         entity.setGenre(model.getGenre());
         entity.setType(model.getType());
-        entity.setPlaytime(model.getPlaytime());
+        entity.setPlaytimeInMin(model.getPlaytimeInMin());
         entity.setDescription(model.getDescription());
         entity.setSellingPrice(model.getSellingPrice());
         entity.setYearOfRelease(model.getYearOfRelease());
         entity.setOriginalStock(model.getOriginalStock());
-        // Map other fields as needed
+        entity.setPurchasePrice(model.getPurchasePrice());
+        entity.setAmountSold(model.getAmountSold());
+        entity.setCurrentStock(model.getCurrentStock());
         return entity;
     }
 }

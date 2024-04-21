@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/games")
 @RestController
-
 public class GameController {
 
     private final GameDTOMapper gameDTOMapper;
@@ -57,7 +56,7 @@ public class GameController {
         var gameModel = gameDTOMapper.createGameModel(gameInputDto);
         var newGame = gameService.createGame(gameModel);
         var gameDto = gameDTOMapper.toGameDto(newGame);
-        return ResponseEntity.created(URI.create("/movies/" + newGame.getId()))
+        return ResponseEntity.created(URI.create("/games/" + newGame.getId()))
                 .body(gameDto);
     }
 
@@ -73,6 +72,5 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

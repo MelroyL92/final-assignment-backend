@@ -15,7 +15,6 @@ public class ShoppingList {
     private String type;
     private Double subtotal;
 
-    // nieuwe code inclusief getters en setters
     private Boolean packaging;
     private Double packagingCost;
     private Boolean atHomeDelivery;

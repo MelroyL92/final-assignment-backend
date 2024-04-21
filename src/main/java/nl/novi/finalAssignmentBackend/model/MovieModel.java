@@ -12,7 +12,7 @@ public class MovieModel extends ProductModel {
         private String type;
         private String director;
 
-        private String playtime;
+        private Integer playtimeInMin;
 
         private ShoppingList shoppingList;
 
@@ -24,12 +24,12 @@ public class MovieModel extends ProductModel {
         this.shoppingList = shoppingList;
          }
 
-    public String getPlaytime() {
-            return playtime;
+    public Integer getPlaytimeInMin() {
+            return playtimeInMin;
         }
 
-        public void setPlaytime(String playtime) {
-            this.playtime = playtime;
+        public void setPlaytimeInMin(Integer playtimeInMin) {
+            this.playtimeInMin = playtimeInMin;
         }
 
         public String getGenre() {

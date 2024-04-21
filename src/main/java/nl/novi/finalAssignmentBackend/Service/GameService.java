@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.GameRepository;
+import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
@@ -19,10 +20,12 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
+    private final UserRepository userRepository;
 
-    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+    public GameService(GameRepository gameRepository, GameMapper gameMapper,UserRepository userRepository) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
+        this.userRepository = userRepository;
     }
 
 
@@ -58,11 +61,11 @@ public class GameService {
             existingGame.setOriginalStock(gameModel.getOriginalStock());
             existingGame.setPlatform(gameModel.getPlatform());
             existingGame.setName(gameModel.getName());
-            existingGame.setPlayDuration(gameModel.getPlayDuration());
+            existingGame.setPlayDurationInMin(gameModel.getPlayDurationInMin());
             existingGame.setPublisher(gameModel.getPublisher());
             existingGame.setDescription(gameModel.getDescription());
             existingGame.setAmountSold(gameModel.getAmountSold());
-            existingGame.setPlayDuration(gameModel.getPlayDuration());
+            existingGame.setPlayDurationInMin(gameModel.getPlayDurationInMin());
             existingGame.setSellingPrice(gameModel.getSellingPrice());
             existingGame.setPurchasePrice(gameModel.getPurchasePrice());
             existingGame.setYearOfRelease(gameModel.getYearOfRelease());

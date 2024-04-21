@@ -19,11 +19,12 @@ public class MovieDTOMapper {
         target.setName(movie.getName());
         target.setGenre(movie.getGenre());
         target.setType(movie.getType());
-        target.setPlaytime(movie.getPlaytime());
+        target.setPlaytime(movie.getPlaytimeInMin());
         target.setDescription(movie.getDescription());
         target.setSellingPrice(movie.getSellingPrice());
         target.setYearOfRelease(movie.getYearOfRelease());
         target.setOriginalStock(movie.getOriginalStock());
+        target.setCurrentStock(movie.getCurrentStock());
         return target;
     }
 
@@ -37,11 +38,12 @@ public class MovieDTOMapper {
         movie.setPurchasePrice(dto.getSellingPrice());
         movie.setGenre(dto.getGenre());
         movie.setDirector(dto.getDirector());
-        movie.setPlaytime(dto.getPlaytime());
+        movie.setPlaytimeInMin(dto.getPlaytimeInMin());
         movie.setYearOfRelease(dto.getYearOfRelease());
         movie.setAmountSold(dto.getAmountSold());
         movie.setDescription(dto.getDescription());
         movie.setOriginalStock(dto.getOriginalStock());
+        movie.setCurrentStock(dto.getCurrentStock());
         return movie;
     }
 }

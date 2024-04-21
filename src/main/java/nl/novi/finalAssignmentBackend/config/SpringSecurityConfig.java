@@ -30,11 +30,6 @@ public class SpringSecurityConfig {
     }
 
 
-
-
-
-
-    // Authenticatie met customUserDetailsService en passwordEncoder
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
         var auth = new DaoAuthenticationProvider();
@@ -44,23 +39,18 @@ public class SpringSecurityConfig {
     }
 
 
-
-    // Authorizatie met jwt
-    // authorisatie toevoegen!!!!!
-    //requestMatchers allemaal toevoegen voor alle endpoints!
     @Bean
     protected SecurityFilterChain filter (HttpSecurity http) throws Exception {
 
-        //JWT token authentication
+
         http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-//                .requestMatchers("/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/games/**").hasAnyRole("ADMIN","USER")  // toegevoegd
@@ -68,20 +58,21 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "shoppinglists/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers(HttpMethod.GET, "invoices/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers(HttpMethod.POST,"/games").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/invoices").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST,"/shoppinglists").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/invoices/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN") //user moet dit misschien ook kunnen?
+                .requestMatchers(HttpMethod.POST,"/shoppinglists").hasRole("ADMIN") //user moet dit misschien ook kunnen op bepaalde eigenschappen na?
                 .requestMatchers(HttpMethod.PUT, "/games").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/movies").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/invoices").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/invoices/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.DELETE, "/movies").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/games").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/invoices").hasRole("ADMIN")
                 .requestMatchers("/authenticated").authenticated()
                 .requestMatchers("/authenticate").permitAll()
-                .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegd. */
+                .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

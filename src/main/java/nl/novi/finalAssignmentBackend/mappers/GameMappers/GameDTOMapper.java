@@ -24,8 +24,9 @@ public class GameDTOMapper {
             target.setYearOfRelease(game.getYearOfRelease());
             target.setOriginalStock(game.getOriginalStock());
             target.setPlatform(game.getPlatform());
-            target.setPlayDuration(game.getPlayDuration());
+            target.setPlayDurationInMin(game.getPlayDurationInMin());
             target.setPublisher(game.getPublisher());
+            target.setCurrentStock(game.getCurrentStock());
             return target;
         }
 
@@ -48,12 +49,14 @@ public class GameDTOMapper {
             game.setYearOfRelease(dto.getYearOfRelease());
             game.setAmountSold(dto.getAmountSold());
             game.setDescription(dto.getDescription());
-            game.setOriginalStock(dto.getOriginalStock());
+//            game.setOriginalStock(dto.getOriginalStock());
             game.setPlatform(dto.getPlatform());
-            game.setPlayDuration(dto.getPlayDuration());
+            game.setPlayDurationInMin(dto.getPlayDurationInMin());
             game.setPublisher(dto.getPublisher());
+            game.setCurrentStock(dto.getCurrentStock());
             return game;
         }
+
 
 }
 

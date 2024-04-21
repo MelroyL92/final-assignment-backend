@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,15 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
+
+    @Size(min =10, max = 60, message = "please fill in a description between 3 and 60 characters")
     private String dateOrdered;
     private Boolean orderConfirmation;
-    private String status;
-    private String deliveryDate;
-    private Double profit;
+
+    private String status; // maybe make a if statement with a few options
+    private String deliveryDate; //maybe a if statement in the model that if the stock is valid to be delivered within ... else...
+    private Double profit;  // still need to calculate the profit based on the purchase and sell price
+    private Double totalPrice;
 
     @ManyToMany()
     @JoinTable(
@@ -96,4 +101,12 @@ public class Invoice {
    public void setUser(User user) {
        this.user = user;
    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

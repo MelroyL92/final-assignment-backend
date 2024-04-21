@@ -6,6 +6,7 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Invoice;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.InvoiceHelpers;
 import nl.novi.finalAssignmentBackend.mappers.InvoiceMapper.InvoiceMapper;
 import nl.novi.finalAssignmentBackend.model.InvoiceModel;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,13 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final InvoiceMapper invoiceMapper;
     private final ShoppingListRepository shoppingListRepository;
+    private final InvoiceHelpers invoiceHelpers;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceMapper invoiceMapper, ShoppingListRepository shoppingListRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, InvoiceMapper invoiceMapper, ShoppingListRepository shoppingListRepository, InvoiceHelpers invoiceHelpers) {
         this.invoiceRepository = invoiceRepository;
         this.invoiceMapper = invoiceMapper;
         this.shoppingListRepository = shoppingListRepository;
+        this.invoiceHelpers = invoiceHelpers;
     }
 
 
@@ -34,7 +37,9 @@ public class InvoiceService {
 
     public InvoiceModel getInvoiceById(Long id){
        Invoice invoice= invoiceRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Invoice not found with id " + id));
-        return invoiceMapper.fromEntity(invoice);
+       invoiceHelpers.calculateTotalPrice(id);
+       invoiceRepository.save(invoice);
+       return invoiceMapper.fromEntity(invoice);
     }
 
     public InvoiceModel createInvoice(InvoiceModel invoiceModel){

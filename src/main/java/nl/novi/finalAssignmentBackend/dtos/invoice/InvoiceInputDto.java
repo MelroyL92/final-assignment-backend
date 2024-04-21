@@ -16,6 +16,8 @@ public class InvoiceInputDto {
 
     private Double profit;
 
+    private Double totalPrice;
+
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
     private User user;
@@ -83,5 +85,13 @@ public class InvoiceInputDto {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

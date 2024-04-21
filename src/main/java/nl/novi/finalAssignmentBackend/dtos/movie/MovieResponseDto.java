@@ -9,15 +9,15 @@ public class MovieResponseDto extends productResponseDto {
     private String type;
     private String director;
 
-    private String playtime;
+    private Integer playtimeInMin;
 
 
-    public String getPlaytime() {
-        return playtime;
+    public Integer getPlaytimeInMin() {
+        return playtimeInMin;
     }
 
-    public void setPlaytime(String playtime) {
-        this.playtime = playtime;
+    public void setPlaytime(Integer playtimeInMin) {
+        this.playtimeInMin = playtimeInMin;
     }
 
     public String getGenre() {

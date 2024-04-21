@@ -6,7 +6,7 @@ public class GameResponseDto extends productResponseDto {
     private Long id;
     private String platform;
     private String publisher;
-    private String playDuration;
+    private Integer playDurationInMin;
 
 
     public Long getId() {
@@ -33,11 +33,11 @@ public class GameResponseDto extends productResponseDto {
         this.publisher = publisher;
     }
 
-    public String getPlayDuration() {
-        return playDuration;
+    public Integer getPlayDurationInMin() {
+        return playDurationInMin;
     }
 
-    public void setPlayDuration(String playDuration) {
-        this.playDuration = playDuration;
+    public void setPlayDurationInMin(Integer playDurationInMin) {
+        this.playDurationInMin = playDurationInMin;
     }
 }

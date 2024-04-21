@@ -14,7 +14,7 @@ public class InvoiceResponseDto {
     private String status;
     private String deliveryDate;
 
-    private Double profit;
+    private Double totalPrice;
 
     private User user;
 
@@ -68,12 +68,12 @@ public class InvoiceResponseDto {
         this.shoppingList = shoppingList;
     }
 
-    public Double getProfit() {
-        return profit;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setProfit(Double profit) {
-        this.profit = profit;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public User getUser() {

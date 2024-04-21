@@ -65,7 +65,7 @@ import java.util.Map;
         @PutMapping("/{username}/invoices/{invoiceId}")
         public ResponseEntity<String>addUserToInvoice(@PathVariable String username, @PathVariable  Long invoiceId) {
             userService.addInvoiceToUser(username, invoiceId);
-            return ResponseEntity.ok("the invoice with id " + invoiceId + " has been assigned to user " + username);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + invoiceId);
         }
 
 

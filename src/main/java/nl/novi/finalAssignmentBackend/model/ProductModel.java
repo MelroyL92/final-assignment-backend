@@ -27,11 +27,7 @@ public abstract class ProductModel {
 
     private Double purchasePrice;
 
-
-
-    public ProductModel() {
-
-    }
+    private Integer currentStock;
 
 
 
@@ -83,5 +79,13 @@ public abstract class ProductModel {
 
     public void setAmountSold(Integer amountSold) {
         this.amountSold = amountSold;
+    }
+
+    public Integer getCurrentStock() {
+        return currentStock;
+    }
+
+    public void setCurrentStock(Integer currentStock) {
+        this.currentStock = originalStock - amountSold;
     }
 }

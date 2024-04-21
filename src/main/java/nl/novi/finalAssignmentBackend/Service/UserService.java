@@ -7,6 +7,7 @@ import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
 import nl.novi.finalAssignmentBackend.entities.Authority;
 import nl.novi.finalAssignmentBackend.entities.Invoice;
 import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
@@ -129,16 +130,11 @@ public class UserService {
         User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
         Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(()-> new RecordNotFoundException("invoice with id " + invoiceId + " does not exist."));
 
-       invoice.setUser(user);
-       invoiceRepository.save(invoice);
-
-//        user.setInvoice(invoice);
-//        userRepository.save(user);
-//        user.getInvoice().add(invoice);
-//        invoice.getUser().getInvoice().add(invoice);
-//          invoice.setUser(invoice.getUser());
-
-
+        if (invoice.getUser() != null) {
+            throw new BadRequestException("User " + username + " is already associated with an invoice.");
+        }
+            invoice.setUser(user);
+            invoiceRepository.save(invoice);
     }
 
 }

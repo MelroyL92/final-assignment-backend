@@ -23,8 +23,11 @@ public class GameMapper implements EntityMapper<GameModel, Game> {
         model.setYearOfRelease(entity.getYearOfRelease());
         model.setOriginalStock(entity.getOriginalStock());
         model.setPlatform(entity.getPlatform());
-        model.setPlayDuration(entity.getPlayDuration());
+        model.setPlayDurationInMin(entity.getPlayDurationInMin());
         model.setPublisher(entity.getPublisher());
+        model.setAmountSold(entity.getAmountSold());
+        model.setPurchasePrice(entity.getPurchasePrice());
+        model.setCurrentStock(entity.getCurrentStock());
         return model;
     }
 
@@ -42,8 +45,11 @@ public class GameMapper implements EntityMapper<GameModel, Game> {
         entity.setYearOfRelease(model.getYearOfRelease());
         entity.setOriginalStock(model.getOriginalStock());
         entity.setPlatform(model.getPlatform());
-        entity.setPlayDuration(model.getPlayDuration());
+        entity.setPlayDurationInMin(model.getPlayDurationInMin());
         entity.setPublisher(model.getPublisher());
+        entity.setPurchasePrice(model.getPurchasePrice());
+        entity.setAmountSold(model.getAmountSold());
+        entity.setCurrentStock(model.getCurrentStock());
         return entity;
     }
 }
