@@ -24,6 +24,9 @@ public class Invoice {
     private Double profit;  // still need to calculate the profit based on the purchase and sell price
     private Double totalPrice;
 
+    private boolean createPdf;// (nieuw inclusief getters + setters, test)
+
+
     @ManyToMany()
     @JoinTable(
             name = "invoice_shopping_list",
@@ -109,4 +112,14 @@ public class Invoice {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public boolean isCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(boolean createPdf) {
+        this.createPdf = createPdf;
+    }
+
+
 }

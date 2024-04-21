@@ -7,10 +7,12 @@ import nl.novi.finalAssignmentBackend.entities.Invoice;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.InvoiceHelpers;
+import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFile;
 import nl.novi.finalAssignmentBackend.mappers.InvoiceMapper.InvoiceMapper;
 import nl.novi.finalAssignmentBackend.model.InvoiceModel;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ public class InvoiceService {
        Invoice invoice= invoiceRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Invoice not found with id " + id));
        invoiceHelpers.calculateTotalPrice(id);
        invoiceRepository.save(invoice);
+       createInvoice(invoice);
        return invoiceMapper.fromEntity(invoice);
     }
 
@@ -72,5 +75,16 @@ public class InvoiceService {
 
     public void deleteInvoice(Long id){
         invoiceRepository.deleteById(id);
+    }
+
+    public void createInvoice(Invoice invoice) {
+        if (invoice.isCreatePdf()) {
+            PdfFile pdfFile = new PdfFile();
+            try {
+                pdfFile.createPdf(invoice);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

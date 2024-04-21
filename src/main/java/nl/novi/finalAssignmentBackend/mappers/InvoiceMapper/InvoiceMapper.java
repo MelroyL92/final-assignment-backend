@@ -23,6 +23,7 @@ public class InvoiceMapper implements EntityMapper<InvoiceModel, Invoice> {
         model.setProfit(entity.getProfit());
         model.setUser(entity.getUser());
         model.setTotalPrice(entity.getTotalPrice());
+        model.setCreatePdf(entity.isCreatePdf());
         return model;
     }
 
@@ -42,6 +43,7 @@ public class InvoiceMapper implements EntityMapper<InvoiceModel, Invoice> {
         entity.setProfit(model.getProfit());
         entity.setUser(model.getUser());
         entity.setTotalPrice(model.getTotalPrice());
+        entity.setCreatePdf(model.isCreatePdf());
         return entity;
     }
 }

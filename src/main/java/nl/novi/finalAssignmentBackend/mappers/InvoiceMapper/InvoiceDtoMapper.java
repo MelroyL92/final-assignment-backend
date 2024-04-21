@@ -24,6 +24,7 @@ public class InvoiceDtoMapper {
         target.setShoppingList(invoice.getShoppingList());
         target.setUser(invoice.getUser());
         target.setTotalPrice(invoice.getTotalPrice());
+        target.setCreatePdf(invoice.isCreatePdf());
         return target;
     }
 
@@ -38,6 +39,7 @@ public class InvoiceDtoMapper {
         invoice.setProfit(dto.getProfit());
         invoice.setUser(dto.getUser());
         invoice.setTotalPrice(dto.getProfit());
+        invoice.setCreatePdf(dto.isCreatePdf());
         return invoice;
     }
 

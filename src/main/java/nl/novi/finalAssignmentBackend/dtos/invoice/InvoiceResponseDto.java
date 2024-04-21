@@ -16,6 +16,8 @@ public class InvoiceResponseDto {
 
     private Double totalPrice;
 
+    private boolean createPdf;// (nieuw inclusief getters + setters, test)
+
     private User user;
 
     private List<ShoppingList> shoppingList = new ArrayList<>();
@@ -82,5 +84,13 @@ public class InvoiceResponseDto {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }
