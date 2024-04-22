@@ -1,6 +1,4 @@
 package nl.novi.finalAssignmentBackend.model;
-
-import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.entities.User;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class InvoiceModel {
 
     private boolean createPdf;// (nieuw inclusief getters + setters, test)
 
-    private List<ShoppingList> shoppingList = new ArrayList<>();
+    private List<ShoppingListModel> shoppingLists = new ArrayList<>();
 
     private User user;
 
@@ -72,13 +70,7 @@ public class InvoiceModel {
         this.deliveryDate = deliveryDate;
     }
 
-    public List<ShoppingList> getShoppingList() {
-        return shoppingList;
-    }
 
-    public void setShoppingList(List<ShoppingList> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
 
     public Double getProfit() {
         return profit;
@@ -94,6 +86,14 @@ public class InvoiceModel {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public List<ShoppingListModel> getShoppingLists() {
+        return shoppingLists;
+    }
+
+    public void setShoppingLists(List<ShoppingListModel> shoppingLists) {
+        this.shoppingLists = shoppingLists;
     }
 
     public boolean isCreatePdf() {

@@ -50,7 +50,36 @@ public class ShoppingListService {
         this.movieMapper = movieMapper;
         this.movieDTOMapper = movieDTOMapper;
     }
+//    public List<ShoppingListResponseDto> getShoppingList() {
+//        return shoppingListRepository.findAll()
+//                .stream()
+//                .map(shoppingList -> {
+//                    ShoppingListResponseDto dto = new ShoppingListResponseDto();
+//                    dto.setId(shoppingList.getId());
+//                    dto.setType(shoppingList.getType());
+//                    dto.setSubtotal(shoppingList.getSubtotal());
+//                    // Populate other fields as needed
+//                    dto.setGames(gameDTOMapper.toGameDTOs(shoppingList.getGames()));
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+//    }
 
+//    public List<ShoppingListResponseDto> getShoppingList() {
+//        return shoppingListRepository.findAll()
+//                .stream()
+//                .map(shoppingList -> {
+//                    ShoppingListResponseDto dto = new ShoppingListResponseDto();
+//                    dto.setId(shoppingList.getId());
+//                    dto.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
+//                    dto.setDeliveryCost(shoppingList.getDeliveryCost());
+//                    dto.setSubtotal(shoppingList.getSubtotal());
+//                    dto.setType(shoppingList.getType());
+//                    dto.setGames(gameDTOMapper.toGameDTOs(shoppingList.getGames()));
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+//    }
 
     public List<ShoppingListModel> getShoppingList() {
         return shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());

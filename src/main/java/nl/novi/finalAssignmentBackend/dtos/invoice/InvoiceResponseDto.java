@@ -1,7 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.invoice;
 
-import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class InvoiceResponseDto {
 
     private User user;
 
-    private List<ShoppingList> shoppingList = new ArrayList<>();
+    private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -62,11 +62,11 @@ public class InvoiceResponseDto {
         this.deliveryDate = deliveryDate;
     }
 
-    public List<ShoppingList> getShoppingList() {
+    public List<ShoppingListModel> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<ShoppingList> shoppingList) {
+    public void setShoppingList(List<ShoppingListModel> shoppingList) {
         this.shoppingList = shoppingList;
     }
 

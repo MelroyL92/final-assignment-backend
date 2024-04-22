@@ -30,9 +30,6 @@ public abstract class ProductModel {
     private Integer currentStock;
 
 
-
-
-
     public Double getSellingPrice() {
         return sellingPrice;
     }

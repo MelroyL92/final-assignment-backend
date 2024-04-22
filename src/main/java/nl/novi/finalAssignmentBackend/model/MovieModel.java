@@ -1,7 +1,6 @@
 package nl.novi.finalAssignmentBackend.model;
-
-
-import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieModel extends ProductModel {
 
@@ -14,17 +13,11 @@ public class MovieModel extends ProductModel {
 
         private Integer playtimeInMin;
 
-        private ShoppingList shoppingList;
+        private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
-        public ShoppingList getShoppingList() {
-        return shoppingList;
-        }
 
-        public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
-         }
 
-    public Integer getPlaytimeInMin() {
+        public Integer getPlaytimeInMin() {
             return playtimeInMin;
         }
 
@@ -64,6 +57,15 @@ public class MovieModel extends ProductModel {
             return id;
         }
 
+        public List<ShoppingListModel> getShoppingList() {
+        return shoppingList;
+        }
+
+        public void setShoppingList(List<ShoppingListModel> shoppingList) {
+        this.shoppingList = shoppingList;
+        }
 }
+
+
 
 

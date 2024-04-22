@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.mappers.GameMappers;
 
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,8 @@ import java.util.List;
 @Component
 public class GameDTOMapper {
 
-        public GameResponseDto toGameDto(GameModel game){
+
+    public GameResponseDto toGameDto(GameModel game){
             return toGameDto(game, new GameResponseDto());
         }
 
@@ -30,29 +32,29 @@ public class GameDTOMapper {
             return target;
         }
 
-        public List<GameResponseDto> toGameDTOs(List<GameModel>gameModels){
-            List<GameResponseDto> result = new ArrayList<>();
-            for (GameModel gameModel: gameModels){
-                result.add(toGameDto(gameModel));
-            }
+//        public List<GameResponseDto> toGameDTOs(List<GameModel>gameModels){
+//            List<GameResponseDto> result = new ArrayList<>();
+//            for (GameModel gameModel: gameModels){
+//                result.add(toGameDto(gameModel));
+//            }
+//            return result;
+//        }
 
-            return result;
-        }
 
-//    public GameResponseDto toShoppinglistGameDto (Game game){
-//        GameResponseDto dto = new GameResponseDto();
-//        dto.setId(game.getId());
-//        dto.setName(game.getName());
-//        dto.setDescription(game.getDescription());
-//        dto.setSellingPrice(game.getSellingPrice());
-//        dto.setYearOfRelease(game.getYearOfRelease());
-//        dto.setOriginalStock(game.getOriginalStock());
-//        dto.setPlatform(game.getPlatform());
-//        dto.setPlayDurationInMin(game.getPlayDurationInMin());
-//        dto.setPublisher(game.getPublisher());
-//        dto.setCurrentStock(game.getCurrentStock());
-//        return dto;
-//    }
+//         public GameModel toGameDTO(Game game) {
+//            GameModel gameModel = new GameModel();
+//            gameModel.setId(game.getId());
+//            gameModel.setName(game.getName());
+//              return gameModel;
+//            }
+//
+//        public List<GameModel> toGameDTOs(List<Game> games) {
+//            List<GameModel> gameModels = new ArrayList<>();
+//            for (Game game : games) {
+//            gameModels.add(toGameDTO(game));
+//             }
+//             return gameModels;
+//                }
 
 
         public GameModel createGameModel(GameInputDto dto) {

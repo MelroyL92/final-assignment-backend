@@ -34,11 +34,11 @@ public class ShoppingListController {
         this.gameDTOMapper = gameDTOMapper;
     }
 
+    //    in de get kijken hoe ik alles aan kan passen zodat ik de dto terug krijg en niet alles
     @GetMapping
     public ResponseEntity<List<ShoppingListResponseDto>> getAllShoppingLists() {
         var shoppingList = shoppingListService.getShoppingList();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
-
         return new ResponseEntity<>(shoppingListDTO, HttpStatus.OK);
     }
 

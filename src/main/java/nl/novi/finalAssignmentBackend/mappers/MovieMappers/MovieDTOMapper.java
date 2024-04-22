@@ -5,6 +5,9 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class MovieDTOMapper {
 
@@ -27,7 +30,13 @@ public class MovieDTOMapper {
         target.setCurrentStock(movie.getCurrentStock());
         return target;
     }
-
+    public List<MovieResponseDto> toMovieDTOs(List<MovieModel>movieModels){
+        List<MovieResponseDto> result = new ArrayList<>();
+        for (MovieModel movieModel: movieModels){
+            result.add(toMovieDto(movieModel));
+        }
+        return result;
+    }
 
     public MovieModel createMovieModel(MovieInputDto dto) {
         var movie = new MovieModel();

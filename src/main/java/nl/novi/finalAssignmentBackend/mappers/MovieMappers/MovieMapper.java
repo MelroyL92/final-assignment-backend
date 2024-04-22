@@ -5,6 +5,9 @@ import nl.novi.finalAssignmentBackend.mappers.EntityMapper;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class MovieMapper implements EntityMapper<MovieModel,Movie> {
 
@@ -31,11 +34,7 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         return model;
     }
 
-
-
-
-
-    @Override
+        @Override
     public Movie toEntity(MovieModel model){
         if (model == null){
             return null;
@@ -56,7 +55,26 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         entity.setCurrentStock(model.getCurrentStock());
         return entity;
     }
+
+
+    public List<Movie> toEntityList(List<MovieModel> movieModels) {
+        List<Movie> entityList = new ArrayList<>();
+        for (MovieModel model : movieModels) {
+            entityList.add(toEntity(model));
+        }
+        return entityList;
+    }
+
+    public List<MovieModel>fromEntity(List<Movie>movies){
+        List<MovieModel>modelList = new ArrayList<>();
+        for(Movie movie : movies){
+            modelList.add(fromEntity(movie));
+        }
+        return modelList;
+    }
 }
+
+
 
 // nog wel kijken naar de velden die de user niet mag zien en de admin wel zoals bijvoorbeeld de inkoopprijs
 

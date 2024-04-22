@@ -1,7 +1,8 @@
 package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
 
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
+
+import nl.novi.finalAssignmentBackend.model.GameModel;
+import nl.novi.finalAssignmentBackend.model.MovieModel;
 
 import java.util.List;
 
@@ -18,23 +19,24 @@ public class ShoppingListInputDto {
         private Double packagingCost;
 
 
-        List<Movie> movies;
+        List<MovieModel> movies;
 
-        List<Game> games;
+        List<GameModel> games;
 
-    public List<Movie> getMovies() {
+
+    public List<MovieModel> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieModel> movies) {
         this.movies = movies;
     }
 
-    public List<Game> getGames() {
+    public List<GameModel> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameModel> games) {
         this.games = games;
     }
 

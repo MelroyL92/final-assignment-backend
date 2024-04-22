@@ -20,6 +20,15 @@ public class ShoppingList {
     private Boolean atHomeDelivery;
     private Integer deliveryCost;
 
+    private Boolean isLocked;  // toegevoegd voor authorisatiepoging
+
+    public Boolean getLocked() { // toegevoegd voor authorisatiepoging
+        return isLocked;
+    }
+
+    public void setLocked(Boolean locked) { // toegevoegd voor authorisatiepoging
+        isLocked = locked;
+    }
 
     @ManyToMany()
     @JoinTable(
@@ -41,6 +50,7 @@ public class ShoppingList {
     // is this relation made correctly???
     @ManyToMany(mappedBy = "shoppingList")
     private List<Invoice>invoices = new ArrayList<>();
+
 
     public Long getId() {
         return id;

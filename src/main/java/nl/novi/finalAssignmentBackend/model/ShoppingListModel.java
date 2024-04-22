@@ -1,9 +1,4 @@
 package nl.novi.finalAssignmentBackend.model;
-
-
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
-
 import java.util.List;
 
 public class ShoppingListModel {
@@ -19,8 +14,20 @@ public class ShoppingListModel {
 
     private Double packagingCost;
 
-    private List<Game> games;
-    private List<Movie> movies;
+    private Boolean isLocked;  // toegevoegd voor authorisatiepoging
+
+
+
+    public Boolean getLocked() { // toegevoegd voor authorisatiepoging
+        return isLocked;
+    }
+
+    public void setLocked(Boolean locked) { // toegevoegd voor authorisatiepoging
+        isLocked = locked;
+    }
+
+    private List<GameModel> games;
+    private List<MovieModel> movies;
 
     public Boolean getPackaging() {
         return packaging;
@@ -46,20 +53,19 @@ public class ShoppingListModel {
         this.deliveryCost = deliverCost;
     }
 
-    public List<Movie> getMovies() {
-        return this.movies;
-    }
-    public List<Game> getGames() {
+    public List<GameModel> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameModel> games) {
         this.games = games;
     }
 
+    public List<MovieModel> getMovies() {
+        return movies;
+    }
 
-
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieModel> movies) {
         this.movies = movies;
     }
 
