@@ -39,6 +39,21 @@ public class GameDTOMapper {
             return result;
         }
 
+//    public GameResponseDto toShoppinglistGameDto (Game game){
+//        GameResponseDto dto = new GameResponseDto();
+//        dto.setId(game.getId());
+//        dto.setName(game.getName());
+//        dto.setDescription(game.getDescription());
+//        dto.setSellingPrice(game.getSellingPrice());
+//        dto.setYearOfRelease(game.getYearOfRelease());
+//        dto.setOriginalStock(game.getOriginalStock());
+//        dto.setPlatform(game.getPlatform());
+//        dto.setPlayDurationInMin(game.getPlayDurationInMin());
+//        dto.setPublisher(game.getPublisher());
+//        dto.setCurrentStock(game.getCurrentStock());
+//        return dto;
+//    }
+
 
         public GameModel createGameModel(GameInputDto dto) {
             var game = new GameModel();
@@ -49,7 +64,7 @@ public class GameDTOMapper {
             game.setYearOfRelease(dto.getYearOfRelease());
             game.setAmountSold(dto.getAmountSold());
             game.setDescription(dto.getDescription());
-//            game.setOriginalStock(dto.getOriginalStock());
+            game.setOriginalStock(dto.getOriginalStock());
             game.setPlatform(dto.getPlatform());
             game.setPlayDurationInMin(dto.getPlayDurationInMin());
             game.setPublisher(dto.getPublisher());

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 public abstract class Product {
 
 
-        @NotNull
+        @NotNull(message = "the selling price should be between 1 and 500 euro")
         @Min(1)
         @Max(500)
         private Double sellingPrice;

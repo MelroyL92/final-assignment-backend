@@ -22,7 +22,7 @@ public class Game extends Product {
     @Size(min =3, max = 100, message = "please fill in a description between 3 and 100 characters")
     private String publisher;
     @Column(name = "play_duration_in_min")
-    @NotNull
+    @NotNull(message = "the playtime should be between 1 and 10000 minutes")
     @Min(1)
     @Max(10000)
     private Integer playDurationInMin;
