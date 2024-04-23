@@ -13,7 +13,6 @@ import java.util.List;
 public class GameMapper implements EntityMapper<GameModel, Game> {
 
 
-    @Override
     public GameModel fromEntity(Game entity) {
         if (entity == null){
             return null;

@@ -3,7 +3,6 @@ package nl.novi.finalAssignmentBackend.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.GameRepository;
-import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
@@ -20,17 +19,15 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
-    private final UserRepository userRepository;
 
-    public GameService(GameRepository gameRepository, GameMapper gameMapper,UserRepository userRepository) {
+    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
-        this.userRepository = userRepository;
     }
 
 
     public List<GameModel> getGames(){
-        return gameRepository.findAll().stream().map(gameMapper::fromEntity).collect(Collectors.toList());
+    return gameRepository.findAll().stream().map(gameMapper::fromEntity).collect(Collectors.toList());
     }
 
     public GameModel getGameById(Long id) {
