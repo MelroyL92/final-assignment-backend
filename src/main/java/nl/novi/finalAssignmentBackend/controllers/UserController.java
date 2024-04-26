@@ -52,6 +52,7 @@ import java.util.Map;
                     .buildAndExpand(newUsername).toUri();
 
             return ResponseEntity.created(location).build();
+
         }
 
         @PutMapping(value = "/{username}")

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GameServiceTest {
@@ -38,9 +38,7 @@ public class GameServiceTest {
 
     @BeforeEach
     public void setUp() {
-        gameRepository = Mockito.mock();
-        gameService = Mockito.mock();
-        gameMapper = Mockito.mock();
+
     }
 
 
@@ -90,20 +88,27 @@ public class GameServiceTest {
             }
             GameModel gameModel = new GameModel();
             gameModel.setId(game.getId());
-            gameModel.setPlatform(game.getPlatform());
-            gameModel.setPublisher(game.getPublisher());
-            gameModel.setPlayDurationInMin(game.getPlayDurationInMin());
-            gameModel.setOriginalStock(game.getOriginalStock());
             gameModel.setName(game.getName());
             gameModel.setDescription(game.getDescription());
-            gameModel.setCurrentStock(game.getCurrentStock());
-            gameModel.setAmountSold(game.getAmountSold());
-            gameModel.setPurchasePrice(game.getPurchasePrice());
             gameModel.setSellingPrice(game.getSellingPrice());
             gameModel.setYearOfRelease(game.getYearOfRelease());
+            gameModel.setOriginalStock(game.getOriginalStock());
+            gameModel.setPlatform(game.getPlatform());
+            gameModel.setPlayDurationInMin(game.getPlayDurationInMin());
+            gameModel.setPublisher(game.getPublisher());
+            gameModel.setPurchasePrice(game.getPurchasePrice());
+
+            Integer amountSold = game.getAmountSold();
+            if (amountSold != null) {
+                gameModel.setAmountSold(amountSold);
+                gameModel.setCurrentStock(game.getOriginalStock() - amountSold);
+            } else {
+                gameModel.setAmountSold(0);
+                gameModel.setCurrentStock(game.getOriginalStock());
+            }
+
             return gameModel;
         });
-
 
         List<GameModel> result = gameService.getGames();
 
@@ -173,31 +178,86 @@ public class GameServiceTest {
         assertEquals(60, result.getPlayDurationInMin());
     }
 
+    @Test
+    public void testGamesByPlatformNoFound(){
 
+    }
+
+
+    @Test
+    @DisplayName("get games bij platform")
+    public void testGetGamesByPlatform() {
+        // Define mockGames with some sample games
+        List<Game> mockGames = new ArrayList<>();
+        Game game1 = new Game();
+        game1.setPlatform("pc");
+        mockGames.add(game1);
+
+        Game game2 = new Game();
+        game2.setPlatform("Playstation");
+        mockGames.add(game2);
+
+        // Configure behavior of mock repository (have to test this better still to check for capital letters too
+        Mockito.when(gameRepository.findByPlatformContainingIgnoreCase("pc")).thenReturn(mockGames);
+
+        // Call the method under test
+        List<GameModel> result = gameService.getGamesByPlatform("pc");
+
+        // Assert the result
+        assertFalse(result.isEmpty());
+        assertEquals(mockGames.size(), result.size());
+        verify(gameRepository).findByPlatformContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("pc")));
+        verifyNoMoreInteractions(gameRepository);
+
+    }
+
+    @Test
+    @DisplayName("create game")
+    public void testCreateGame() {
+        // Create a GameModel object with sample data
+        GameModel gameModel = new GameModel();
+        gameModel.setPlatform("pc");
+        gameModel.setDescription("the best game ever");
+        gameModel.setPurchasePrice(100.0);
+        gameModel.setName("game of thrones");
+        gameModel.setYearOfRelease(2015);
+        gameModel.setOriginalStock(100);
+        gameModel.setAmountSold(50);
+        gameModel.setPlayDurationInMin(200);
+        gameModel.setPublisher("Whatever works");
+        gameModel.setSellingPrice(120.0);
+
+        // Mock the behavior of gameMapper.fromEntity method to return the same gameModel
+        Mockito.when(gameMapper.fromEntity(Mockito.any(Game.class))).thenAnswer(invocation -> {
+            Game gameArgument = invocation.getArgument(0);
+            return gameModel;
+        });
+
+        // Mock the behavior of gameMapper.toEntity method to return a new Game entity
+        Mockito.when(gameMapper.toEntity(Mockito.any(GameModel.class))).thenAnswer(invocation -> {
+            GameModel gameModelArgument = invocation.getArgument(0);
+            Game gameEntity = new Game();
+            gameEntity.setPlatform(gameModelArgument.getPlatform());
+            gameEntity.setDescription(gameModelArgument.getDescription());
+            return gameEntity;
+        });
+
+        Game savedGameEntity = new Game();
+        savedGameEntity.setId(1L);
+        Mockito.when(gameRepository.save(Mockito.any(Game.class))).thenReturn(savedGameEntity);
+
+        GameModel result = gameService.createGame(gameModel);
+
+        assertNotNull(result);
+        // Assert other properties of the result similarly...
+
+        // Verify interactions with mocks
+        verify(gameMapper).toEntity(gameModel);
+        verify(gameRepository).save(Mockito.any(Game.class));
+        verify(gameMapper).fromEntity(savedGameEntity);
+        verifyNoMoreInteractions(gameMapper, gameRepository);
+    }
 }
-//    @DisplayName("get games bij platform")
-//    public void testGetGamesByPlatform() {
-//        // Define mockGames with some sample games
-//        List<Game> mockGames = Arrays.asList(
-//                new Game1(1L, "Platform 1"),
-//                new Game(2L, "Platform 2")
-//        );
-//
-//        // Configure behavior of mock repository
-//        when(gameRepository.findByPlatformContainingIgnoreCase("platform")).thenReturn(mockGames);
-//
-//        // Call the method under test
-//        List<GameModel> result = gameService.getGamesByPlatform("platform");
-//
-//        // Assert the result
-//        assertEquals(2, result.size()); // Ensure that the correct number of games is returned
-//        // Add more assertions as needed to verify the properties of the returned game
-//    }
-//}
-//
-//        @Test
-//        @DisplayName("create game")
-//        public void testCreateGame() {
 //
 //        }
 //

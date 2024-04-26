@@ -11,6 +11,7 @@ public class GameInputDto extends Product {
         private Integer playDurationInMin;
 
 
+
         public Long getId() {
             return id;
         }

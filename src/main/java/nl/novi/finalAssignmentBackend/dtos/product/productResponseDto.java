@@ -15,6 +15,8 @@ public class productResponseDto {
 
     private Integer currentStock;
 
+    private Integer amountSold;
+
 
     private Integer yearOfRelease;
 
@@ -59,11 +61,31 @@ public class productResponseDto {
         this.name = name;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+
+
     public Integer getCurrentStock() {
         return currentStock;
     }
 
     public void setCurrentStock(Integer currentStock) {
-        this.currentStock = currentStock;
+
+        if (amountSold != null) {
+            this.currentStock = originalStock - amountSold;
+        } else {
+            // Handle the case when amountSold is null
+            // For example, you could set currentStock to originalStock
+            this.currentStock = originalStock;
+        }
+
+
     }
+
 }

@@ -34,7 +34,6 @@ INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, de
 INSERT INTO shopping_list (type, subtotal, at_home_delivery, packaging) VALUES ('shoppinglist', 0, true, true);
 INSERT INTO invoices (date_ordered, order_confirmation, status, delivery_date, create_pdf) VALUES ('16-04-2024', true, 'being processed', '25-04-2024', true);
 
-
 INSERT INTO users (username, password, enabled, apikey, email) VALUES ('melroy', '$2a$12$46LxSceN4XVxVXbePOrWquxu5cMk056uKhnVAWbNKgYN6d4u23TJG', true, '', 'melroy_lingsma@live.nl');
 INSERT INTO users (username, password, enabled, apikey, email) VALUES ('user', '$2a$12$46LxSceN4XVxVXbePOrWquxu5cMk056uKhnVAWbNKgYN6d4u23TJG', true,'', 'user@user.nl');
 INSERT INTO authorities (username, authority) VALUES ('melroy', 'ROLE_ADMIN');

@@ -28,6 +28,7 @@ public class GameDTOMapper {
             target.setPlatform(game.getPlatform());
             target.setPlayDurationInMin(game.getPlayDurationInMin());
             target.setPublisher(game.getPublisher());
+            target.setAmountSold(game.getAmountSold());
             target.setCurrentStock(game.getCurrentStock());
             return target;
         }
@@ -64,13 +65,15 @@ public class GameDTOMapper {
             game.setSellingPrice(dto.getSellingPrice());
             game.setPurchasePrice(dto.getSellingPrice());
             game.setYearOfRelease(dto.getYearOfRelease());
+            game.setOriginalStock(dto.getOriginalStock());
             game.setAmountSold(dto.getAmountSold());
             game.setDescription(dto.getDescription());
-            game.setOriginalStock(dto.getOriginalStock());
             game.setPlatform(dto.getPlatform());
             game.setPlayDurationInMin(dto.getPlayDurationInMin());
             game.setPublisher(dto.getPublisher());
             game.setCurrentStock(dto.getCurrentStock());
+
+
             return game;
         }
 

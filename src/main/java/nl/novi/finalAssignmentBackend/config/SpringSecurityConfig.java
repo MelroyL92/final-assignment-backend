@@ -61,7 +61,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/invoices/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN") //user moet dit misschien ook kunnen?
                 .requestMatchers(HttpMethod.POST,"/shoppinglists").hasRole("ADMIN") //user moet dit misschien ook kunnen op bepaalde eigenschappen na?
-                .requestMatchers(HttpMethod.PUT, "/games").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/games/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/movies").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/invoices/**").hasAnyRole("ADMIN", "USER")

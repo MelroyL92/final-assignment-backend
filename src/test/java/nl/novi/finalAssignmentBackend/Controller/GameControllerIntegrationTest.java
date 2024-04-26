@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+
+
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
@@ -26,20 +28,18 @@ public class GameControllerIntegrationTest {
 
         String requestJson = """
                 {
-                         "sellingPrice": 60.0,
-                         "originalStock": 200,
-                         "description": "Experience Middle-earth like never before in The Lord of the Rings: The Battle for Middle-Earth, the first The Lord of the Rings game that puts you in command of a real-time, open world. ",
-                         "name": "Lord of the rings battle for middle earth",
-                         "currentStock": 100,
-                         "yearOfRelease": 2007,
-                         "id": 1,
-                         "platform": "PC",
-                         "publisher": "EA Games",
-                         "playDurationInMin": 300,
-                         "amountSold": 10,
-                         "currentStock": 100,
-                         "purchasePrice": 10
-          
+                  "sellingPrice": 60.0,
+                  "originalStock": 200,
+                  "description": "Experience Middle-earth like never before in The Lord of the Rings: The Battle for Middle-Earth, the first The Lord of the Rings game that puts you in command of a real-time, open world. ",
+                  "name": "Lord of the rings battle for middle earth",
+                  "currentStock": 100,
+                  "purchasePrice": 10,
+                  "amountSold": 100,
+                  "yearOfRelease": 2007,
+                  "id": 1,
+                  "platform": "PC",
+                  "publisher": "EA Games",
+                  "playDurationInMin": 300
                 }
                 """;
 

@@ -3,20 +3,23 @@ package nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListInputDto;
 import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
-import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
 public class ShoppingListDTOMapper {
 
-    private GameDTOMapper gameDTOMapper;
-    private MovieDTOMapper movieDTOMapper;
+    private final GameDTOMapper gameDTOMapper;
 
-    // in the mapper i still need to fix it so that customers dont get shown everyfield of the games and the movies.
-    public ShoppingListResponseDto toShoppingListDto(ShoppingListModel shoppingList){
+    public ShoppingListDTOMapper(GameDTOMapper gameDTOMapper) {
+        this.gameDTOMapper = gameDTOMapper;
+    }
+
+    public ShoppingListResponseDto toShoppingListDto(ShoppingListModel shoppingList) {
         return toShoppingListDto(shoppingList, new ShoppingListResponseDto());
     }
 
@@ -31,6 +34,14 @@ public class ShoppingListDTOMapper {
         target.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
         target.setPackagingCost(shoppingList.getPackagingCost());
         return target;
+    }
+
+    public List<ShoppingListResponseDto> toGameDTOs(List<ShoppingListModel> shoppingListModels) {
+        List<ShoppingListResponseDto> result = new ArrayList<>();
+        for (ShoppingListModel shoppingListModel : shoppingListModels) {
+            result.add(toShoppingListDto(shoppingListModel));
+        }
+        return result;
     }
 
 
@@ -48,4 +59,5 @@ public class ShoppingListDTOMapper {
         return shoppingList;
     }
 }
+
 

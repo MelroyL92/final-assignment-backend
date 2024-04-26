@@ -1,16 +1,17 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.GameService;
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +21,13 @@ public class GameController {
 
     private final GameDTOMapper gameDTOMapper;
     private final GameService gameService;
+    private final HttpServletRequest request;
 
 
-    public GameController(GameDTOMapper gameDTOMapper, GameService gameService) {
+    public GameController(GameDTOMapper gameDTOMapper, GameService gameService, HttpServletRequest request) {
         this.gameDTOMapper = gameDTOMapper;
         this.gameService = gameService;
+        this.request = request;
     }
 
     @GetMapping
@@ -56,8 +59,7 @@ public class GameController {
         var gameModel = gameDTOMapper.createGameModel(gameInputDto);
         var newGame = gameService.createGame(gameModel);
         var gameDto = gameDTOMapper.toGameDto(newGame);
-        return ResponseEntity.created(URI.create("/games/" + newGame.getId()))
-                .body(gameDto);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, gameDto.getId())).body(gameDto);
     }
 
     @PutMapping("{id}")

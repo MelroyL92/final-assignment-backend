@@ -14,7 +14,7 @@ public class GameMapper implements EntityMapper<GameModel, Game> {
 
 
     public GameModel fromEntity(Game entity) {
-        if (entity == null){
+        if (entity == null) {
             return null;
         }
         GameModel model = new GameModel();
@@ -27,8 +27,8 @@ public class GameMapper implements EntityMapper<GameModel, Game> {
         model.setPlatform(entity.getPlatform());
         model.setPlayDurationInMin(entity.getPlayDurationInMin());
         model.setPublisher(entity.getPublisher());
-        model.setAmountSold(entity.getAmountSold());
         model.setPurchasePrice(entity.getPurchasePrice());
+        model.setAmountSold(entity.getAmountSold());
         model.setCurrentStock(entity.getCurrentStock());
         return model;
     }
