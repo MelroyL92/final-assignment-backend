@@ -2,6 +2,7 @@ package nl.novi.finalAssignmentBackend.Service;
 import nl.novi.finalAssignmentBackend.Repository.GameRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +13,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -178,9 +176,29 @@ public class GameServiceTest {
         assertEquals(60, result.getPlayDurationInMin());
     }
 
-    @Test
-    public void testGamesByPlatformNoFound(){
 
+    @Test
+    @DisplayName("platform Exception test")
+    public void testGamesByPlatformNoGamesFound() {
+
+        List<Game> mockGames = new ArrayList<>();
+        Game game1 = new Game();
+        game1.setPlatform("pc");
+        mockGames.add(game1);
+
+        Mockito.when(gameRepository.findByPlatformContainingIgnoreCase(Mockito.anyString())).thenAnswer(invocation -> {
+            String platform = invocation.getArgument(0);
+            if ("playstation".equalsIgnoreCase(platform)) {
+                return Collections.emptyList();
+            } else {
+                return mockGames;
+            }
+        });
+
+
+        assertThrows(RecordNotFoundException.class, () -> {
+            gameService.getGamesByPlatform("playstation");
+        });
     }
 
 
@@ -214,7 +232,6 @@ public class GameServiceTest {
     @Test
     @DisplayName("create game")
     public void testCreateGame() {
-        // Create a GameModel object with sample data
         GameModel gameModel = new GameModel();
         gameModel.setPlatform("pc");
         gameModel.setDescription("the best game ever");
@@ -227,13 +244,11 @@ public class GameServiceTest {
         gameModel.setPublisher("Whatever works");
         gameModel.setSellingPrice(120.0);
 
-        // Mock the behavior of gameMapper.fromEntity method to return the same gameModel
         Mockito.when(gameMapper.fromEntity(Mockito.any(Game.class))).thenAnswer(invocation -> {
             Game gameArgument = invocation.getArgument(0);
             return gameModel;
         });
 
-        // Mock the behavior of gameMapper.toEntity method to return a new Game entity
         Mockito.when(gameMapper.toEntity(Mockito.any(GameModel.class))).thenAnswer(invocation -> {
             GameModel gameModelArgument = invocation.getArgument(0);
             Game gameEntity = new Game();
@@ -249,7 +264,6 @@ public class GameServiceTest {
         GameModel result = gameService.createGame(gameModel);
 
         assertNotNull(result);
-        // Assert other properties of the result similarly...
 
         // Verify interactions with mocks
         verify(gameMapper).toEntity(gameModel);
@@ -257,22 +271,73 @@ public class GameServiceTest {
         verify(gameMapper).fromEntity(savedGameEntity);
         verifyNoMoreInteractions(gameMapper, gameRepository);
     }
-}
-//
-//        }
-//
-//        @Test
-//        @DisplayName("test update Game")
-//        public void testUpdateGame() {
-//
-//        }
-//
-//        @Test
-//        @DisplayName("test delete game")
-//        public void testDeleteGame() {
-//            Long gameId = 1L;
-//            // No need to mock behavior for delete method
-//
-//            assertDoesNotThrow(() -> gameService.deleteGame(gameId));
-//        }
-//    }
+
+
+    @Test
+    @DisplayName("test update Game")
+    public void testUpdateGame() {
+        Game existingGame = new Game();
+        existingGame.setId(1L);
+        existingGame.setOriginalStock(100);
+        existingGame.setPlatform("pc");
+        existingGame.setName("star wars");
+        existingGame.setPlayDurationInMin(200);
+        existingGame.setPublisher("dont care");
+        existingGame.setDescription("worst game");
+        existingGame.setAmountSold(1);
+        existingGame.setSellingPrice(10.0);
+        existingGame.setPurchasePrice(5.0);
+        existingGame.setYearOfRelease(2000);
+
+        Mockito.when(gameRepository.findById(1L)).thenReturn(Optional.of(existingGame));
+
+        GameModel updatedGameModel = new GameModel();
+        updatedGameModel.setId(existingGame.getId());
+        updatedGameModel.setOriginalStock(200);
+        updatedGameModel.setPlatform("PS5");
+        updatedGameModel.setName("Lord of the rings");
+        updatedGameModel.setPlayDurationInMin(100);
+        updatedGameModel.setPublisher("WETA");
+        updatedGameModel.setDescription("the best game ever");
+        updatedGameModel.setAmountSold(100);
+        updatedGameModel.setSellingPrice(150.0);
+        updatedGameModel.setPurchasePrice(50.0);
+        updatedGameModel.setYearOfRelease(2001);
+
+        Mockito.when(gameRepository.save(Mockito.any(Game.class))).thenAnswer(invocation -> {
+            Game game = invocation.getArgument(0);
+            return game;
+        });
+
+        Mockito.when(gameMapper.fromEntity(Mockito.any(Game.class))).thenReturn(updatedGameModel);
+
+        GameModel returnedUpdatedGameModel = gameService.updateGame(1L, updatedGameModel);
+
+        assertEquals(updatedGameModel.getPlatform(), returnedUpdatedGameModel.getPlatform());
+        // add more assertions
+    }
+
+    @Test
+    @DisplayName("update, record not found")
+    public void testUpdateRecordNotFound(){
+        // Arrange
+        GameModel model = new GameModel();
+        model.setId(1L);
+
+        // Act & Assert
+        RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
+            gameService.updateGame(2L, model);
+        });
+
+        // Assert
+        assertEquals("Game with ID 2 does not exist", exception.getMessage());
+    }
+
+        @Test
+        @DisplayName("test delete game")
+        public void testDeleteGame() {
+            Long gameId = 1L;
+
+            assertDoesNotThrow(() -> gameService.deleteGame(gameId));
+        }
+    }

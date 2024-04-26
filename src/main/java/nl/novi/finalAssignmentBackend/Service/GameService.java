@@ -62,7 +62,6 @@ public class GameService {
             existingGame.setPublisher(gameModel.getPublisher());
             existingGame.setDescription(gameModel.getDescription());
             existingGame.setAmountSold(gameModel.getAmountSold());
-            existingGame.setPlayDurationInMin(gameModel.getPlayDurationInMin());
             existingGame.setSellingPrice(gameModel.getSellingPrice());
             existingGame.setPurchasePrice(gameModel.getPurchasePrice());
             existingGame.setYearOfRelease(gameModel.getYearOfRelease());
