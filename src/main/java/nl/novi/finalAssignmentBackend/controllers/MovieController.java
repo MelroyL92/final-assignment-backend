@@ -34,7 +34,7 @@ public class MovieController {
     @GetMapping("")
     public ResponseEntity<List<MovieResponseDto>>getAllMovies(){
         var movies = movieService.getMovies();
-        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDto).collect(Collectors.toList());
+        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDTO).collect(Collectors.toList());
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
 
@@ -44,7 +44,7 @@ public class MovieController {
         if (movie == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        var movieDTO = movieDTOMapper.toMovieDto(movie);
+        var movieDTO = movieDTOMapper.toMovieDTO(movie);
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class MovieController {
     public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
         var newMovie = movieService.createMovie(movieModel);
-        var movieDto = movieDTOMapper.toMovieDto(newMovie);
+        var movieDto = movieDTOMapper.toMovieDTO(newMovie);
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, movieDto.getId())).body(movieDto);
 
     }
@@ -67,7 +67,7 @@ public class MovieController {
     @PutMapping("{id}")
     public ResponseEntity<MovieResponseDto>updateMovie(@PathVariable Long id,@RequestBody MovieInputDto movieInputDto) {
         var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
-        var movieDto = movieDTOMapper.toMovieDto(updateMovie);
+        var movieDto = movieDTOMapper.toMovieDTO(updateMovie);
         return new ResponseEntity<>(movieDto, HttpStatus.OK);
     }
 

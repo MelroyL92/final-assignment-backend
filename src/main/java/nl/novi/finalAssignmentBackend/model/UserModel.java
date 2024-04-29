@@ -1,30 +1,32 @@
 package nl.novi.finalAssignmentBackend.model;
 
+import nl.novi.finalAssignmentBackend.entities.Authority;
+import nl.novi.finalAssignmentBackend.entities.UploadOrder;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class UserModel {
 
-    private int id;
-    private String name;
+
+    private String username;
     private String email;
     private String password;
-    private String BirthYear;
+    private String apikey;
 
     private OrderModel Order;
 
+    private UploadOrder uploadOrder;
 
-    public int getId() {
-        return id;
+    private Set<Authority> authorities = new HashSet<>();
+
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -43,12 +45,28 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getBirthYear() {
-        return BirthYear;
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setBirthYear(String birthYear) {
-        BirthYear = birthYear;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
+    }
+
+    public UploadOrder getUploadOrder() {
+        return uploadOrder;
+    }
+
+    public void setUploadOrder(UploadOrder uploadOrder) {
+        this.uploadOrder = uploadOrder;
+    }
 }

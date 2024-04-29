@@ -1,12 +1,21 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
+
+import nl.novi.finalAssignmentBackend.Service.UploadOrderService;
 import nl.novi.finalAssignmentBackend.Service.UserService;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
+import nl.novi.finalAssignmentBackend.entities.UploadOrder;
+import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.InvalidMediaTypeException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +26,11 @@ import java.util.Map;
     public class UserController {
 
         private final UserService userService;
+        private final UploadOrderService uploadOrderService;
 
-        public UserController(UserService userService) {
+        public UserController(UserService userService, UploadOrderService uploadOrderService) {
             this.userService = userService;
+            this.uploadOrderService = uploadOrderService;
         }
 
 
@@ -98,6 +109,41 @@ import java.util.Map;
                 throw new BadRequestException();
             }
         }
+
+            @PostMapping("/{username}/uploadOrder")
+            public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {
+             String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                     .path("/users/{username}/uploadOrder")
+                     .buildAndExpand(username)
+                     .toUriString();
+
+                UploadOrder uploadOrder = uploadOrderService.storeFile(file, url);
+                User user = userService.addOrderFile(username, uploadOrder);
+
+                return ResponseEntity.created(URI.create(url)).body(user);
+                }
+
+
+         @GetMapping("/{username}/uploadOrder")
+         public ResponseEntity<byte[]>getUploadedOrder(@PathVariable("username")String username){
+
+            UploadOrder uploadOrder = userService.getUploadedOrderFromUser(username);
+
+             MediaType mediaType;
+
+             try{
+                 mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
+             } catch (InvalidMediaTypeException ignore){
+                 mediaType = MediaType.APPLICATION_OCTET_STREAM;
+             }
+
+             return ResponseEntity
+                     .ok()
+                     .contentType(mediaType)
+                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + uploadOrder.getTitle())
+                     .body(uploadOrder.getContents());
+         }
+
 
         @DeleteMapping(value = "/{username}/authorities/{authority}")
         public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {

@@ -75,8 +75,15 @@ public class OrderService {
         if(order.getUser() == null){
             throw new EntityNotFoundException("please assign a user to the order before adding a shoppingList");
         }
-        order.getShoppingList().add(shoppingList);
-        orderRepository.save(order);
+        if(shoppingList.getUser() == null){
+            throw new EntityNotFoundException("please add a user to the shoppingList before adding it to the order");
+        }
+        if(order.getUser().getUsername().equalsIgnoreCase(shoppingList.getUser().getUsername())){
+            order.getShoppingList().add(shoppingList);
+            orderRepository.save(order);
+        }
+        throw new EntityNotFoundException("the user of the shoppingList with id " + shoppingList.getUser().getUsername() + " and the user of the order with id " + order.getUser().getUsername() + " do not match");
+
     }
 
     public void deleteOrder(Long id){

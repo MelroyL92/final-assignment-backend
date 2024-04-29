@@ -22,7 +22,7 @@ public class ShoppingListModel {
     private List<GameModel> games;
     private List<MovieModel> movies;
 
-    private User user;
+    private UserModel userModel;
 
 
 
@@ -106,11 +106,19 @@ public class ShoppingListModel {
         this.packagingCost = packagingCost;
     }
 
-    public User getUser() {
-        return user;
+    public UserModel getUserModel() {
+        return userModel;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
+
+    //    public List<UserModel> getUserModel() {
+//        return userModel;
+//    }
+//
+//    public void setUserModel(List<UserModel> userModel) {
+//        this.userModel = userModel;
+//    }
 }

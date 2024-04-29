@@ -3,8 +3,8 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.ShoppingListService;
-import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListInputDto;
-import nl.novi.finalAssignmentBackend.dtos.ShoppingList.ShoppingListResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListInputDto;
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
@@ -37,7 +37,7 @@ public class ShoppingListController {
     //    in de get kijken hoe ik alles aan kan passen zodat ik de dto terug krijg en niet alles
     @GetMapping
     public ResponseEntity<List<ShoppingListResponseDto>> getAllShoppingLists() {
-        var shoppingList = shoppingListService.getShoppingList();
+        var shoppingList = shoppingListService.getAllShoppingLists();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
         return new ResponseEntity<>(shoppingListDTO, HttpStatus.OK);
     }

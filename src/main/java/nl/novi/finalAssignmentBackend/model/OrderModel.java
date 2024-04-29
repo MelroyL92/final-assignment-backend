@@ -20,14 +20,15 @@ public class OrderModel {
 
     private List<ShoppingListModel> shoppingLists = new ArrayList<>();
 
-    private User user;
+    private UserModel userModel;
 
-    public User getUser() {
-        return user;
+
+    public UserModel getUserModel() {
+        return userModel;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 
     public Long getOrderNumber() {

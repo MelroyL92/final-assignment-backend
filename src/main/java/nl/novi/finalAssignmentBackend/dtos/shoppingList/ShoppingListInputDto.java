@@ -1,9 +1,10 @@
-package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
+package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
 
 import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
+import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.util.List;
 
@@ -24,7 +25,9 @@ public class ShoppingListInputDto {
 
        private List<GameModel> games;
 
-       private User user;
+       private UserModel user;
+
+
 
 
     public List<MovieModel> getMovies() {
@@ -99,11 +102,11 @@ public class ShoppingListInputDto {
         this.packagingCost = packagingCost;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 }

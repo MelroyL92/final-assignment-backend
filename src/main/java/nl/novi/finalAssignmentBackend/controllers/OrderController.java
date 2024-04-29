@@ -2,6 +2,7 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.OrderService;
+import nl.novi.finalAssignmentBackend.Service.UploadOrderService;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
@@ -20,10 +21,9 @@ public class OrderController {
 
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
-
     private final HttpServletRequest request;
 
-    public OrderController(nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDtoMapper orderDtoMapper, nl.novi.finalAssignmentBackend.Service.OrderService orderService, HttpServletRequest request) {
+    public OrderController(OrderDtoMapper orderDtoMapper, OrderService orderService, HttpServletRequest request) {
         this.orderDtoMapper = orderDtoMapper;
         this.orderService = orderService;
         this.request = request;
@@ -55,6 +55,8 @@ public class OrderController {
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, orderDto.getOrderNumber())).body(orderDto);
     }
 
+
+
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponseDto>UpdateInvoice(@RequestParam Long id, @RequestBody OrderInputDto orderInputDto){
         var updateOrder = orderService.updateOrderModel(id, orderDtoMapper.createOrderModel(orderInputDto));
@@ -73,7 +75,5 @@ public class OrderController {
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }
-
-
 
 }

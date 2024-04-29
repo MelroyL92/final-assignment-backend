@@ -4,6 +4,7 @@ import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.mappers.EntityMapper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
+import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserMapper;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,13 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
 
     private final GameMapper gameMapper;
     private final MovieMapper movieMapper;
+    private final UserMapper userMapper;
 
 
-    public ShoppingListMapper(GameMapper gameMapper, MovieMapper movieMapper) {
+    public ShoppingListMapper(GameMapper gameMapper, MovieMapper movieMapper, UserMapper userMapper) {
         this.gameMapper = gameMapper;
         this.movieMapper = movieMapper;
+        this.userMapper = userMapper;
     }
 
 
@@ -40,7 +43,7 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
        model.setPackaging(shoppingList.getPackaging());
        model.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
        model.setPackagingCost(shoppingList.getPackagingCost());
-       model.setUser(shoppingList.getUser());
+       model.setUserModel(userMapper.fromEntity(shoppingList.getUser()));
        return model;
     }
 
@@ -59,7 +62,7 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
         entity.setPackaging(shoppingListModel.getPackaging());
         entity.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
         entity.setPackagingCost(shoppingListModel.getPackagingCost());
-        entity.setUser(shoppingListModel.getUser());
+        entity.setUser(userMapper.toEntity(shoppingListModel.getUserModel()));
         return entity;
     }
 

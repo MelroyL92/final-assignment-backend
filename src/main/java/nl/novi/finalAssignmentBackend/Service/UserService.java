@@ -1,14 +1,12 @@
 package nl.novi.finalAssignmentBackend.Service;
 
 
+import jakarta.transaction.Transactional;
 import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
-import nl.novi.finalAssignmentBackend.entities.Authority;
-import nl.novi.finalAssignmentBackend.entities.Order;
-import nl.novi.finalAssignmentBackend.entities.ShoppingList;
-import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.entities.*;
 import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
@@ -139,6 +137,28 @@ public class UserService {
         }
             order.setUser(user);
             orderRepository.save(order);
+    }
+
+    @Transactional
+    public User addOrderFile(String username, UploadOrder uploadOrder){
+        Optional<User> optionalUser = userRepository.findById(username); // big question if this will even work
+        if(optionalUser.isEmpty()){
+            throw new RecordNotFoundException("user not found");
+        }
+        User user = optionalUser.get();
+        user.setUploadOrder(uploadOrder);
+        return userRepository.save(user);
+
+    }
+
+    @Transactional
+
+    public UploadOrder getUploadedOrderFromUser (String username){
+        Optional<User> optionalUser = userRepository.findById(username);
+        if(optionalUser.isEmpty()){
+            throw new RecordNotFoundException("student with name " + username + " has not been found");
+        }
+        return optionalUser.get().getUploadOrder();
     }
 
     public void addShoppingListToUser(String username, Long shoppingListId){

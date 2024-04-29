@@ -10,7 +10,9 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
@@ -50,44 +52,28 @@ public class ShoppingListService {
         this.movieMapper = movieMapper;
         this.movieDTOMapper = movieDTOMapper;
     }
-//    public List<ShoppingListResponseDto> getShoppingList() {
-//        return shoppingListRepository.findAll()
-//                .stream()
-//                .map(shoppingList -> {
-//                    ShoppingListResponseDto dto = new ShoppingListResponseDto();
-//                    dto.setId(shoppingList.getId());
-//                    dto.setType(shoppingList.getType());
-//                    dto.setSubtotal(shoppingList.getSubtotal());
-//                    // Populate other fields as needed
-//                    dto.setGames(gameDTOMapper.toGameDTOs(shoppingList.getGames()));
-//                    return dto;
-//                })
-//                .collect(Collectors.toList());
-//    }
 
-//    public List<ShoppingListResponseDto> getShoppingList() {
-//        return shoppingListRepository.findAll()
-//                .stream()
-//                .map(shoppingList -> {
-//                    ShoppingListResponseDto dto = new ShoppingListResponseDto();
-//                    dto.setId(shoppingList.getId());
-//                    dto.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
-//                    dto.setDeliveryCost(shoppingList.getDeliveryCost());
-//                    dto.setSubtotal(shoppingList.getSubtotal());
-//                    dto.setType(shoppingList.getType());
-//                    dto.setGames(gameDTOMapper.toGameDTOs(shoppingList.getGames()));
-//                    return dto;
-//                })
-//                .collect(Collectors.toList());
-//    }
+    public List<ShoppingListModel> getAllShoppingLists() {
+        List<ShoppingList> shoppingLists = shoppingListRepository.findAll();
 
-    public List<ShoppingListModel> getShoppingList() {
-        shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());
-        return shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());
+        List<ShoppingList> shoppingListsWithUsers = shoppingLists.stream()
+                .filter(shoppingList -> shoppingList.getUser() != null)
+                .collect(Collectors.toList());
+
+        if (shoppingListsWithUsers.isEmpty()) {
+            throw new EntityNotFoundException("No shopping lists with users found.");
+        }
+
+        return shoppingListsWithUsers.stream()
+                .map(shoppingListMapper::fromEntity)
+                .collect(Collectors.toList());
     }
 
     public ShoppingListModel getShoppingListById(Long id) {
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Shoppinglist not found with id: " + id));
+        if(shoppingList.getUser() == null){
+            throw new EntityNotFoundException("No user found please add a user to the shoppingList before you continue");
+        }
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
@@ -128,7 +114,7 @@ public class ShoppingListService {
             if (optionalMovie.isPresent()) {
                 Movie movie = optionalMovie.get();
                 var toMoviemodel = movieMapper.fromEntity(movie);
-                return Collections.singletonList(movieDTOMapper.toMovieDto(toMoviemodel));
+                return Collections.singletonList(movieDTOMapper.toMovieDTO(toMoviemodel));
             } else {
                 throw new RecordNotFoundException("movie has not been found within the shopping list");
             }
@@ -139,9 +125,12 @@ public class ShoppingListService {
         Optional<ShoppingList> shoppingListFound = shoppingListRepository.findById(id);
         if (shoppingListFound.isPresent()) {
             ShoppingList excistingShoppingList = shoppingListFound.get();
+            if(excistingShoppingList.getUser() == null){
+                throw new EntityNotFoundException("add a user before adjusting the shoppingList");
+            }
             excistingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
             excistingShoppingList.setType(shoppingListModel.getType());
-            excistingShoppingList.setPackaging(excistingShoppingList.getPackaging());
+            excistingShoppingList.setPackaging(shoppingListModel.getPackaging());
             excistingShoppingList = shoppingListRepository.save(excistingShoppingList);
             return shoppingListMapper.fromEntity(excistingShoppingList);
         } else {
@@ -150,8 +139,6 @@ public class ShoppingListService {
 
     }
 
-//     the entire game gets saved because thats what we need to be able to acces
-//     but i do need to make sure that when a client gets acces to it it goes through the dto
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));

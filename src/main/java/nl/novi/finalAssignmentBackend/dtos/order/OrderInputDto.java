@@ -2,6 +2,7 @@ package nl.novi.finalAssignmentBackend.dtos.order;
 
 import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
+import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class OrderInputDto {
 
     private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
-    private User user;
+    private UserModel user;
 
 
     public Long getOrderNumber() {
@@ -81,11 +82,11 @@ public class OrderInputDto {
         this.profit = profit;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 

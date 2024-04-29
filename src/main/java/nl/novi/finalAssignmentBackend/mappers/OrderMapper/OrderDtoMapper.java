@@ -4,6 +4,7 @@ import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
+import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserDtoMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,13 @@ public class OrderDtoMapper {
     // not used? if so then remove it!
     private final ShoppingListDTOMapper shoppingListDTOMapper;
     private final GameDTOMapper gameDTOMapper;
+    private final UserDtoMapper userDtoMapper;
 
 
-    public OrderDtoMapper(ShoppingListDTOMapper shoppingListDTOMapper, GameDTOMapper gameDTOMapper) {
+    public OrderDtoMapper(ShoppingListDTOMapper shoppingListDTOMapper, GameDTOMapper gameDTOMapper, UserDtoMapper userDtoMapper) {
         this.shoppingListDTOMapper = shoppingListDTOMapper;
         this.gameDTOMapper = gameDTOMapper;
+        this.userDtoMapper = userDtoMapper;
     }
 
     public OrderResponseDto toOrderDto(OrderModel order) {
@@ -35,7 +38,7 @@ public class OrderDtoMapper {
         target.setOrderNumber(order.getOrderNumber());
         target.setOrderConfirmation(order.getOrderConfirmation());
         target.setShoppingList(order.getShoppingLists());
-        target.setUser(order.getUser());
+        target.setUser(userDtoMapper.toUserDTO(order.getUserModel()));
         target.setTotalPrice(order.getTotalPrice());
         target.setCreatePdf(order.isCreatePdf());
         return target;
@@ -59,7 +62,7 @@ public class OrderDtoMapper {
         order.setOrderNumber(dto.getOrderNumber());
         order.setShoppingLists(dto.getShoppingList());
         order.setProfit(dto.getProfit());
-        order.setUser(dto.getUser());
+        order.setUserModel(dto.getUser());
         order.setTotalPrice(dto.getProfit());
         order.setCreatePdf(dto.isCreatePdf());
         return order;

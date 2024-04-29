@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.Set;
 public class User {
 
 
-    // Deze eerste 3 variabelen zijn verplicht om te kunnen inloggen met een username, password en rol.
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -44,6 +44,9 @@ public class User {
     @Column
     private String email;
 
+    @OneToOne
+    @JsonIgnoreProperties(value = {"contents","contentType"} )
+    UploadOrder uploadOrder;
 
     public String getUsername() { return username; }
     public void setUsername(String username) {
@@ -62,6 +65,9 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email;}
 
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
@@ -70,8 +76,11 @@ public class User {
         this.authorities.remove(authority);
     }
 
+    public UploadOrder getUploadOrder() {
+        return uploadOrder;
+    }
 
-//    public void setShoppingLists(List<ShoppingList> shoppingLists) {
-//        this.shoppingLists = shoppingLists;
-
+    public void setUploadOrder(UploadOrder uploadOrder) {
+        this.uploadOrder = uploadOrder;
+    }
 }

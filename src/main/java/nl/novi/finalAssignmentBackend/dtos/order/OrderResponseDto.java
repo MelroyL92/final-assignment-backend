@@ -1,7 +1,9 @@
 package nl.novi.finalAssignmentBackend.dtos.order;
 
+import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
 import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
+import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class OrderResponseDto {
 
     private boolean createPdf;// (nieuw inclusief getters + setters, test)
 
-    private User user;
+    private UserResponseDto user;
 
     private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
@@ -78,11 +80,11 @@ public class OrderResponseDto {
         this.totalPrice = totalPrice;
     }
 
-    public User getUser() {
+    public UserResponseDto getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserResponseDto user) {
         this.user = user;
     }
 

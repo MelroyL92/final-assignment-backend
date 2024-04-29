@@ -12,11 +12,11 @@ import java.util.List;
 public class MovieDTOMapper {
 
 
-    public MovieResponseDto toMovieDto(MovieModel movie){
-        return toMovieDto(movie, new MovieResponseDto());
+    public MovieResponseDto toMovieDTO(MovieModel movie){
+        return toMovieDTO(movie, new MovieResponseDto());
     }
 
-    public <D extends MovieResponseDto> D toMovieDto(MovieModel movie, D target) {
+    public <D extends MovieResponseDto> D toMovieDTO(MovieModel movie, D target) {
         target.setId(movie.getId());
         target.setDirector(movie.getDirector());
         target.setName(movie.getName());
@@ -33,7 +33,7 @@ public class MovieDTOMapper {
     public List<MovieResponseDto> toMovieDTOs(List<MovieModel>movieModels){
         List<MovieResponseDto> result = new ArrayList<>();
         for (MovieModel movieModel: movieModels){
-            result.add(toMovieDto(movieModel));
+            result.add(toMovieDTO(movieModel));
         }
         return result;
     }
