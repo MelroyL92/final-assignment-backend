@@ -63,10 +63,16 @@ import java.util.Map;
             return ResponseEntity.noContent().build();
         }
 
-        @PutMapping("/{username}/invoices/{invoiceId}")
-        public ResponseEntity<String>addUserToInvoice(@PathVariable String username, @PathVariable  Long invoiceId) {
-            userService.addInvoiceToUser(username, invoiceId);
-            return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + invoiceId);
+        @PutMapping("/{username}/orders/{orderId}")
+        public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
+            userService.addOrderToUser(username, orderId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + orderId);
+        }
+
+        @PutMapping("/{username}/shoppinglists/{shoppingListId}")
+        public ResponseEntity<String>addUserToShoppingList(@PathVariable String username, @PathVariable Long shoppingListId){
+            userService.addShoppingListToUser(username,shoppingListId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to the shoppinglist");
         }
 
 

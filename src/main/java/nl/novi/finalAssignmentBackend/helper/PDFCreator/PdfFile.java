@@ -1,7 +1,7 @@
 package nl.novi.finalAssignmentBackend.helper.PDFCreator;
 
 import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Invoice;
+import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
@@ -17,15 +17,15 @@ import java.io.IOException;
 public class PdfFile {
 
 
-    public void createPdf(Invoice invoice) throws IOException {
+    public void createPdf(Order order) throws IOException {
 
-        if (invoice.getUser() == null) {
-            throw new RecordNotFoundException("Invoice does not have a user associated with it.");
+        if (order.getUser() == null) {
+            throw new RecordNotFoundException("Order does not have a user associated with it.");
         }
 
         boolean hasGamesOrMovies = false;
 
-        for (ShoppingList shoppingList : invoice.getShoppingList()) {
+        for (ShoppingList shoppingList : order.getShoppingList()) {
             if (!shoppingList.getGames().isEmpty() || !shoppingList.getMovies().isEmpty()) {
                 hasGamesOrMovies = true;
                 break;
@@ -46,18 +46,18 @@ public class PdfFile {
                 float yPosition = 700;
                 contentStream.beginText();
                 contentStream.newLineAtOffset(100, yPosition);
-                contentStream.showText("Invoice number: " + invoice.getOrderNumber());
+                contentStream.showText("Ordernumber: " + order.getOrderNumber());
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Delivery date: " + invoice.getDeliveryDate());
+                contentStream.showText("Delivery date: " + order.getDeliveryDate());
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Ordered by: " + (invoice.getUser() != null ? invoice.getUser().getUsername() : ""));
+                contentStream.showText("Ordered by: " + (order.getUser() != null ? order.getUser().getUsername() : ""));
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -50);
 
 
-                for (ShoppingList shoppingList : invoice.getShoppingList()) {
+                for (ShoppingList shoppingList : order.getShoppingList()) {
                     contentStream.newLineAtOffset(0, -0);
                     contentStream.showText("Shopping List ID: " + shoppingList.getId());
                     yPosition -= 20;
@@ -90,12 +90,12 @@ public class PdfFile {
 
                 }
                 contentStream.newLineAtOffset(0, -40);
-                contentStream.showText("Total price: €" + invoice.getTotalPrice());
+                contentStream.showText("Total price: €" + order.getTotalPrice());
                 contentStream.endText();
             }
 
             // Save the document
-            document.save("invoice_" + invoice.getOrderNumber() + ".pdf");
+            document.save("order_" + order.getOrderNumber() + ".pdf");
 
         }
     }

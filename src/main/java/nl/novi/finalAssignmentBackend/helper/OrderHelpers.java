@@ -1,31 +1,31 @@
 package nl.novi.finalAssignmentBackend.helper;
 
 import jakarta.persistence.EntityNotFoundException;
-import nl.novi.finalAssignmentBackend.Repository.InvoiceRepository;
+import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 
 import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Invoice;
+import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InvoiceHelpers {
+public class OrderHelpers {
 
-    private final InvoiceRepository invoiceRepository;
+    private final OrderRepository orderRepository;
 
-    public InvoiceHelpers(InvoiceRepository invoiceRepository) {
-        this.invoiceRepository = invoiceRepository;
+    public OrderHelpers(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
 
     public void calculateProfit(Long id) {
-        Invoice invoice = invoiceRepository.findById(id)
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invoice not found, the profit cannot be calculated"));
 
         double profit = 0.00;
 
-        for (ShoppingList shoppingList : invoice.getShoppingList()) {
+        for (ShoppingList shoppingList : order.getShoppingList()) {
                 for (Game game : shoppingList.getGames()) {
                     profit += calculateProfitGame(game);
                 }
@@ -37,8 +37,8 @@ public class InvoiceHelpers {
                 }
             }
 
-        invoice.setProfit(profit);
-        invoiceRepository.save(invoice);
+        order.setProfit(profit);
+        orderRepository.save(order);
         }
 
 
@@ -53,19 +53,19 @@ public class InvoiceHelpers {
 
 
     public void calculateTotalPrice(Long id){
-        Invoice invoice = invoiceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Invoice not found, the profit cannot be calculated"));
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found, the profit cannot be calculated"));
 
         double totalPrice = 0.00;
 
-        for (ShoppingList shoppingList : invoice.getShoppingList()) {
+        for (ShoppingList shoppingList : order.getShoppingList()) {
             var subtotal = shoppingList.getSubtotal();
             var packaging = shoppingList.getPackagingCost();
             var delivery = shoppingList.getDeliveryCost();
 
             totalPrice += subtotal + packaging + delivery;
-            invoice.setTotalPrice(totalPrice);
-            invoiceRepository.save(invoice);
+            order.setTotalPrice(totalPrice);
+            orderRepository.save(order);
 
         }
 

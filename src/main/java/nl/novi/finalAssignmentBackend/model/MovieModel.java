@@ -11,21 +11,20 @@ public class MovieModel extends ProductModel {
         private String type;
         private String director;
 
-        private Integer playtimeInMin;
+        private Integer watchTimeInMin;
 
         private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
 
+    public Integer getWatchTimeInMin() {
+        return watchTimeInMin;
+    }
 
-        public Integer getPlaytimeInMin() {
-            return playtimeInMin;
-        }
+    public void setWatchTimeInMin(Integer watchTimeInMin) {
+        this.watchTimeInMin = watchTimeInMin;
+    }
 
-        public void setPlaytimeInMin(Integer playtimeInMin) {
-            this.playtimeInMin = playtimeInMin;
-        }
-
-        public String getGenre() {
+    public String getGenre() {
             return genre;
         }
 
@@ -57,13 +56,13 @@ public class MovieModel extends ProductModel {
             return id;
         }
 
-        public List<ShoppingListModel> getShoppingList() {
-        return shoppingList;
-        }
-
-        public void setShoppingList(List<ShoppingListModel> shoppingList) {
-        this.shoppingList = shoppingList;
-        }
+//        public List<ShoppingListModel> getShoppingList() {
+//        return shoppingList;
+//        }
+//
+//        public void setShoppingList(List<ShoppingListModel> shoppingList) {
+//        this.shoppingList = shoppingList;
+//        }
 }
 
 

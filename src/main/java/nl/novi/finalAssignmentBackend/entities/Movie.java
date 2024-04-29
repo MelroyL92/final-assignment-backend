@@ -29,19 +29,19 @@ public class Movie extends Product {
     @NotNull(message = "please fill in a valid playtime between 10 and 400 min")
     @Min(10)
     @Max(400)
-    @Column(name = "playtime_in_min")
-    private Integer playtimeInMin;
+    @Column(name = "watch_time_in_min")
+    private Integer watchTimeInMin;
 
    @ManyToMany(mappedBy = "movies")
    private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
-    public Integer getPlaytimeInMin() {
-        return playtimeInMin;
+    public Integer getWatchTimeInMin() {
+        return watchTimeInMin;
     }
 
-    public void setPlaytimeInMin(Integer playtimeInMin) {
-        this.playtimeInMin = playtimeInMin;
+    public void setWatchTimeInMin(Integer watchTimeInMin) {
+        this.watchTimeInMin = watchTimeInMin;
     }
 
     public String getGenre() {

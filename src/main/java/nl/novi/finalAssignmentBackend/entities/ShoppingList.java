@@ -49,7 +49,11 @@ public class ShoppingList {
 
     // is this relation made correctly???
     @ManyToMany(mappedBy = "shoppingList")
-    private List<Invoice>invoices = new ArrayList<>();
+    private List<Order>orders = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private User user;
 
 
     public Long getId() {
@@ -124,5 +128,12 @@ public class ShoppingList {
         this.packagingCost = packagingCost;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 

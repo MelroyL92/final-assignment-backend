@@ -23,7 +23,7 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         model.setDirector(entity.getDirector());
         model.setGenre(entity.getGenre());
         model.setType(entity.getType());
-        model.setPlaytimeInMin(entity.getPlaytimeInMin());
+        model.setWatchTimeInMin(entity.getWatchTimeInMin());
         model.setDescription(entity.getDescription());
         model.setSellingPrice(entity.getSellingPrice());
         model.setYearOfRelease(entity.getYearOfRelease());
@@ -45,7 +45,7 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         entity.setDirector(model.getDirector());
         entity.setGenre(model.getGenre());
         entity.setType(model.getType());
-        entity.setPlaytimeInMin(model.getPlaytimeInMin());
+        entity.setWatchTimeInMin(model.getWatchTimeInMin());
         entity.setDescription(model.getDescription());
         entity.setSellingPrice(model.getSellingPrice());
         entity.setYearOfRelease(model.getYearOfRelease());

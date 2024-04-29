@@ -22,7 +22,7 @@ public class MovieDTOMapper {
         target.setName(movie.getName());
         target.setGenre(movie.getGenre());
         target.setType(movie.getType());
-        target.setPlaytime(movie.getPlaytimeInMin());
+        target.setWatchTimeInMin(movie.getWatchTimeInMin());
         target.setDescription(movie.getDescription());
         target.setSellingPrice(movie.getSellingPrice());
         target.setYearOfRelease(movie.getYearOfRelease());
@@ -47,7 +47,7 @@ public class MovieDTOMapper {
         movie.setPurchasePrice(dto.getSellingPrice());
         movie.setGenre(dto.getGenre());
         movie.setDirector(dto.getDirector());
-        movie.setPlaytimeInMin(dto.getPlaytimeInMin());
+        movie.setWatchTimeInMin(dto.getWatchTimeInMin());
         movie.setYearOfRelease(dto.getYearOfRelease());
         movie.setAmountSold(dto.getAmountSold());
         movie.setDescription(dto.getDescription());

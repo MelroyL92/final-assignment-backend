@@ -82,6 +82,7 @@ public class ShoppingListService {
 //    }
 
     public List<ShoppingListModel> getShoppingList() {
+        shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());
         return shoppingListRepository.findAll().stream().map(shoppingListMapper::fromEntity).collect(Collectors.toList());
     }
 

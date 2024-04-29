@@ -1,29 +1,44 @@
-package nl.novi.finalAssignmentBackend.dtos.invoice;
+package nl.novi.finalAssignmentBackend.entities;
 
-import nl.novi.finalAssignmentBackend.entities.User;
-import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
-
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvoiceInputDto {
 
+@Entity
+@Table(name = "orders")
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
+
+    @Size(min =10, max = 60, message = "please fill in a description between 3 and 60 characters")
     private String dateOrdered;
     private Boolean orderConfirmation;
-    private String status;
-    private String deliveryDate;
 
-    private Double profit;
-
+    private String status; // maybe make a if statement with a few options
+    private String deliveryDate; //maybe a if statement in the model that if the stock is valid to be delivered within ... else...
+    private Double profit;  // still need to calculate the profit based on the purchase and sell price
     private Double totalPrice;
 
     private boolean createPdf;// (nieuw inclusief getters + setters, test)
 
-    private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
+    @ManyToMany()
+    @JoinTable(
+            name = "Order_shopping_list",
+            joinColumns = @JoinColumn(name = "order_number_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
+    )
+    private List<ShoppingList> shoppingList = new ArrayList<>();
+
+    // this one still needs to be checked better
+    @ManyToOne
+    @JoinColumn(name = "username")
     private User user;
-
+// Something to think about: maybe make a attribute for profit to only be shown to the admin so he/she can see what profit gets made on each order
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -65,14 +80,6 @@ public class InvoiceInputDto {
         this.deliveryDate = deliveryDate;
     }
 
-    public List<ShoppingListModel> getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(List<ShoppingListModel> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
     public Double getProfit() {
         return profit;
     }
@@ -81,13 +88,21 @@ public class InvoiceInputDto {
         this.profit = profit;
     }
 
-    public User getUser() {
-        return user;
+    public List<ShoppingList> getShoppingList() {
+        return shoppingList;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setShoppingList(List<ShoppingList> shoppingList) {
+        this.shoppingList = shoppingList;
     }
+
+   public User getUser() {
+       return user;
+   }
+
+   public void setUser(User user) {
+       this.user = user;
+   }
 
     public Double getTotalPrice() {
         return totalPrice;
@@ -104,4 +119,6 @@ public class InvoiceInputDto {
     public void setCreatePdf(boolean createPdf) {
         this.createPdf = createPdf;
     }
+
+
 }

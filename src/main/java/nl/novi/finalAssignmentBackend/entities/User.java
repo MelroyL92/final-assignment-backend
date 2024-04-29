@@ -30,8 +30,10 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Invoice>invoice=new ArrayList<>();
+    private List<Order>orders=new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ShoppingList>shoppingLists=new ArrayList<>();
 
     @Column(nullable = false)
     private boolean enabled = true;
@@ -67,4 +69,9 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
+
+
+//    public void setShoppingLists(List<ShoppingList> shoppingLists) {
+//        this.shoppingLists = shoppingLists;
+
 }

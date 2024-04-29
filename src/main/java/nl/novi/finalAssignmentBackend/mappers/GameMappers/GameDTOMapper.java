@@ -3,7 +3,6 @@ package nl.novi.finalAssignmentBackend.mappers.GameMappers;
 
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
-import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.stereotype.Component;
 
@@ -33,13 +32,15 @@ public class GameDTOMapper {
             return target;
         }
 
-//        public List<GameResponseDto> toGameDTOs(List<GameModel>gameModels){
-//            List<GameResponseDto> result = new ArrayList<>();
-//            for (GameModel gameModel: gameModels){
-//                result.add(toGameDto(gameModel));
-//            }
-//            return result;
-//        }
+        public List<GameResponseDto> toGameDTOs(List<GameModel>gameModels){
+            List<GameResponseDto> result = new ArrayList<>();
+            for (GameModel gameModel: gameModels){
+                result.add(toGameDto(gameModel));
+            }
+            return result;
+        }
+
+
 
 
 //         public GameModel toGameDTO(Game game) {

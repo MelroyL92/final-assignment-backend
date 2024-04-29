@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
 
+import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 
@@ -17,9 +18,13 @@ public class ShoppingListResponseDto {
     private Integer deliveryCost;
     private Double packagingCost;
 
-    List<MovieModel> movies;
+    private List<MovieModel> movies;
 
-    List<GameModel> games;
+    private List<GameModel> games;
+
+    private User user;
+
+
 
 
     public Long getId() {
@@ -92,6 +97,14 @@ public class ShoppingListResponseDto {
 
     public void setPackagingCost(Double packagingCost) {
         this.packagingCost = packagingCost;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

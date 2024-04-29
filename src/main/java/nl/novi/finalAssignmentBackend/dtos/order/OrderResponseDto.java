@@ -1,10 +1,12 @@
-package nl.novi.finalAssignmentBackend.model;
+package nl.novi.finalAssignmentBackend.dtos.order;
+
 import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvoiceModel {
+public class OrderResponseDto {
 
     private Long orderNumber;
     private String dateOrdered;
@@ -12,23 +14,13 @@ public class InvoiceModel {
     private String status;
     private String deliveryDate;
 
-    private Double profit;
-
     private Double totalPrice;
 
     private boolean createPdf;// (nieuw inclusief getters + setters, test)
 
-    private List<ShoppingListModel> shoppingLists = new ArrayList<>();
-
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -70,14 +62,12 @@ public class InvoiceModel {
         this.deliveryDate = deliveryDate;
     }
 
-
-
-    public Double getProfit() {
-        return profit;
+    public List<ShoppingListModel> getShoppingList() {
+        return shoppingList;
     }
 
-    public void setProfit(Double profit) {
-        this.profit = profit;
+    public void setShoppingList(List<ShoppingListModel> shoppingList) {
+        this.shoppingList = shoppingList;
     }
 
     public Double getTotalPrice() {
@@ -88,12 +78,12 @@ public class InvoiceModel {
         this.totalPrice = totalPrice;
     }
 
-    public List<ShoppingListModel> getShoppingLists() {
-        return shoppingLists;
+    public User getUser() {
+        return user;
     }
 
-    public void setShoppingLists(List<ShoppingListModel> shoppingLists) {
-        this.shoppingLists = shoppingLists;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isCreatePdf() {

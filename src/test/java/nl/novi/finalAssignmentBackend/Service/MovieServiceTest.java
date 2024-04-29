@@ -62,7 +62,7 @@ public class MovieServiceTest {
         movie1.setDescription("worst of the lotr movies but still great");
         movie1.setType("blu ray");
         movie1.setGenre("fantasy");
-        movie1.setPlaytimeInMin(200);
+        movie1.setWatchTimeInMin(200);
         mockMovies.add(movie1);
 
         Movie movie2 = new Movie();
@@ -78,7 +78,7 @@ public class MovieServiceTest {
         movie2.setDescription("worst of the lotr movies but still great");
         movie2.setType("blu ray");
         movie2.setGenre("fantasy");
-        movie2.setPlaytimeInMin(300);
+        movie2.setWatchTimeInMin(300);
         mockMovies.add(movie2);
 
         when(movierepository.findAll()).thenReturn(mockMovies);
@@ -101,7 +101,7 @@ public class MovieServiceTest {
             movieModel.setDescription(movie.getDescription());
             movieModel.setType(movie.getType());
             movieModel.setGenre(movie.getGenre());
-            movieModel.setPlaytimeInMin(movie.getPlaytimeInMin());
+            movieModel.setWatchTimeInMin(movie.getWatchTimeInMin());
 
             return movieModel;
         });
@@ -119,7 +119,7 @@ public class MovieServiceTest {
         assertEquals("worst of the lotr movies but still great", result.get(0).getDescription());
         assertEquals("blu ray", result.get(0).getType());
         assertEquals("fantasy", result.get(0).getGenre());
-        assertEquals(200, result.get(0).getPlaytimeInMin());
+        assertEquals(200, result.get(0).getWatchTimeInMin());
 
         assertEquals(80.0, result.get(1).getPurchasePrice());
         assertEquals(30.0, result.get(1).getSellingPrice());
@@ -132,7 +132,7 @@ public class MovieServiceTest {
         assertEquals("worst of the lotr movies but still great", result.get(1).getDescription());
         assertEquals("blu ray", result.get(1).getType());
         assertEquals("fantasy", result.get(1).getGenre());
-        assertEquals(300, result.get(1).getPlaytimeInMin());
+        assertEquals(300, result.get(1).getWatchTimeInMin());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class MovieServiceTest {
         movie1.setDescription("worst of the lotr movies but still great");
         movie1.setType("blu ray");
         movie1.setGenre("fantasy");
-        movie1.setPlaytimeInMin(200);
+        movie1.setWatchTimeInMin(200);
 
         when(movierepository.findById(1L)).thenReturn(Optional.of(movie1));
 
@@ -170,7 +170,7 @@ public class MovieServiceTest {
             movieModel.setDescription(movie.getDescription());
             movieModel.setType(movie.getType());
             movieModel.setGenre(movie.getGenre());
-            movieModel.setPlaytimeInMin(movie.getPlaytimeInMin());
+            movieModel.setWatchTimeInMin(movie.getWatchTimeInMin());
             return movieModel;
         });
 
@@ -187,7 +187,7 @@ public class MovieServiceTest {
         assertEquals("worst of the lotr movies but still great", result.getDescription());
         assertEquals("blu ray", result.getType());
         assertEquals("fantasy", result.getGenre());
-        assertEquals(200, result.getPlaytimeInMin());
+        assertEquals(200, result.getWatchTimeInMin());
     }
 
     @Test
@@ -246,7 +246,7 @@ public class MovieServiceTest {
         movieModel.setDescription("worst of the lotr movies but still great");
         movieModel.setType("blu ray");
         movieModel.setGenre("fantasy");
-        movieModel.setPlaytimeInMin(200);
+        movieModel.setWatchTimeInMin(200);
 
         Mockito.when(movieMapper.fromEntity(Mockito.any(Movie.class))).thenAnswer(invocation -> {
             Movie movieArgument = invocation.getArgument(0);
@@ -267,7 +267,7 @@ public class MovieServiceTest {
             movieEntity.setDescription(movieModelArgument.getDescription());
             movieEntity.setType(movieModelArgument.getType());
             movieEntity.setGenre(movieModelArgument.getGenre());
-            movieEntity.setPlaytimeInMin(movieModelArgument.getPlaytimeInMin());
+            movieEntity.setWatchTimeInMin(movieModelArgument.getWatchTimeInMin());
             return movieEntity;
         });
 
@@ -300,7 +300,7 @@ public class MovieServiceTest {
         existingMovie.setDescription("worst of the lotr movies but still great");
         existingMovie.setType("blu ray");
         existingMovie.setGenre("fantasy");
-        existingMovie.setPlaytimeInMin(200);
+        existingMovie.setWatchTimeInMin(200);
 
         Mockito.when(movierepository.findById(1L)).thenReturn(Optional.of(existingMovie));
 
@@ -317,7 +317,7 @@ public class MovieServiceTest {
         updatedMovieModel.setDescription("worst of the lotr movies but still great");
         updatedMovieModel.setType("blu ray");
         updatedMovieModel.setGenre("fantasy");
-        updatedMovieModel.setPlaytimeInMin(200);
+        updatedMovieModel.setWatchTimeInMin(200);
 
         Mockito.when(movierepository.save(Mockito.any(Movie.class))).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);
@@ -339,7 +339,7 @@ public class MovieServiceTest {
         assertEquals(updatedMovieModel.getDescription(), returnedUpdatedMovieModel.getDescription());
         assertEquals(updatedMovieModel.getType(), returnedUpdatedMovieModel.getType());
         assertEquals(updatedMovieModel.getGenre(), returnedUpdatedMovieModel.getGenre());
-        assertEquals(updatedMovieModel.getPlaytimeInMin(), returnedUpdatedMovieModel.getPlaytimeInMin());
+        assertEquals(updatedMovieModel.getWatchTimeInMin(), returnedUpdatedMovieModel.getWatchTimeInMin());
     }
 
     @Test@DisplayName("update record not found")

@@ -63,7 +63,7 @@ public class MovieService {
             existingMovie.setGenre(movieModel.getGenre());
             existingMovie.setDescription(movieModel.getDescription());
             existingMovie.setAmountSold(movieModel.getAmountSold());
-            existingMovie.setPlaytimeInMin(movieModel.getPlaytimeInMin());
+            existingMovie.setWatchTimeInMin(movieModel.getWatchTimeInMin());
             existingMovie.setSellingPrice(movieModel.getSellingPrice());
             existingMovie.setPurchasePrice(movieModel.getPurchasePrice());
             existingMovie.setYearOfRelease(movieModel.getYearOfRelease());

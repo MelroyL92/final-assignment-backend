@@ -40,6 +40,7 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
        model.setPackaging(shoppingList.getPackaging());
        model.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
        model.setPackagingCost(shoppingList.getPackagingCost());
+       model.setUser(shoppingList.getUser());
        return model;
     }
 
@@ -52,12 +53,13 @@ public class ShoppingListMapper implements EntityMapper<ShoppingListModel, Shopp
         entity.setSubtotal(shoppingListModel.getSubtotal());
         entity.setId(shoppingListModel.getId());
         entity.setType(shoppingListModel.getType());
-        entity.setGames(gameMapper.toEntity(shoppingListModel.getGames()));
-        entity.setMovies(movieMapper.toEntityList(shoppingListModel.getMovies()));
+//        entity.setGames(gameMapper.toEntity(shoppingListModel.getGames())); // hoe kan ik dit veranderen naar een gameDTOMapper?
+//        entity.setMovies(movieMapper.toEntityList(shoppingListModel.getMovies())); // hoe kan ik dit veranderen naar een movieDTOMapper?
         entity.setDeliveryCost(shoppingListModel.getDeliverCost());
         entity.setPackaging(shoppingListModel.getPackaging());
         entity.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
         entity.setPackagingCost(shoppingListModel.getPackagingCost());
+        entity.setUser(shoppingListModel.getUser());
         return entity;
     }
 

@@ -8,7 +8,7 @@ public class UserModel {
     private String password;
     private String BirthYear;
 
-    private InvoiceModel invoice;
+    private OrderModel Order;
 
 
     public int getId() {

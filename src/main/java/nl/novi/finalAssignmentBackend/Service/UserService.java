@@ -1,11 +1,13 @@
 package nl.novi.finalAssignmentBackend.Service;
 
 
-import nl.novi.finalAssignmentBackend.Repository.InvoiceRepository;
+import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
+import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
 import nl.novi.finalAssignmentBackend.entities.Authority;
-import nl.novi.finalAssignmentBackend.entities.Invoice;
+import nl.novi.finalAssignmentBackend.entities.Order;
+import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
@@ -24,13 +26,15 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ShoppingListRepository shoppingListRepository;
     private final PasswordEncoder passwordEncoder;
-    private final InvoiceRepository invoiceRepository;
+    private final OrderRepository orderRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InvoiceRepository invoiceRepository) {
+    public UserService(UserRepository userRepository, ShoppingListRepository shoppingListRepository, PasswordEncoder passwordEncoder, OrderRepository orderRepository) {
         this.userRepository = userRepository;
+        this.shoppingListRepository = shoppingListRepository;
         this.passwordEncoder = passwordEncoder;
-        this.invoiceRepository = invoiceRepository;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -126,15 +130,27 @@ public class UserService {
         return user;
     }
 
-    public void addInvoiceToUser(String username, Long invoiceId){
+    public void addOrderToUser(String username, Long orderId){
         User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
-        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(()-> new RecordNotFoundException("invoice with id " + invoiceId + " does not exist."));
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new RecordNotFoundException("order with id " + orderId + " does not exist."));
 
-        if (invoice.getUser() != null) {
-            throw new BadRequestException("User " + username + " is already associated with an invoice.");
+        if (order.getUser() != null) {
+            throw new BadRequestException("User " + username + " is already associated with an order.");
         }
-            invoice.setUser(user);
-            invoiceRepository.save(invoice);
+            order.setUser(user);
+            orderRepository.save(order);
+    }
+
+    public void addShoppingListToUser(String username, Long shoppingListId){
+        User user = userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException(username));
+        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
+
+        if (shoppingList.getUser()!= null) {
+            throw new BadRequestException();
+        }
+
+        shoppingList.setUser(user);
+        shoppingListRepository.save(shoppingList);
     }
 
 }
