@@ -1,22 +1,22 @@
 package nl.novi.finalAssignmentBackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 @Entity
 public class UploadOrder {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
 
     private String title;
     private String url;
     private String contentType;
     @Lob
     byte[] contents;
+
+    @OneToOne
+    private User user;
 
     public UploadOrder(String title, String url, String contentType, byte[] contents){
         this.contentType = contentType;
@@ -30,11 +30,11 @@ public class UploadOrder {
     }
 
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

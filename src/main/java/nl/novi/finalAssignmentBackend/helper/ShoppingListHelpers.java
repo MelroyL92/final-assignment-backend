@@ -43,29 +43,32 @@ public class ShoppingListHelpers {
         int gameAmount = shoppingList.getGames().size();
         int totalAmount = movieAmount + gameAmount;
 
-        if (shoppingList.getAtHomeDelivery()) {
-            int deliveryCost = 0;
+        int deliveryCost = 0; // Initialize deliveryCost to 0 by default
 
+        if (shoppingList.getAtHomeDelivery()) {
             if (totalAmount < 5) {
                 deliveryCost = 5;
             } else if (totalAmount < 10) {
                 deliveryCost = 10;
-            } else {
-                deliveryCost = 0;
-                // think of a way to let the person know that its free because of the amount they buy
-            }
-            shoppingList.setDeliveryCost(deliveryCost);
+            } // No need for an else, as it defaults to 0
+            // Add a comment or a notification here to indicate that delivery is free for larger orders
         }
+        // Set deliveryCost only if atHomeDelivery is true
+        shoppingList.setDeliveryCost(deliveryCost);
         shoppingListRepository.save(shoppingList);
     }
 
     public void calculatePackagingCost(Long shoppingListId) {
 
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(() -> new EntityNotFoundException("Shopping list not found. The packaging cant be calculated"));
-        int amount = shoppingList.getGames().size() + shoppingList.getMovies().size();
-        double packagingCost = 0.40 * amount;
+        double packagingCost = 0;
 
-        packagingCost = Math.round(packagingCost * 100.0) / 100.0;
+        if(shoppingList.getPackaging()) {
+            int amount = shoppingList.getGames().size() + shoppingList.getMovies().size();
+            packagingCost = 0.40 * amount;
+
+            packagingCost = Math.round(packagingCost * 100.0) / 100.0;
+        }
 
         shoppingList.setPackagingCost(packagingCost);
         shoppingListRepository.save(shoppingList);

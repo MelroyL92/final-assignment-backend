@@ -1,5 +1,4 @@
 package nl.novi.finalAssignmentBackend.model;
-import nl.novi.finalAssignmentBackend.entities.User;
 
 import java.util.List;
 
@@ -15,8 +14,7 @@ public class ShoppingListModel {
     private Integer deliveryCost;
 
     private Double packagingCost;
-
-    private Boolean isLocked;  // toegevoegd voor authorisatiepoging
+    private Boolean createPdf;
 
 
     private List<GameModel> games;
@@ -24,15 +22,6 @@ public class ShoppingListModel {
 
     private UserModel userModel;
 
-
-
-    public Boolean getLocked() { // toegevoegd voor authorisatiepoging
-        return isLocked;
-    }
-
-    public void setLocked(Boolean locked) { // toegevoegd voor authorisatiepoging
-        isLocked = locked;
-    }
 
     public Boolean getPackaging() {
         return packaging;
@@ -114,11 +103,11 @@ public class ShoppingListModel {
         this.userModel = userModel;
     }
 
-    //    public List<UserModel> getUserModel() {
-//        return userModel;
-//    }
-//
-//    public void setUserModel(List<UserModel> userModel) {
-//        this.userModel = userModel;
-//    }
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
+    }
 }

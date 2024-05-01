@@ -1,7 +1,8 @@
 package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +15,20 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
 
-    @Size(min =10, max = 60, message = "please fill in a description between 3 and 60 characters")
-    private String dateOrdered;
+    private LocalDate dateOrdered;
+//    private String dateOrdered;
     private Boolean orderConfirmation;
 
     private String status; // maybe make a if statement with a few options
-    private String deliveryDate; //maybe a if statement in the model that if the stock is valid to be delivered within ... else...
+
+    private LocalDate deliveryDate;
+//    private String deliveryDate; //maybe a if statement in the model that if the stock is valid to be delivered within ... else...
     private Double profit;  // still need to calculate the profit based on the purchase and sell price
     private Double totalPrice;
 
-    private boolean createPdf;// (nieuw inclusief getters + setters, test)
+    private Boolean hasPaid;
+
+    private Boolean createPdf;// (nieuw inclusief getters + setters, test)
 
 
     @ManyToMany()
@@ -34,7 +39,6 @@ public class Order {
     )
     private List<ShoppingList> shoppingList = new ArrayList<>();
 
-    // this one still needs to be checked better
     @ManyToOne
     @JoinColumn(name = "username")
     private User user;
@@ -46,14 +50,6 @@ public class Order {
 
     public void setOrderNumber(Long orderNumber) {
         this.orderNumber = orderNumber;
-    }
-
-    public String getDateOrdered() {
-        return dateOrdered;
-    }
-
-    public void setDateOrdered(String dateOrdered) {
-        this.dateOrdered = dateOrdered;
     }
 
     public Boolean getOrderConfirmation() {
@@ -70,14 +66,6 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
     }
 
     public Double getProfit() {
@@ -112,13 +100,35 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public boolean isCreatePdf() {
+    public Boolean isCreatePdf() {
         return createPdf;
     }
 
-    public void setCreatePdf(boolean createPdf) {
+    public void setCreatePdf(Boolean createPdf) {
         this.createPdf = createPdf;
     }
 
+    public LocalDate getDateOrdered() {
+        return dateOrdered;
+    }
 
+    public void setDateOrdered(LocalDate dateOrdered) {
+        this.dateOrdered = dateOrdered;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public Boolean getHasPaid() {
+        return hasPaid;
+    }
+
+    public void setHasPaid(Boolean hasPaid) {
+        this.hasPaid = hasPaid;
+    }
 }

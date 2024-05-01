@@ -55,6 +55,12 @@ public class MovieController {
         return ResponseEntity.ok(movies).getBody();
     }
 
+    @GetMapping("/name")
+    public List<MovieModel>getMoviesByName(@RequestParam String name){
+        List<MovieModel> movies = movieService.getMovieByName(name);
+        return ResponseEntity.ok(movies).getBody();
+    }
+
     @PostMapping("")
     public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);

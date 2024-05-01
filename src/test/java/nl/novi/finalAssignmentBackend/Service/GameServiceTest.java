@@ -230,6 +230,57 @@ public class GameServiceTest {
     }
 
     @Test
+    @DisplayName("find game by name no games found")
+    public void testFindGamesByNameNoFound(){
+        List<Game>mockGames = new ArrayList<>();
+        Game game1 = new Game();
+        game1.setName("pokemon");
+        mockGames.add(game1);
+
+        Mockito.when(gameRepository.findByNameContainingIgnoreCase(Mockito.anyString())).thenAnswer(invocation -> {
+            String name = invocation.getArgument(0);
+            if ("Star trek".equalsIgnoreCase(name)) {
+                return Collections.emptyList();
+            } else {
+                return mockGames;
+            }
+        });
+        assertThrows(RecordNotFoundException.class, () -> {
+            gameService.getGameByName("Star Trek");
+        });
+    }
+
+    @Test
+    @DisplayName("find game by name")
+    public void testFindGamesByName(){
+        List<Game>mockGames = new ArrayList<>();
+        Game game1 = new Game();
+        game1.setName("pokemon");
+        mockGames.add(game1);
+
+        Game game2 = new Game();
+        game2.setName("pokemon1");
+        mockGames.add(game2);
+
+        Game game3 = new Game();
+        game3.setName("pokemon2");
+        mockGames.add(game3);
+
+        Game game4 = new Game();
+        game2.setName("pokemon3");
+        mockGames.add(game4);
+
+        Mockito.when(gameRepository.findByNameContainingIgnoreCase("pokemon")).thenReturn(mockGames);
+
+        List<GameModel> result = gameService.getGameByName("pokemon");
+
+        assertFalse(result.isEmpty());
+        assertEquals(mockGames.size(), result.size());
+        verify(gameRepository).findByNameContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("pokemon")));
+        verifyNoMoreInteractions(gameRepository);
+    }
+
+    @Test
     @DisplayName("create game")
     public void testCreateGame() {
         GameModel gameModel = new GameModel();
@@ -318,7 +369,7 @@ public class GameServiceTest {
     }
 
     @Test
-    @DisplayName("update, record not found")
+    @DisplayName("update, game not found")
     public void testUpdateRecordNotFound(){
         // Arrange
         GameModel model = new GameModel();

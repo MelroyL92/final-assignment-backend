@@ -10,9 +10,8 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
-import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
-import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileWishList;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
@@ -22,6 +21,7 @@ import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMap
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +39,7 @@ public class ShoppingListService {
     private final GameMapper gameMapper;
     private final MovieDTOMapper movieDTOMapper;
     private final MovieMapper movieMapper;
+
 
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository,
                                ShoppingListHelpers shoppingListHelpers, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
@@ -77,8 +78,17 @@ public class ShoppingListService {
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
+    // not through the dto now because it gave a error with the user and the user doesnt get added untill after the creation of the shoppingList
     public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel) {
-        ShoppingList shoppingList = shoppingListMapper.toEntity(shoppingListModel);
+//        ShoppingList shoppingList = shoppingListMapper.toEntity(shoppingListModel);
+//        shoppingList = shoppingListRepository.save(shoppingList);
+//        return shoppingListMapper.fromEntity(shoppingList);
+
+        ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setType(shoppingListModel.getType());
+        shoppingList.setPackaging(shoppingListModel.getPackaging());
+        shoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
+
         shoppingList = shoppingListRepository.save(shoppingList);
         return shoppingListMapper.fromEntity(shoppingList);
     }
@@ -124,20 +134,37 @@ public class ShoppingListService {
     public ShoppingListModel updateShoppingList(Long id, ShoppingListModel shoppingListModel) {
         Optional<ShoppingList> shoppingListFound = shoppingListRepository.findById(id);
         if (shoppingListFound.isPresent()) {
-            ShoppingList excistingShoppingList = shoppingListFound.get();
-            if(excistingShoppingList.getUser() == null){
-                throw new EntityNotFoundException("add a user before adjusting the shoppingList");
+            ShoppingList existingShoppingList = shoppingListFound.get();
+
+            if(existingShoppingList.getUser() == null){
+                throw new EntityNotFoundException("Add a user before adjusting the shoppingList");
             }
-            excistingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
-            excistingShoppingList.setType(shoppingListModel.getType());
-            excistingShoppingList.setPackaging(shoppingListModel.getPackaging());
-            excistingShoppingList = shoppingListRepository.save(excistingShoppingList);
-            return shoppingListMapper.fromEntity(excistingShoppingList);
-        } else {
-            throw new RecordNotFoundException("shopping list with id " + id + " not found");
+            if (shoppingListModel.getAtHomeDelivery() != null) {
+                existingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
+                shoppingListHelpers.calculateDeliveryCost(existingShoppingList.getId());
+            }
+            if (shoppingListModel.getType() != null) {
+                existingShoppingList.setType(shoppingListModel.getType());
+            }
+            if (shoppingListModel.getPackaging() != null) {
+                existingShoppingList.setPackaging(shoppingListModel.getPackaging());
+                shoppingListHelpers.calculatePackagingCost(existingShoppingList.getId());
+            }
+            if(shoppingListModel.getCreatePdf() != null){
+                existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
+            }
+            if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
+                createPDFFromWishlist(existingShoppingList);
+            }
+            existingShoppingList = shoppingListRepository.save(existingShoppingList);
+            return shoppingListMapper.fromEntity(existingShoppingList);
+        }    else {
+            throw new RecordNotFoundException("Shopping list with id " + id + " not found");
         }
 
     }
+
+
 
     public void addGameToShoppingList(Long shoppingListId, Long gameId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
@@ -214,6 +241,17 @@ public class ShoppingListService {
             shoppingListRepository.save(shoppingList);
         } else {
             throw new RecordNotFoundException("the movie you requested to delete with id " + movieId + " does not exist");
+        }
+    }
+
+    public void createPDFFromWishlist(ShoppingList shoppingList){
+        if (shoppingList.getCreatePdf() &&  shoppingList.getType().contains("wishlist")){
+            PdfFileWishList pdfFileWishList = new PdfFileWishList();
+            try {
+                pdfFileWishList.createPdf(shoppingList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -49,21 +49,21 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/**").permitAll()
+//
                                 .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/games/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/games").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/games/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/games").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/games/**").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/movies").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/movies").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/{id}").hasRole("USER")// werkt nog niet
@@ -74,7 +74,7 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(HttpMethod.DELETE, "/orders").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN")
 
                                 .requestMatchers("/authenticated").authenticated()
                                 .requestMatchers("/authenticate").permitAll()

@@ -44,6 +44,15 @@ public class GameService {
         return games.stream().map(gameMapper::fromEntity).collect(Collectors.toList());
     }
 
+    public List<GameModel>getGameByName(String name){
+        List<Game>games = gameRepository.findByNameContainingIgnoreCase(name);
+        if (games.isEmpty()){
+            throw new RecordNotFoundException("No games were found containing " + name);
+        }
+
+        return  games.stream().map(gameMapper::fromEntity).collect(Collectors.toList());
+    }
+
     public GameModel createGame (GameModel gameModel){
         Game game = gameMapper.toEntity(gameModel);
         game = gameRepository.save(game);

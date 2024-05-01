@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 public class MovieServiceTest {
 
     @Mock
-    private MovieRepository movierepository;
+    private MovieRepository movieRepository;
 
     @Mock
     private MovieMapper movieMapper;
@@ -81,7 +81,7 @@ public class MovieServiceTest {
         movie2.setWatchTimeInMin(300);
         mockMovies.add(movie2);
 
-        when(movierepository.findAll()).thenReturn(mockMovies);
+        when(movieRepository.findAll()).thenReturn(mockMovies);
 
         when(movieMapper.fromEntity((Movie) ArgumentMatchers.any())).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);
@@ -153,7 +153,7 @@ public class MovieServiceTest {
         movie1.setGenre("fantasy");
         movie1.setWatchTimeInMin(200);
 
-        when(movierepository.findById(1L)).thenReturn(Optional.of(movie1));
+        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie1));
 
         Mockito.when(movieMapper.fromEntity((Movie) ArgumentMatchers.any())).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);
@@ -196,8 +196,9 @@ public class MovieServiceTest {
         List<Movie> mockMovies = new ArrayList<>();
         Movie movie = new Movie();
         movie.setGenre("Horror");
+        mockMovies.add(movie);
 
-        Mockito.when(movierepository.findByGenreContainingIgnoreCase(Mockito.anyString())).thenAnswer(invocation -> {
+        Mockito.when(movieRepository.findByGenreContainingIgnoreCase(Mockito.anyString())).thenAnswer(invocation -> {
             String movie1 = invocation.getArgument(0);
             if ("fantasy".equalsIgnoreCase(movie1)) {
                 return Collections.emptyList();
@@ -221,14 +222,61 @@ public class MovieServiceTest {
         movie.setGenre("sci fi");
         mockMovies.add(movie);
 
-        when(movierepository.findByGenreContainingIgnoreCase("sci fi")).thenReturn(mockMovies);
+        when(movieRepository.findByGenreContainingIgnoreCase("sci fi")).thenReturn(mockMovies);
 
         List<MovieModel> result = movieService.getMoviesByGenre("sci fi");
 
         assertFalse(result.isEmpty());
         assertEquals(mockMovies.size(), result.size());
-        verify(movierepository).findByGenreContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("sci fi")));
-        verifyNoMoreInteractions(movierepository);
+        verify(movieRepository).findByGenreContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("sci fi")));
+        verifyNoMoreInteractions(movieRepository);
+    }
+
+    @Test
+    @DisplayName("cannot find movie by name")
+    public void testNotFindMovieByName(){
+        List<Movie> mockMovies = new ArrayList<>();
+        Movie movie = new Movie();
+        movie.setGenre("Lord of the rings");
+        mockMovies.add(movie);
+
+        Mockito.when(movieRepository.findMovieByNameIsContainingIgnoreCase(Mockito.anyString())).thenAnswer(invocation -> {
+            String name = invocation.getArgument(0);
+            if ("Harry Potter".equalsIgnoreCase(name)){
+                return Collections.emptyList();
+            } else {
+                return mockMovies;
+            }
+        });
+        assertThrows(RecordNotFoundException.class, () -> {
+            movieService.getMovieByName("Harry Potter");
+        });
+    }
+
+    @Test
+    @DisplayName("find by name")
+    public void testFindMovieByName(){
+        List<Movie>mockMovies = new ArrayList<>();
+        Movie movie1 = new Movie();
+        movie1.setName("lord of the rings and the fellowship of the ring");
+        mockMovies.add(movie1);
+
+       Movie movie2 = new Movie();
+       movie2.setName("Lord of the rings and the two towers");
+       mockMovies.add(movie2);
+
+       Movie movie3 = new Movie();
+       movie3.setName("Lord of the rings and the return of the king");
+       mockMovies.add(movie3);
+
+       Mockito.when(movieRepository.findMovieByNameIsContainingIgnoreCase("lord of the rings")).thenReturn(mockMovies);
+
+       List<MovieModel>result = movieService.getMovieByName("lord of the rings");
+
+        assertFalse(result.isEmpty());
+        assertEquals(mockMovies.size(), result.size());
+        verify(movieRepository).findMovieByNameIsContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("lord of the rings")));
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -273,15 +321,15 @@ public class MovieServiceTest {
 
         Movie savedMovieEntity = new Movie();
         savedMovieEntity.setId(1L);
-        Mockito.when(movierepository.save(Mockito.any(Movie.class))).thenReturn(savedMovieEntity);
+        Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenReturn(savedMovieEntity);
 
         MovieModel result = movieService.createMovie(movieModel);
 
         assertNotNull(result);
         verify(movieMapper).toEntity(movieModel);
-        verify(movierepository).save(Mockito.any(Movie.class));
+        verify(movieRepository).save(Mockito.any(Movie.class));
         verify(movieMapper).fromEntity(savedMovieEntity);
-        verifyNoMoreInteractions(movieMapper, movierepository);
+        verifyNoMoreInteractions(movieMapper, movieRepository);
     }
 
     @Test
@@ -302,7 +350,7 @@ public class MovieServiceTest {
         existingMovie.setGenre("fantasy");
         existingMovie.setWatchTimeInMin(200);
 
-        Mockito.when(movierepository.findById(1L)).thenReturn(Optional.of(existingMovie));
+        Mockito.when(movieRepository.findById(1L)).thenReturn(Optional.of(existingMovie));
 
         MovieModel updatedMovieModel = new MovieModel();
         updatedMovieModel.setId(1L);
@@ -319,7 +367,7 @@ public class MovieServiceTest {
         updatedMovieModel.setGenre("fantasy");
         updatedMovieModel.setWatchTimeInMin(200);
 
-        Mockito.when(movierepository.save(Mockito.any(Movie.class))).thenAnswer(invocation -> {
+        Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);
             return movie;
         });

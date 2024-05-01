@@ -161,7 +161,7 @@ public class UserService {
         return optionalUser.get().getUploadOrder();
     }
 
-    public void addShoppingListToUser(String username, Long shoppingListId){
+    public void addUserToShoppingList(String username, Long shoppingListId){
         User user = userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException(username));
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
 

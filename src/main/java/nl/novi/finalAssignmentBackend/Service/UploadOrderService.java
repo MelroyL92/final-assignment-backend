@@ -29,7 +29,7 @@ public class UploadOrderService {
             return uploadOrderRepository.save(uploadOrder);
         }
 
-    public UploadOrder getOrderById(String id){
+    public UploadOrder getOrderById(Long id){
         return uploadOrderRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("the order with id " + id + " does not excist"));
     }
 }

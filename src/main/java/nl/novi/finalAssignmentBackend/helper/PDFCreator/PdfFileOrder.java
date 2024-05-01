@@ -14,7 +14,7 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import java.io.IOException;
 
 
-public class PdfFile {
+public class PdfFileOrder {
 
 
     public void createPdf(Order order) throws IOException {

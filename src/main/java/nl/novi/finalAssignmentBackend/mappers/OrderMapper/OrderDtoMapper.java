@@ -2,8 +2,6 @@ package nl.novi.finalAssignmentBackend.mappers.OrderMapper;
 
 import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
-import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
-import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserDtoMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.stereotype.Component;
@@ -14,17 +12,17 @@ import java.util.List;
 @Component
 public class OrderDtoMapper {
 
-    // not used? if so then remove it!
-    private final ShoppingListDTOMapper shoppingListDTOMapper;
-    private final GameDTOMapper gameDTOMapper;
+
     private final UserDtoMapper userDtoMapper;
 
 
-    public OrderDtoMapper(ShoppingListDTOMapper shoppingListDTOMapper, GameDTOMapper gameDTOMapper, UserDtoMapper userDtoMapper) {
-        this.shoppingListDTOMapper = shoppingListDTOMapper;
-        this.gameDTOMapper = gameDTOMapper;
+
+    public OrderDtoMapper(UserDtoMapper userDtoMapper) {
         this.userDtoMapper = userDtoMapper;
     }
+
+
+
 
     public OrderResponseDto toOrderDto(OrderModel order) {
         return toOrderDto(order, new OrderResponseDto());
@@ -41,8 +39,10 @@ public class OrderDtoMapper {
         target.setUser(userDtoMapper.toUserDTO(order.getUserModel()));
         target.setTotalPrice(order.getTotalPrice());
         target.setCreatePdf(order.isCreatePdf());
+        target.setHasPaid(order.getHasPaid());
         return target;
     }
+
 
     public List<OrderResponseDto> toOrderDtos(List<OrderModel>orderModels){
         List<OrderResponseDto> result = new ArrayList<>();
@@ -62,9 +62,10 @@ public class OrderDtoMapper {
         order.setOrderNumber(dto.getOrderNumber());
         order.setShoppingLists(dto.getShoppingList());
         order.setProfit(dto.getProfit());
-        order.setUserModel(dto.getUser());
+//        order.setUserModel(dto.getUser());
         order.setTotalPrice(dto.getProfit());
         order.setCreatePdf(dto.isCreatePdf());
+        order.setHasPaid(dto.getHasPaid());
         return order;
     }
 

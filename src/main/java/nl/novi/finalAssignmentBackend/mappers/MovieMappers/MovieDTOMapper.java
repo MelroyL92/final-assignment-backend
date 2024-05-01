@@ -27,6 +27,7 @@ public class MovieDTOMapper {
         target.setSellingPrice(movie.getSellingPrice());
         target.setYearOfRelease(movie.getYearOfRelease());
         target.setOriginalStock(movie.getOriginalStock());
+        target.setAmountSold(movie.getAmountSold());
         target.setCurrentStock(movie.getCurrentStock());
         return target;
     }
@@ -49,9 +50,9 @@ public class MovieDTOMapper {
         movie.setDirector(dto.getDirector());
         movie.setWatchTimeInMin(dto.getWatchTimeInMin());
         movie.setYearOfRelease(dto.getYearOfRelease());
-        movie.setAmountSold(dto.getAmountSold());
         movie.setDescription(dto.getDescription());
         movie.setOriginalStock(dto.getOriginalStock());
+        movie.setAmountSold(dto.getAmountSold());
         movie.setCurrentStock(dto.getCurrentStock());
         return movie;
     }

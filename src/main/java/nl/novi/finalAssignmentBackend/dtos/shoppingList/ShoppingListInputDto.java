@@ -1,7 +1,6 @@
 package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
 
-import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import nl.novi.finalAssignmentBackend.model.UserModel;
@@ -19,6 +18,11 @@ public class ShoppingListInputDto {
         private Integer deliveryCost;
 
         private Double packagingCost;
+
+        private Boolean createPdf;
+
+
+
 
 
        private List<MovieModel> movies;
@@ -108,5 +112,13 @@ public class ShoppingListInputDto {
 
     public void setUser(UserModel user) {
         this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }

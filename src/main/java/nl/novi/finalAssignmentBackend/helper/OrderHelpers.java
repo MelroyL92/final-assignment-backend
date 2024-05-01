@@ -9,6 +9,8 @@ import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class OrderHelpers {
 
@@ -68,9 +70,27 @@ public class OrderHelpers {
             orderRepository.save(order);
 
         }
-
     }
 
+    // automatically sets the date ordered based on the orderConfirmations value being true;
+    public void setOrderConfirmation(Long id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
+
+
+        if(order.getShoppingList().isEmpty()){
+            throw new EntityNotFoundException("the order does not contain a shopping list and cant be set to true");
+        }
+        if (order.getOrderConfirmation()) {
+            order.setDateOrdered(LocalDate.now());
+        }
+        orderRepository.save(order);
+    }
+
+    public void setDeliveryDate(Long id){
+        Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
+
+
+    }
 
 }
 
@@ -79,5 +99,4 @@ public class OrderHelpers {
 
 
 
-    // if deliverycost = 0 then profit - 10 (max delivery cost);
 

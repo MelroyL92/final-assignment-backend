@@ -18,15 +18,7 @@ public class ShoppingList {
     private Boolean atHomeDelivery;
     private Integer deliveryCost;
 
-    private Boolean isLocked;  // toegevoegd voor authorisatiepoging
-
-    public Boolean getLocked() { // toegevoegd voor authorisatiepoging
-        return isLocked;
-    }
-
-    public void setLocked(Boolean locked) { // toegevoegd voor authorisatiepoging
-        isLocked = locked;
-    }
+    private Boolean createPdf;
 
     @ManyToMany()
     @JoinTable(
@@ -132,6 +124,14 @@ public class ShoppingList {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }
 

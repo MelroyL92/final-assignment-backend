@@ -2,11 +2,11 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.OrderService;
-import nl.novi.finalAssignmentBackend.Service.UploadOrderService;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDtoMapper;
+import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDto>>getAllOrders(){
-        var orders = orderService.getOrders();
+        var orders = orderService.getAllOrders();
         var orderDto = orders.stream().map(orderDtoMapper::toOrderDto).collect(Collectors.toList());
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
@@ -48,18 +48,18 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public ResponseEntity<OrderResponseDto>createOrder(@RequestBody OrderInputDto orderInputDto){
+    public ResponseEntity<OrderModel>createOrder(@RequestBody OrderInputDto orderInputDto){
         var orderModel = orderDtoMapper.createOrderModel(orderInputDto);
         var newOrder = orderService.createOrder(orderModel);
-        var orderDto = orderDtoMapper.toOrderDto(newOrder);
-        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, orderDto.getOrderNumber())).body(orderDto);
+//        var orderDto = orderDtoMapper.toOrderDto(newOrder);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newOrder.getOrderNumber())).body(newOrder);
     }
 
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderResponseDto>UpdateInvoice(@RequestParam Long id, @RequestBody OrderInputDto orderInputDto){
-        var updateOrder = orderService.updateOrderModel(id, orderDtoMapper.createOrderModel(orderInputDto));
+    public ResponseEntity<OrderResponseDto>updateOrder(@PathVariable Long id, @RequestBody OrderInputDto orderInputDto){
+        var updateOrder = orderService.updateOrder(id, orderDtoMapper.createOrderModel(orderInputDto));
         var invoiceDto = orderDtoMapper.toOrderDto(updateOrder);
         return new ResponseEntity<>(invoiceDto, HttpStatus.OK);
     }

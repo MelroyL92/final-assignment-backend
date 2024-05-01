@@ -8,4 +8,5 @@ import java.util.List;
 public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findByPlatformContainingIgnoreCase(String genre);
+    List<Game> findByNameContainingIgnoreCase(String name);
 }

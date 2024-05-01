@@ -1,26 +1,26 @@
 package nl.novi.finalAssignmentBackend.model;
-import nl.novi.finalAssignmentBackend.entities.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderModel {
 
     private Long orderNumber;
-    private String dateOrdered;
     private Boolean orderConfirmation;
     private String status;
-    private String deliveryDate;
-
     private Double profit;
-
     private Double totalPrice;
+    private LocalDate dateOrdered;
+    private LocalDate deliveryDate;
+    private Boolean createPdf;// (nieuw inclusief getters + setters, test)
+    private Boolean hasPaid;
 
-    private boolean createPdf;// (nieuw inclusief getters + setters, test)
 
     private List<ShoppingListModel> shoppingLists = new ArrayList<>();
-
     private UserModel userModel;
+
+
 
 
     public UserModel getUserModel() {
@@ -39,14 +39,6 @@ public class OrderModel {
         this.orderNumber = orderNumber;
     }
 
-    public String getDateOrdered() {
-        return dateOrdered;
-    }
-
-    public void setDateOrdered(String dateOrdered) {
-        this.dateOrdered = dateOrdered;
-    }
-
     public Boolean getOrderConfirmation() {
         return orderConfirmation;
     }
@@ -62,16 +54,6 @@ public class OrderModel {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
-
 
     public Double getProfit() {
         return profit;
@@ -97,11 +79,33 @@ public class OrderModel {
         this.shoppingLists = shoppingLists;
     }
 
-    public boolean isCreatePdf() {
+    public Boolean isCreatePdf() {
         return createPdf;
     }
 
-    public void setCreatePdf(boolean createPdf) {
+    public void setCreatePdf(Boolean createPdf) {
         this.createPdf = createPdf;
+    }
+
+    public LocalDate getDateOrdered() {
+        return dateOrdered;
+    }
+    public void setDateOrdered(LocalDate dateOrdered) {
+        this.dateOrdered = dateOrdered;
+    }
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public Boolean getHasPaid() {
+        return hasPaid;
+    }
+
+    public void setHasPaid(Boolean hasPaid) {
+        this.hasPaid = hasPaid;
     }
 }

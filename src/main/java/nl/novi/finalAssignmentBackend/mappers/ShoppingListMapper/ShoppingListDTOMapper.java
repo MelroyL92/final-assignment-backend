@@ -2,7 +2,6 @@ package nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper;
 
 import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListInputDto;
 import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDto;
-import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserDtoMapper;
@@ -42,6 +41,7 @@ public class ShoppingListDTOMapper {
         target.setAtHomeDelivery(shoppingList.getAtHomeDelivery());
         target.setPackagingCost(shoppingList.getPackagingCost());
         target.setUser(userDtoMapper.toUserDTO(shoppingList.getUserModel()));
+        target.setCreatePdf(shoppingList.getCreatePdf());
         return target;
     }
 
@@ -66,7 +66,7 @@ public class ShoppingListDTOMapper {
         shoppingList.setPackaging(dto.getPackaging());
         shoppingList.setAtHomeDelivery(dto.getAtHomeDelivery());
         shoppingList.setPackagingCost(dto.getPackagingCost());
-        shoppingList.setUserModel(dto.getUser());
+        shoppingList.setCreatePdf(dto.getCreatePdf());
         return shoppingList;
     }
 }

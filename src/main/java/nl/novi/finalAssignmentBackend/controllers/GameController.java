@@ -47,10 +47,15 @@ public class GameController {
         return new ResponseEntity<>(gameDto,HttpStatus.OK);
     }
 
-    // what to return when a non valid param is entered?
     @GetMapping("/platform")
     public List<GameModel>getGamesByGenre(@RequestParam String platform){
         List<GameModel>games=gameService.getGamesByPlatform(platform);
+        return ResponseEntity.ok(games).getBody();
+    }
+
+    @GetMapping("/name")
+    public List<GameModel>getGamesByName(@RequestParam String name){
+        List<GameModel>games = gameService.getGameByName(name);
         return ResponseEntity.ok(games).getBody();
     }
 

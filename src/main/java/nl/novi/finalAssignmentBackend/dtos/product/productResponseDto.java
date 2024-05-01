@@ -80,8 +80,6 @@ public class productResponseDto {
         if (amountSold != null) {
             this.currentStock = originalStock - amountSold;
         } else {
-            // Handle the case when amountSold is null
-            // For example, you could set currentStock to originalStock
             this.currentStock = originalStock;
         }
 

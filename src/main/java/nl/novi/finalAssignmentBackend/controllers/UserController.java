@@ -82,7 +82,7 @@ import java.util.Map;
 
         @PutMapping("/{username}/shoppinglists/{shoppingListId}")
         public ResponseEntity<String>addUserToShoppingList(@PathVariable String username, @PathVariable Long shoppingListId){
-            userService.addShoppingListToUser(username,shoppingListId);
+            userService.addUserToShoppingList(username,shoppingListId);
             return ResponseEntity.ok("the user with id " + username + " has been assigned to the shoppinglist");
         }
 

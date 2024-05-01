@@ -10,6 +10,7 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
+import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,11 +72,10 @@ public class ShoppingListController {
         }
 
     @PostMapping("")
-    public ResponseEntity<ShoppingListResponseDto>createShoppingList(@RequestBody ShoppingListInputDto shoppingListInputDto){
+    public ResponseEntity<ShoppingListModel>createShoppingList(@RequestBody ShoppingListInputDto shoppingListInputDto){
         var shoppingListModel = shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto);
         var newShoppingList = shoppingListService.createShoppingList(shoppingListModel);
-        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(newShoppingList);
-        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, shoppingListDto.getId())).body(shoppingListDto);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newShoppingList.getId())).body(newShoppingList);
 
     }
 

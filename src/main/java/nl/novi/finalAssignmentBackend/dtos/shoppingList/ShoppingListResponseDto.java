@@ -3,7 +3,6 @@ package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
-import nl.novi.finalAssignmentBackend.entities.User;
 
 
 import java.util.List;
@@ -18,6 +17,9 @@ public class ShoppingListResponseDto {
     private Boolean atHomeDelivery;
     private Integer deliveryCost;
     private Double packagingCost;
+    private Boolean createPdf;
+
+
 
     private List<MovieResponseDto> movies;
 
@@ -105,6 +107,14 @@ public class ShoppingListResponseDto {
 
     public void setUser(UserResponseDto user) {
         this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }
 
