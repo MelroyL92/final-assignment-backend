@@ -38,6 +38,12 @@ public class MovieController {
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/admin") //added for the admin still need to fix this in the security
+    public ResponseEntity<List<MovieModel>>getAllMoviesAdmin(){
+        var movies = movieService.getMovies();
+        return new ResponseEntity<>(movies, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponseDto>getMovieById(@PathVariable Long id){
         var movie = movieService.getMovieById(id);
@@ -46,6 +52,15 @@ public class MovieController {
         }
         var movieDTO = movieDTOMapper.toMovieDTO(movie);
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/{id}") //added for the admin still need to fix this in the security
+    public ResponseEntity<MovieModel>getMovieByIdAdmin(@PathVariable Long id){
+        var movie = movieService.getMovieById(id);
+        if (movie == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 
     // what to return when a non valid param is entered?

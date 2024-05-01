@@ -37,6 +37,12 @@ public class GameController {
         return new ResponseEntity<>(gameDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/admin") //added for the admin still need to fix this in the security
+    public ResponseEntity<List<GameModel>>getAllGamesAdmin(){
+        var games = gameService.getGames();
+        return new ResponseEntity<>(games, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GameResponseDto>getGameById(@PathVariable Long id){
         var game = gameService.getGameById(id);
@@ -45,6 +51,12 @@ public class GameController {
         }
         var gameDto =gameDTOMapper.toGameDto(game);
         return new ResponseEntity<>(gameDto,HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/{id}") //added for the admin still need to fix this in the security
+    public ResponseEntity<GameModel>getGameByIdAdmin(@PathVariable Long id){
+        var game = gameService.getGameById(id);
+        return new ResponseEntity<>(game, HttpStatus.OK);
     }
 
     @GetMapping("/platform")
