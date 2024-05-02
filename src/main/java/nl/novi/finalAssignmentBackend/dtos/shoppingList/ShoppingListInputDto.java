@@ -1,7 +1,9 @@
-package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
+package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
+
+import nl.novi.finalAssignmentBackend.model.GameModel;
+import nl.novi.finalAssignmentBackend.model.MovieModel;
+import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.util.List;
 
@@ -17,24 +19,34 @@ public class ShoppingListInputDto {
 
         private Double packagingCost;
 
+        private Boolean createPdf;
 
-        List<Movie> movies;
 
-        List<Game> games;
 
-    public List<Movie> getMovies() {
+
+
+       private List<MovieModel> movies;
+
+       private List<GameModel> games;
+
+       private UserModel user;
+
+
+
+
+    public List<MovieModel> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieModel> movies) {
         this.movies = movies;
     }
 
-    public List<Game> getGames() {
+    public List<GameModel> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameModel> games) {
         this.games = games;
     }
 
@@ -92,5 +104,21 @@ public class ShoppingListInputDto {
 
     public void setPackagingCost(Double packagingCost) {
         this.packagingCost = packagingCost;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }

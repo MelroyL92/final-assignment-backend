@@ -31,11 +31,17 @@ public class MovieController {
     }
 
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<List<MovieResponseDto>>getAllMovies(){
         var movies = movieService.getMovies();
-        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDto).collect(Collectors.toList());
+        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDTO).collect(Collectors.toList());
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin") //added for the admin still need to fix this in the security
+    public ResponseEntity<List<MovieModel>>getAllMoviesAdmin(){
+        var movies = movieService.getMovies();
+        return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -44,8 +50,17 @@ public class MovieController {
         if (movie == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        var movieDTO = movieDTOMapper.toMovieDto(movie);
+        var movieDTO = movieDTOMapper.toMovieDTO(movie);
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/{id}") //added for the admin still need to fix this in the security
+    public ResponseEntity<MovieModel>getMovieByIdAdmin(@PathVariable Long id){
+        var movie = movieService.getMovieById(id);
+        if (movie == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 
     // what to return when a non valid param is entered?
@@ -55,11 +70,17 @@ public class MovieController {
         return ResponseEntity.ok(movies).getBody();
     }
 
+    @GetMapping("/name")
+    public List<MovieModel>getMoviesByName(@RequestParam String name){
+        List<MovieModel> movies = movieService.getMovieByName(name);
+        return ResponseEntity.ok(movies).getBody();
+    }
+
     @PostMapping("")
     public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
         var newMovie = movieService.createMovie(movieModel);
-        var movieDto = movieDTOMapper.toMovieDto(newMovie);
+        var movieDto = movieDTOMapper.toMovieDTO(newMovie);
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, movieDto.getId())).body(movieDto);
 
     }
@@ -67,7 +88,7 @@ public class MovieController {
     @PutMapping("{id}")
     public ResponseEntity<MovieResponseDto>updateMovie(@PathVariable Long id,@RequestBody MovieInputDto movieInputDto) {
         var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
-        var movieDto = movieDTOMapper.toMovieDto(updateMovie);
+        var movieDto = movieDTOMapper.toMovieDTO(updateMovie);
         return new ResponseEntity<>(movieDto, HttpStatus.OK);
     }
 

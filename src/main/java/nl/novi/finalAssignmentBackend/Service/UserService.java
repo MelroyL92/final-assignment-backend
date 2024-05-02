@@ -1,10 +1,14 @@
 package nl.novi.finalAssignmentBackend.Service;
 
 
+import jakarta.transaction.Transactional;
+import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
+import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
-import nl.novi.finalAssignmentBackend.entities.Authority;
-import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.entities.*;
+import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,11 +24,15 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ShoppingListRepository shoppingListRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OrderRepository orderRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ShoppingListRepository shoppingListRepository, PasswordEncoder passwordEncoder, OrderRepository orderRepository) {
         this.userRepository = userRepository;
+        this.shoppingListRepository = shoppingListRepository;
         this.passwordEncoder = passwordEncoder;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -118,6 +126,51 @@ public class UserService {
         user.setEmail(userDto.getEmail());
 
         return user;
+    }
+
+    public void addUserToOrder(String username, Long orderId){
+        User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new RecordNotFoundException("order with id " + orderId + " does not exist."));
+
+        if (order.getUser() != null) {
+            throw new BadRequestException("User " + username + " is already associated with an order.");
+        }
+            order.setUser(user);
+            orderRepository.save(order);
+    }
+
+    @Transactional
+    public User addOrderFile(String username, UploadOrder uploadOrder){
+        Optional<User> optionalUser = userRepository.findById(username); // big question if this will even work
+        if(optionalUser.isEmpty()){
+            throw new RecordNotFoundException("user not found");
+        }
+        User user = optionalUser.get();
+        user.setUploadOrder(uploadOrder);
+        return userRepository.save(user);
+
+    }
+
+    @Transactional
+
+    public UploadOrder getUploadedOrderFromUser (String username){
+        Optional<User> optionalUser = userRepository.findById(username);
+        if(optionalUser.isEmpty()){
+            throw new RecordNotFoundException("student with name " + username + " has not been found");
+        }
+        return optionalUser.get().getUploadOrder();
+    }
+
+    public void addUserToShoppingList(String username, Long shoppingListId){
+        User user = userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException(username));
+        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
+
+        if (shoppingList.getUser()!= null) {
+            throw new BadRequestException();
+        }
+
+        shoppingList.setUser(user);
+        shoppingListRepository.save(shoppingList);
     }
 
 }

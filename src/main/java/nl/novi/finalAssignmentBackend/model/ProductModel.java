@@ -17,40 +17,18 @@ public abstract class ProductModel {
 
     private Integer yearOfRelease;
 
-    public Integer getYearOfRelease() {
-        return yearOfRelease;
-    }
-
-    public void setYearOfRelease(Integer yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
-    }
 
     private Double purchasePrice;
 
-
-
-    public ProductModel() {
-
-    }
-
-
-
+    private Integer currentStock;
 
 
     public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Double price) {
-        this.sellingPrice = price;
-    }
-
-    public Double getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
+    public void setSellingPrice(Double sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public Integer getOriginalStock() {
@@ -83,5 +61,30 @@ public abstract class ProductModel {
 
     public void setAmountSold(Integer amountSold) {
         this.amountSold = amountSold;
+    }
+
+    public Integer getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(Integer yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
+
+    public Double getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(Double purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
+    public Integer getCurrentStock() {
+        return currentStock;
+    }
+
+    public void setCurrentStock(Integer currentStock) {
+        this.currentStock = originalStock -amountSold;
+
     }
 }

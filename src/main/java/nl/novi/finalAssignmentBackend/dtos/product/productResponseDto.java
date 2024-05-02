@@ -13,7 +13,9 @@ public class productResponseDto {
 
     private String name;
 
+    private Integer currentStock;
 
+    private Integer amountSold;
 
 
     private Integer yearOfRelease;
@@ -59,5 +61,29 @@ public class productResponseDto {
         this.name = name;
     }
 
+    public Integer getAmountSold() {
+        return amountSold;
+    }
+
+    public void setAmountSold(Integer amountSold) {
+        this.amountSold = amountSold;
+    }
+
+
+
+    public Integer getCurrentStock() {
+        return currentStock;
+    }
+
+    public void setCurrentStock(Integer currentStock) {
+
+        if (amountSold != null) {
+            this.currentStock = originalStock - amountSold;
+        } else {
+            this.currentStock = originalStock;
+        }
+
+
+    }
 
 }

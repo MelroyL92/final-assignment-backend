@@ -1,8 +1,11 @@
 package nl.novi.finalAssignmentBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -10,7 +13,6 @@ import java.util.Set;
 public class User {
 
 
-    // Deze eerste 3 variabelen zijn verplicht om te kunnen inloggen met een username, password en rol.
     @Id
     @Column(nullable = false, unique = true)
     private String username;
@@ -27,8 +29,12 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
 
 
-    // Deze 3 variabelen zijn niet verplicht.
-    // Je mag ook een "String banaan;" toevoegen, als je dat graag wilt.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order>orders=new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ShoppingList>shoppingLists=new ArrayList<>();
+
     @Column(nullable = false)
     private boolean enabled = true;
 
@@ -38,6 +44,9 @@ public class User {
     @Column
     private String email;
 
+    @OneToOne
+    @JsonIgnoreProperties(value = {"contents","contentType"} )
+    UploadOrder uploadOrder;
 
     public String getUsername() { return username; }
     public void setUsername(String username) {
@@ -56,6 +65,9 @@ public class User {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email;}
 
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
@@ -64,4 +76,11 @@ public class User {
         this.authorities.remove(authority);
     }
 
+    public UploadOrder getUploadOrder() {
+        return uploadOrder;
+    }
+
+    public void setUploadOrder(UploadOrder uploadOrder) {
+        this.uploadOrder = uploadOrder;
+    }
 }

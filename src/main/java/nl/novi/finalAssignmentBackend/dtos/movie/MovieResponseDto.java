@@ -9,27 +9,26 @@ public class MovieResponseDto extends productResponseDto {
     private String type;
     private String director;
 
-    private String playtime;
+    private Integer watchTimeInMin;
 
-
-    public String getPlaytime() {
-        return playtime;
+    public Integer getWatchTimeInMin() {
+        return watchTimeInMin;
     }
 
-    public void setPlaytime(String playtime) {
-        this.playtime = playtime;
+    public void setWatchTimeInMin(Integer watchTimeInMin) {
+        this.watchTimeInMin = watchTimeInMin;
     }
 
     public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+   public void setGenre(String genre) {
+       this.genre = genre;
+   }
 
-    public String getType() {
-        return type;
+   public String getType() {
+       return type;
     }
 
     public void setType(String type) {

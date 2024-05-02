@@ -1,31 +1,33 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.GameService;
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDto;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequestMapping("/games")
 @RestController
-
 public class GameController {
 
     private final GameDTOMapper gameDTOMapper;
     private final GameService gameService;
+    private final HttpServletRequest request;
 
 
-    public GameController(GameDTOMapper gameDTOMapper, GameService gameService) {
+    public GameController(GameDTOMapper gameDTOMapper, GameService gameService, HttpServletRequest request) {
         this.gameDTOMapper = gameDTOMapper;
         this.gameService = gameService;
+        this.request = request;
     }
 
     @GetMapping
@@ -33,6 +35,12 @@ public class GameController {
         var games = gameService.getGames();
         var gameDTO = games.stream().map(gameDTOMapper::toGameDto).collect(Collectors.toList());
         return new ResponseEntity<>(gameDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin") //added for the admin still need to fix this in the security
+    public ResponseEntity<List<GameModel>>getAllGamesAdmin(){
+        var games = gameService.getGames();
+        return new ResponseEntity<>(games, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,10 +53,21 @@ public class GameController {
         return new ResponseEntity<>(gameDto,HttpStatus.OK);
     }
 
-    // what to return when a non valid param is entered?
+    @GetMapping("/admin/{id}") //added for the admin still need to fix this in the security
+    public ResponseEntity<GameModel>getGameByIdAdmin(@PathVariable Long id){
+        var game = gameService.getGameById(id);
+        return new ResponseEntity<>(game, HttpStatus.OK);
+    }
+
     @GetMapping("/platform")
     public List<GameModel>getGamesByGenre(@RequestParam String platform){
         List<GameModel>games=gameService.getGamesByPlatform(platform);
+        return ResponseEntity.ok(games).getBody();
+    }
+
+    @GetMapping("/name")
+    public List<GameModel>getGamesByName(@RequestParam String name){
+        List<GameModel>games = gameService.getGameByName(name);
         return ResponseEntity.ok(games).getBody();
     }
 
@@ -57,8 +76,7 @@ public class GameController {
         var gameModel = gameDTOMapper.createGameModel(gameInputDto);
         var newGame = gameService.createGame(gameModel);
         var gameDto = gameDTOMapper.toGameDto(newGame);
-        return ResponseEntity.created(URI.create("/movies/" + newGame.getId()))
-                .body(gameDto);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, gameDto.getId())).body(gameDto);
     }
 
     @PutMapping("{id}")
@@ -73,6 +91,5 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }

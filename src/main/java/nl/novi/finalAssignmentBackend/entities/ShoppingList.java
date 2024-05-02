@@ -1,7 +1,5 @@
 package nl.novi.finalAssignmentBackend.entities;
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +13,12 @@ public class ShoppingList {
     private String type;
     private Double subtotal;
 
-    // nieuwe code inclusief getters en setters
     private Boolean packaging;
     private Double packagingCost;
     private Boolean atHomeDelivery;
     private Integer deliveryCost;
 
+    private Boolean createPdf;
 
     @ManyToMany()
     @JoinTable(
@@ -41,7 +39,12 @@ public class ShoppingList {
 
     // is this relation made correctly???
     @ManyToMany(mappedBy = "shoppingList")
-    private List<Invoice>invoices = new ArrayList<>();
+    private List<Order>orders = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private User user;
+
 
     public Long getId() {
         return id;
@@ -115,5 +118,20 @@ public class ShoppingList {
         this.packagingCost = packagingCost;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
+    }
 }
 

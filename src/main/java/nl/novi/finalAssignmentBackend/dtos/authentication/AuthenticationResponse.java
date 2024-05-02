@@ -1,8 +1,9 @@
-package nl.novi.finalAssignmentBackend.dtos;
+package nl.novi.finalAssignmentBackend.dtos.authentication;
 
 public class AuthenticationResponse {
 
     private final String jwt;
+
 
     public AuthenticationResponse(String jwt) {
         this.jwt = jwt;

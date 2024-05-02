@@ -44,6 +44,17 @@ public class MovieService {
         return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
+    // deze ook nog toevoegen in de test
+    public List<MovieModel> getMovieByName(String name){
+        List<Movie>movies = movieRepository.findMovieByNameIsContainingIgnoreCase(name);
+
+        if(movies.isEmpty()){
+            throw new RecordNotFoundException("no movies found containing " + name);
+        }
+
+        return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
+    }
+
 
     public MovieModel createMovie(MovieModel movieModel) {
         Movie movie = movieMapper.toEntity(movieModel);
@@ -63,7 +74,7 @@ public class MovieService {
             existingMovie.setGenre(movieModel.getGenre());
             existingMovie.setDescription(movieModel.getDescription());
             existingMovie.setAmountSold(movieModel.getAmountSold());
-            existingMovie.setPlaytime(movieModel.getPlaytime());
+            existingMovie.setWatchTimeInMin(movieModel.getWatchTimeInMin());
             existingMovie.setSellingPrice(movieModel.getSellingPrice());
             existingMovie.setPurchasePrice(movieModel.getPurchasePrice());
             existingMovie.setYearOfRelease(movieModel.getYearOfRelease());

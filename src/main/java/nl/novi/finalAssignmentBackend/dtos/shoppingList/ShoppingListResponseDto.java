@@ -1,7 +1,8 @@
-package nl.novi.finalAssignmentBackend.dtos.ShoppingList;
+package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
+import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
 
 
 import java.util.List;
@@ -16,10 +17,16 @@ public class ShoppingListResponseDto {
     private Boolean atHomeDelivery;
     private Integer deliveryCost;
     private Double packagingCost;
+    private Boolean createPdf;
 
-    List<Movie> movies;
 
-    List<Game> games;
+
+    private List<MovieResponseDto> movies;
+
+    private List<GameResponseDto> games;
+
+    private UserResponseDto user;
+
 
 
     public Long getId() {
@@ -46,19 +53,19 @@ public class ShoppingListResponseDto {
         this.subtotal = subtotal;
     }
 
-    public List<Movie> getMovies() {
+    public List<MovieResponseDto> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieResponseDto> movies) {
         this.movies = movies;
     }
 
-    public List<Game> getGames() {
+    public List<GameResponseDto> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameResponseDto> games) {
         this.games = games;
     }
 
@@ -92,6 +99,22 @@ public class ShoppingListResponseDto {
 
     public void setPackagingCost(Double packagingCost) {
         this.packagingCost = packagingCost;
+    }
+
+    public UserResponseDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponseDto user) {
+        this.user = user;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }
 

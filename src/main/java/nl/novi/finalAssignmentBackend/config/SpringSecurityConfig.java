@@ -30,11 +30,6 @@ public class SpringSecurityConfig {
     }
 
 
-
-
-
-
-    // Authenticatie met customUserDetailsService en passwordEncoder
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
         var auth = new DaoAuthenticationProvider();
@@ -44,30 +39,52 @@ public class SpringSecurityConfig {
     }
 
 
-
-    // Authorizatie met jwt
-    // authorisatie toevoegen!!!!!
-    //requestMatchers allemaal toevoegen voor alle endpoints!
     @Bean
     protected SecurityFilterChain filter (HttpSecurity http) throws Exception {
 
-        //JWT token authentication
+
         http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                .requestMatchers("/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                /*TODO voeg de antmatchers toe voor admin(post en delete) en user (overige)*/
-                .requestMatchers("/authenticated").authenticated()
-                .requestMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/
-                .anyRequest().denyAll() /*Deze voeg je altijd als laatste toe, om een default beveiliging te hebben voor eventuele vergeten endpoints of endpoints die je later toevoegd. */
+//
+                                .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/games/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/games/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/games").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/games").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/games/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/games/**").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/movies/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/movies/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/movies/").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/movies/**").hasAnyRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/shoppinglists").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/shoppinglists/{id}/user/{username}").hasAnyRole("USER","ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/shoppinglists/{shoppingListId}/user/{username}/games/{gameId}").hasAnyRole("USER","ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/shoppinglists/{shoppingListId}/user/{username}/movies/{movieId}").hasAnyRole("USER","ADMIN")
+                                .requestMatchers(HttpMethod.POST,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
+
+                                .requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN")
+
+                                .requestMatchers("/authenticated").authenticated()
+                                .requestMatchers("/authenticate").permitAll()
+                                .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

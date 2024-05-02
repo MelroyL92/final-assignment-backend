@@ -1,9 +1,5 @@
 package nl.novi.finalAssignmentBackend.model;
 
-
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
-
 import java.util.List;
 
 public class ShoppingListModel {
@@ -18,9 +14,14 @@ public class ShoppingListModel {
     private Integer deliveryCost;
 
     private Double packagingCost;
+    private Boolean createPdf;
 
-    private List<Game> games;
-    private List<Movie> movies;
+
+    private List<GameModel> games;
+    private List<MovieModel> movies;
+
+    private UserModel userModel;
+
 
     public Boolean getPackaging() {
         return packaging;
@@ -46,20 +47,19 @@ public class ShoppingListModel {
         this.deliveryCost = deliverCost;
     }
 
-    public List<Movie> getMovies() {
-        return this.movies;
-    }
-    public List<Game> getGames() {
+    public List<GameModel> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameModel> games) {
         this.games = games;
     }
 
+    public List<MovieModel> getMovies() {
+        return movies;
+    }
 
-
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieModel> movies) {
         this.movies = movies;
     }
 
@@ -93,5 +93,21 @@ public class ShoppingListModel {
 
     public void setPackagingCost(Double packagingCost) {
         this.packagingCost = packagingCost;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
+    }
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
     }
 }

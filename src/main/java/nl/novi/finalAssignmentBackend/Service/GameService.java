@@ -27,7 +27,7 @@ public class GameService {
 
 
     public List<GameModel> getGames(){
-        return gameRepository.findAll().stream().map(gameMapper::fromEntity).collect(Collectors.toList());
+    return gameRepository.findAll().stream().map(gameMapper::fromEntity).collect(Collectors.toList());
     }
 
     public GameModel getGameById(Long id) {
@@ -44,6 +44,15 @@ public class GameService {
         return games.stream().map(gameMapper::fromEntity).collect(Collectors.toList());
     }
 
+    public List<GameModel>getGameByName(String name){
+        List<Game>games = gameRepository.findByNameContainingIgnoreCase(name);
+        if (games.isEmpty()){
+            throw new RecordNotFoundException("No games were found containing " + name);
+        }
+
+        return  games.stream().map(gameMapper::fromEntity).collect(Collectors.toList());
+    }
+
     public GameModel createGame (GameModel gameModel){
         Game game = gameMapper.toEntity(gameModel);
         game = gameRepository.save(game);
@@ -58,11 +67,10 @@ public class GameService {
             existingGame.setOriginalStock(gameModel.getOriginalStock());
             existingGame.setPlatform(gameModel.getPlatform());
             existingGame.setName(gameModel.getName());
-            existingGame.setPlayDuration(gameModel.getPlayDuration());
+            existingGame.setPlayDurationInMin(gameModel.getPlayDurationInMin());
             existingGame.setPublisher(gameModel.getPublisher());
             existingGame.setDescription(gameModel.getDescription());
             existingGame.setAmountSold(gameModel.getAmountSold());
-            existingGame.setPlayDuration(gameModel.getPlayDuration());
             existingGame.setSellingPrice(gameModel.getSellingPrice());
             existingGame.setPurchasePrice(gameModel.getPurchasePrice());
             existingGame.setYearOfRelease(gameModel.getYearOfRelease());

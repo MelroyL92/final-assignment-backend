@@ -1,9 +1,9 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
-import nl.novi.finalAssignmentBackend.dtos.AuthenticationRequest;
-import nl.novi.finalAssignmentBackend.dtos.AuthenticationResponse;
+import nl.novi.finalAssignmentBackend.dtos.authentication.AuthenticationRequest;
 import nl.novi.finalAssignmentBackend.utils.JwtUtil;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,7 +61,9 @@ public class AuthenticationController {
 
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+                .body("token generated ");
     }
 
 }

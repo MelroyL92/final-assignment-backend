@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +14,34 @@ public class Movie extends Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "genre cannot be empty")
+    @Size(min =3, max = 100, message = "please fill in a genre between 3 and 100 characters")
     private String genre;
+
+    @NotBlank(message = "type cannot be empty")
+    @Size(min =3, max = 100, message = "please fill in a type between 3 and 100 characters")
     private String type;
+
+    @NotBlank(message = "director cannot be empty")
+    @Size(min =3, max = 100, message = "please fill in the director between 3 and 100 characters")
     private String director;
 
-    private String playtime;
+    @NotNull(message = "please fill in a valid playtime between 10 and 400 min")
+    @Min(10)
+    @Max(400)
+    @Column(name = "watch_time_in_min")
+    private Integer watchTimeInMin;
 
    @ManyToMany(mappedBy = "movies")
    private List<ShoppingList> shoppingList = new ArrayList<>();
 
 
-    public String getPlaytime() {
-        return playtime;
+    public Integer getWatchTimeInMin() {
+        return watchTimeInMin;
     }
 
-    public void setPlaytime(String playtime) {
-        this.playtime = playtime;
+    public void setWatchTimeInMin(Integer watchTimeInMin) {
+        this.watchTimeInMin = watchTimeInMin;
     }
 
     public String getGenre() {

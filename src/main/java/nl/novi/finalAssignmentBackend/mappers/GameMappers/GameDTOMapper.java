@@ -12,7 +12,8 @@ import java.util.List;
 @Component
 public class GameDTOMapper {
 
-        public GameResponseDto toGameDto(GameModel game){
+
+    public GameResponseDto toGameDto(GameModel game){
             return toGameDto(game, new GameResponseDto());
         }
 
@@ -24,8 +25,10 @@ public class GameDTOMapper {
             target.setYearOfRelease(game.getYearOfRelease());
             target.setOriginalStock(game.getOriginalStock());
             target.setPlatform(game.getPlatform());
-            target.setPlayDuration(game.getPlayDuration());
+            target.setPlayDurationInMin(game.getPlayDurationInMin());
             target.setPublisher(game.getPublisher());
+            target.setAmountSold(game.getAmountSold());
+            target.setCurrentStock(game.getCurrentStock());
             return target;
         }
 
@@ -34,9 +37,26 @@ public class GameDTOMapper {
             for (GameModel gameModel: gameModels){
                 result.add(toGameDto(gameModel));
             }
-
             return result;
         }
+
+
+
+
+//         public GameModel toGameDTO(Game game) {
+//            GameModel gameModel = new GameModel();
+//            gameModel.setId(game.getId());
+//            gameModel.setName(game.getName());
+//              return gameModel;
+//            }
+//
+//        public List<GameModel> toGameDTOs(List<Game> games) {
+//            List<GameModel> gameModels = new ArrayList<>();
+//            for (Game game : games) {
+//            gameModels.add(toGameDTO(game));
+//             }
+//             return gameModels;
+//                }
 
 
         public GameModel createGameModel(GameInputDto dto) {
@@ -46,14 +66,18 @@ public class GameDTOMapper {
             game.setSellingPrice(dto.getSellingPrice());
             game.setPurchasePrice(dto.getSellingPrice());
             game.setYearOfRelease(dto.getYearOfRelease());
+            game.setOriginalStock(dto.getOriginalStock());
             game.setAmountSold(dto.getAmountSold());
             game.setDescription(dto.getDescription());
-            game.setOriginalStock(dto.getOriginalStock());
             game.setPlatform(dto.getPlatform());
-            game.setPlayDuration(dto.getPlayDuration());
+            game.setPlayDurationInMin(dto.getPlayDurationInMin());
             game.setPublisher(dto.getPublisher());
+            game.setCurrentStock(dto.getCurrentStock());
+
+
             return game;
         }
+
 
 }
 
