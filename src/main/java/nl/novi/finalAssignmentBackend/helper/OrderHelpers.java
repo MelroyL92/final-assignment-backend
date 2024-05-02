@@ -23,7 +23,7 @@ public class OrderHelpers {
 
     public void calculateProfit(Long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Invoice not found, the profit cannot be calculated"));
+                .orElseThrow(() -> new EntityNotFoundException("Order with id " + id + " not found, the profit cannot be calculated"));
 
         double profit = 0.00;
 

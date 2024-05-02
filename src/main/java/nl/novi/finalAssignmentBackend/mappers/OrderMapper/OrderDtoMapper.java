@@ -62,7 +62,6 @@ public class OrderDtoMapper {
         order.setOrderNumber(dto.getOrderNumber());
         order.setShoppingLists(dto.getShoppingList());
         order.setProfit(dto.getProfit());
-//        order.setUserModel(dto.getUser());
         order.setTotalPrice(dto.getProfit());
         order.setCreatePdf(dto.isCreatePdf());
         order.setHasPaid(dto.getHasPaid());

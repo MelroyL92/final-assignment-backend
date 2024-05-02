@@ -5,8 +5,10 @@ import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
 public class ExceptionController {

@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.Service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
@@ -10,6 +11,7 @@ import nl.novi.finalAssignmentBackend.entities.*;
 import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +29,14 @@ public class UserService {
     private final ShoppingListRepository shoppingListRepository;
     private final PasswordEncoder passwordEncoder;
     private final OrderRepository orderRepository;
+    private final LoggedInCheck loggedInCheck;
 
-    public UserService(UserRepository userRepository, ShoppingListRepository shoppingListRepository, PasswordEncoder passwordEncoder, OrderRepository orderRepository) {
+    public UserService(UserRepository userRepository, ShoppingListRepository shoppingListRepository, PasswordEncoder passwordEncoder, OrderRepository orderRepository, LoggedInCheck loggedInCheck) {
         this.userRepository = userRepository;
         this.shoppingListRepository = shoppingListRepository;
         this.passwordEncoder = passwordEncoder;
         this.orderRepository = orderRepository;
+        this.loggedInCheck = loggedInCheck;
     }
 
 
@@ -124,6 +128,7 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
+        user.setUploadOrder(userDto.getUploadOrder());
 
         return user;
     }
@@ -131,12 +136,24 @@ public class UserService {
     public void addUserToOrder(String username, Long orderId){
         User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new RecordNotFoundException("order with id " + orderId + " does not exist."));
-
         if (order.getUser() != null) {
-            throw new BadRequestException("User " + username + " is already associated with an order.");
+            throw new BadRequestException("Order with id " + orderId + " already has a user assigned to it");
         }
-            order.setUser(user);
+        loggedInCheck.verifyLoggedInUser(username);
+        order.setUser(user);
             orderRepository.save(order);
+    }
+
+    public void addUserToShoppingList(String username, Long shoppingListId){
+        User user = userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException(username));
+        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
+
+        if (shoppingList.getUser()!= null) {
+            throw new EntityNotFoundException("shoppinglist with id " + shoppingListId + "already has a user assigned to it");
+        }
+        loggedInCheck.verifyLoggedInUser(username);
+        shoppingList.setUser(user);
+        shoppingListRepository.save(shoppingList);
     }
 
     @Transactional
@@ -152,25 +169,13 @@ public class UserService {
     }
 
     @Transactional
-
     public UploadOrder getUploadedOrderFromUser (String username){
         Optional<User> optionalUser = userRepository.findById(username);
         if(optionalUser.isEmpty()){
-            throw new RecordNotFoundException("student with name " + username + " has not been found");
+            throw new EntityNotFoundException("user with name " + username + " has not been found");
         }
         return optionalUser.get().getUploadOrder();
     }
 
-    public void addUserToShoppingList(String username, Long shoppingListId){
-        User user = userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException(username));
-        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
-
-        if (shoppingList.getUser()!= null) {
-            throw new BadRequestException();
-        }
-
-        shoppingList.setUser(user);
-        shoppingListRepository.save(shoppingList);
-    }
 
 }

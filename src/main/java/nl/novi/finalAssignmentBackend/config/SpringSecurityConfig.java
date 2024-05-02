@@ -49,8 +49,9 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-//
+
                                 .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
@@ -64,7 +65,7 @@ public class SpringSecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, "/movies/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/movies/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/movies/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/movies").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/movies/**").hasAnyRole("ADMIN")
@@ -77,10 +78,11 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
 
-                                .requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.GET, "/orders").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/orders/{id}/user/{username}").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasAnyRole("ADMIN", "USER")
 
                                 .requestMatchers("/authenticated").authenticated()
                                 .requestMatchers("/authenticate").permitAll()

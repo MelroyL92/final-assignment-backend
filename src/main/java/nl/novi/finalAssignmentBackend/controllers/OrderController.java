@@ -30,6 +30,7 @@ public class OrderController {
     }
 
 
+
     @GetMapping
     public ResponseEntity<List<OrderResponseDto>>getAllOrders(){
         var orders = orderService.getAllOrders();
@@ -37,42 +38,42 @@ public class OrderController {
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponseDto>getInvoiceById(@PathVariable Long id){
-        var orders = orderService.getOrderById(id);
+    @GetMapping("/{id}/user/{username}")
+    public ResponseEntity<OrderResponseDto>getInvoiceById(@PathVariable Long id, @PathVariable String username){
+
+        var orders = orderService.getOrderById(id, username);
         if(orders == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         var orderDto = orderDtoMapper.toOrderDto(orders);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity<OrderModel>createOrder(@RequestBody OrderInputDto orderInputDto){
-        var orderModel = orderDtoMapper.createOrderModel(orderInputDto);
-        var newOrder = orderService.createOrder(orderModel);
-//        var orderDto = orderDtoMapper.toOrderDto(newOrder);
+        var newOrder = orderService.createOrder();
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newOrder.getOrderNumber())).body(newOrder);
     }
 
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderResponseDto>updateOrder(@PathVariable Long id, @RequestBody OrderInputDto orderInputDto){
-        var updateOrder = orderService.updateOrder(id, orderDtoMapper.createOrderModel(orderInputDto));
+    @PutMapping("/{id}/user/{username}")
+    public ResponseEntity<OrderResponseDto>updateOrder(@PathVariable Long id, @PathVariable String username, @RequestBody OrderInputDto orderInputDto){
+        var updateOrder = orderService.updateOrder(id, username,  orderDtoMapper.createOrderModel(orderInputDto));
         var invoiceDto = orderDtoMapper.toOrderDto(updateOrder);
         return new ResponseEntity<>(invoiceDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{orderId}/shoppinglists/{shoppingListId}")
-    public ResponseEntity<String>addShoppingListToOrder(@PathVariable Long orderId, @PathVariable Long shoppingListId){
-        orderService.addShoppingListToOrder(orderId,shoppingListId);
-        return ResponseEntity.ok("the shopping list has been added to the invoice");
+    @PutMapping("/{orderId}/shoppinglists/{shoppingListId}/user/{username}")
+    public ResponseEntity<String>addShoppingListToOrder(@PathVariable Long orderId, @PathVariable Long shoppingListId, @PathVariable String username){
+        orderService.addShoppingListToOrder(orderId,shoppingListId, username);
+        return ResponseEntity.ok("the shopping list has been added to the order");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object>deleteOrder(@PathVariable Long id){
-        orderService.deleteOrder(id);
+    @DeleteMapping("/{id}/user/{username}")
+    public ResponseEntity<Object>deleteOrder(@PathVariable Long id, @PathVariable String username){
+        orderService.deleteOrder(id, username);
         return ResponseEntity.noContent().build();
     }
 
