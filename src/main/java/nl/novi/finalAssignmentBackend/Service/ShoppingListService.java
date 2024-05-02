@@ -11,6 +11,7 @@ import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileWishList;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
@@ -35,19 +36,22 @@ public class ShoppingListService {
     private final GameRepository gameRepository;
     private final MovieRepository movieRepository;
     private final ShoppingListHelpers shoppingListHelpers;
+    private final LoggedInCheck loggedInCheck;
     private final GameDTOMapper gameDTOMapper;
     private final GameMapper gameMapper;
     private final MovieDTOMapper movieDTOMapper;
     private final MovieMapper movieMapper;
 
 
-    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository,
-                               ShoppingListHelpers shoppingListHelpers, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
+
+    public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository
+                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
         this.movieRepository = movieRepository;
         this.shoppingListHelpers = shoppingListHelpers;
+        this.loggedInCheck = loggedInCheck;
         this.gameDTOMapper = gameDTOMapper;
         this.gameMapper = gameMapper;
         this.movieMapper = movieMapper;
@@ -70,20 +74,20 @@ public class ShoppingListService {
                 .collect(Collectors.toList());
     }
 
-    public ShoppingListModel getShoppingListById(Long id) {
+    public ShoppingListModel getShoppingListById(Long id, String username) {
+
+        loggedInCheck.verifyLoggedInUser(username);
+
         ShoppingList shoppingList = shoppingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Shoppinglist not found with id: " + id));
         if(shoppingList.getUser() == null){
             throw new EntityNotFoundException("No user found please add a user to the shoppingList before you continue");
         }
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list" );
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
-    // not through the dto now because it gave a error with the user and the user doesnt get added untill after the creation of the shoppingList
     public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel) {
-//        ShoppingList shoppingList = shoppingListMapper.toEntity(shoppingListModel);
-//        shoppingList = shoppingListRepository.save(shoppingList);
-//        return shoppingListMapper.fromEntity(shoppingList);
-
         ShoppingList shoppingList = new ShoppingList();
         shoppingList.setType(shoppingListModel.getType());
         shoppingList.setPackaging(shoppingListModel.getPackaging());
@@ -93,52 +97,74 @@ public class ShoppingListService {
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
-    public List<GameResponseDto> getGameFromShoppingList(Long gameId, Long shoppingListId) {
-        Optional<ShoppingList> shoppingLists = shoppingListRepository.findById(shoppingListId);
-        if (shoppingLists.isEmpty()) {
+    public List<GameResponseDto> getGameFromShoppingList( Long shoppingListId, String username, Long gameId) {
+        loggedInCheck.verifyLoggedInUser(username);
+
+        Optional<ShoppingList> shoppingListOptional = shoppingListRepository.findById(shoppingListId);
+        if (shoppingListOptional.isEmpty()) {
+            throw new RecordNotFoundException("ShoppingList with id " + shoppingListId + " does not exist");
+        }
+        ShoppingList shoppingList = shoppingListOptional.get();
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
+
+        if (shoppingList.getGames().isEmpty()) {
             throw new RecordNotFoundException("The requested game within the list does not exist");
+        }
+
+        Optional<Game> gameOptional = shoppingList.getGames().stream()
+                .filter(game -> game.getId().equals(gameId))
+                .findFirst();
+
+        if (gameOptional.isPresent()) {
+            Game game = gameOptional.get();
+            return Collections.singletonList(gameDTOMapper.toGameDto(gameMapper.fromEntity(game)));
         } else {
-            var gamesInList = shoppingLists.get().getGames();
-            Optional<Game> gameOptional = gamesInList.stream()
-                    .filter(game -> game.getId().equals(gameId))
-                    .findFirst();
-            if (gameOptional.isPresent()) {
-                Game game = gameOptional.get();
-                var toGameModel = gameMapper.fromEntity(game);
-                return Collections.singletonList(gameDTOMapper.toGameDto(toGameModel));
-            } else {
-                throw new RecordNotFoundException("Game not found in the shopping list");
-            }
+            throw new RecordNotFoundException("Game not found in the shopping list");
         }
     }
 
-    public List<MovieResponseDto> getMovieFromShoppingList(Long movieId, Long shoppingListId) {
-        Optional<ShoppingList> shoppingLists = shoppingListRepository.findById(shoppingListId);
-        if (shoppingLists.isEmpty()) {
+    public List<MovieResponseDto> getMovieFromShoppingList(Long shoppingListId,String username, Long movieId) {
+        loggedInCheck.verifyLoggedInUser(username);
+
+        Optional<ShoppingList> shoppingListOptional = shoppingListRepository.findById(shoppingListId);
+        if (shoppingListOptional.isEmpty()) {
+            throw new RecordNotFoundException("ShoppingList with id " + shoppingListId + " does not exist");
+        }
+        ShoppingList shoppingList = shoppingListOptional.get();
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
+
+
+
+        if (shoppingList.getMovies().isEmpty()) {
             throw new RecordNotFoundException("The requested movie within the list does not exist");
         } else {
-            var movieInList = shoppingLists.get().getMovies();
-            Optional<Movie> optionalMovie = movieInList.stream()
+            Optional<Movie> optionalMovie = shoppingList.getMovies().stream()
                     .filter(movie -> movie.getId().equals(movieId))
                     .findFirst();
             if (optionalMovie.isPresent()) {
                 Movie movie = optionalMovie.get();
-                var toMoviemodel = movieMapper.fromEntity(movie);
-                return Collections.singletonList(movieDTOMapper.toMovieDTO(toMoviemodel));
+
+                return Collections.singletonList(movieDTOMapper.toMovieDTO(movieMapper.fromEntity(movie)));
             } else {
                 throw new RecordNotFoundException("movie has not been found within the shopping list");
             }
         }
     }
 
-    public ShoppingListModel updateShoppingList(Long id, ShoppingListModel shoppingListModel) {
+    public ShoppingListModel updateShoppingList(Long id, String username, ShoppingListModel shoppingListModel) {
+        loggedInCheck.verifyLoggedInUser(username);
+
         Optional<ShoppingList> shoppingListFound = shoppingListRepository.findById(id);
+
+
         if (shoppingListFound.isPresent()) {
             ShoppingList existingShoppingList = shoppingListFound.get();
-
             if(existingShoppingList.getUser() == null){
                 throw new EntityNotFoundException("Add a user before adjusting the shoppingList");
             }
+            loggedInCheck.verifyOwnerAuthorization(existingShoppingList.getUser().getUsername(), username, "shopping list");
             if (shoppingListModel.getAtHomeDelivery() != null) {
                 existingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
                 shoppingListHelpers.calculateDeliveryCost(existingShoppingList.getId());
@@ -166,9 +192,13 @@ public class ShoppingListService {
 
 
 
-    public void addGameToShoppingList(Long shoppingListId, Long gameId) {
+    public void addGameToShoppingList(Long shoppingListId, String username, Long gameId) {
+        loggedInCheck.verifyLoggedInUser(username);
+
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
 
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found"));
@@ -181,9 +211,14 @@ public class ShoppingListService {
         shoppingListRepository.save(shoppingList);
     }
 
-    public void addMovieToShoppingList(Long shoppingListId, Long movieId) {
+    public void addMovieToShoppingList(Long shoppingListId, String username,  Long movieId) {
+        loggedInCheck.verifyLoggedInUser(username);
+
+
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
 
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
@@ -198,19 +233,32 @@ public class ShoppingListService {
     }
 
 
+    public void deleteShoppingList(Long id, String username) {
+        loggedInCheck.verifyLoggedInUser(username);
 
-    public void deleteShoppingList(Long id) {
+        Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(id);
+        if (optionalShoppingList.isEmpty()) {
+            throw new RecordNotFoundException("ShoppingList with id " + id + " does not exist");
+        }
+        ShoppingList shoppingList = optionalShoppingList.get();
+
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
+
         shoppingListRepository.deleteById(id);
     }
 
-    public void deleteGameWithinShoppingList(Long gameId, Long shoppingListId) {
+
+
+    public void deleteGameWithinShoppingList(String username, Long shoppingListId, Long gameId) {
+        loggedInCheck.verifyLoggedInUser(username);
 
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
         if (optionalShoppingList.isEmpty()) {
             throw new RecordNotFoundException("shoppingList with id " + shoppingListId + " does not exist");
         }
-
         ShoppingList shoppingList = optionalShoppingList.get();
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list" );
+
         List<Game> gameInList = shoppingList.getGames();
 
         Optional<Game> optionalGame = gameInList.stream().filter(game -> game.getId().equals(gameId)).findFirst();
@@ -224,15 +272,18 @@ public class ShoppingListService {
         }
     }
     
-    public void deleteMovieWithinShoppingList(Long movieId, Long shoppingListId) {
+    public void deleteMovieWithinShoppingList(String username, Long shoppingListId, Long movieId) {
+
+        loggedInCheck.verifyLoggedInUser(username);
+
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
         if (optionalShoppingList.isEmpty()) {
-            throw new RecordNotFoundException("shoppingList with id " + shoppingListId + " does not exist");
+            throw new EntityNotFoundException("ShoppingList with id " + shoppingListId + " does not exist");
         }
-
         ShoppingList shoppingList = optionalShoppingList.get();
-        List<Movie> movieInList = shoppingList.getMovies();
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list" );
 
+        List<Movie> movieInList = shoppingList.getMovies();
         Optional<Movie> optionalMovie = movieInList.stream().filter(movie -> movie.getId().equals(movieId)).findFirst();
 
         if (optionalMovie.isPresent()) {
@@ -240,7 +291,7 @@ public class ShoppingListService {
             movieInList.remove(movieToDelete);
             shoppingListRepository.save(shoppingList);
         } else {
-            throw new RecordNotFoundException("the movie you requested to delete with id " + movieId + " does not exist");
+            throw new RecordNotFoundException("The movie you requested to delete with id " + movieId + " does not exist");
         }
     }
 

@@ -35,7 +35,6 @@ public class ShoppingListController {
         this.gameDTOMapper = gameDTOMapper;
     }
 
-    //    in de get kijken hoe ik alles aan kan passen zodat ik de dto terug krijg en niet alles
     @GetMapping
     public ResponseEntity<List<ShoppingListResponseDto>> getAllShoppingLists() {
         var shoppingList = shoppingListService.getAllShoppingLists();
@@ -43,9 +42,9 @@ public class ShoppingListController {
         return new ResponseEntity<>(shoppingListDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ShoppingListResponseDto> getShoppingListById(@PathVariable Long id) {
-        var shoppingList = shoppingListService.getShoppingListById(id);
+    @GetMapping("/{id}/user/{username}")
+    public ResponseEntity<ShoppingListResponseDto> getShoppingListById(@PathVariable Long id, @PathVariable String username) {
+        var shoppingList = shoppingListService.getShoppingListById(id, username);
         if (shoppingList == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -53,18 +52,18 @@ public class ShoppingListController {
         return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
     }
 
-        @GetMapping("/{shoppingListId}/games/{gameId}")
-        public ResponseEntity<List<GameResponseDto>>searchGameFromShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId){
-            var gameInList = shoppingListService.getGameFromShoppingList(shoppingListId, gameId);
+        @GetMapping("/{shoppingListId}/user/{username}/games/{gameId}")
+        public ResponseEntity<List<GameResponseDto>>searchGameFromShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long gameId){
+            var gameInList = shoppingListService.getGameFromShoppingList(shoppingListId, username, gameId);
             if(gameInList == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(gameInList,HttpStatus.OK);
         }
 
-        @GetMapping("{shoppingListId}/movies/{movieId}")
-        public ResponseEntity<List<MovieResponseDto>>searchMovieFromShoppingList(@PathVariable Long shoppingListId, @PathVariable Long movieId){
-            var movieInList = shoppingListService.getMovieFromShoppingList(shoppingListId, movieId);
+        @GetMapping("{shoppingListId}/user/{username}/movies/{movieId}")
+        public ResponseEntity<List<MovieResponseDto>>searchMovieFromShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long movieId){
+            var movieInList = shoppingListService.getMovieFromShoppingList(shoppingListId, username, movieId);
              if (movieInList == null){
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
           }
@@ -80,42 +79,42 @@ public class ShoppingListController {
     }
 
 
-    @PutMapping("/{shoppingListId}/games/{gameId}")
-    public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long gameId) {
-        shoppingListService.addGameToShoppingList(shoppingListId, gameId);
+    @PutMapping("/{shoppingListId}/user/{username}/games/{gameId}")
+    public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long gameId) {
+        shoppingListService.addGameToShoppingList(shoppingListId, username, gameId);
         return ResponseEntity.ok("Game successfully added to shopping list");
     }
 
 
-    @PutMapping("/{shoppingListId}/movies/{movieId}")
-    public ResponseEntity<String>addMovieToShoppingList(@PathVariable Long shoppingListId, @PathVariable Long movieId){
-        shoppingListService.addMovieToShoppingList(shoppingListId,movieId);
+    @PutMapping("/{shoppingListId}/user/{username}/movies/{movieId}")
+    public ResponseEntity<String>addMovieToShoppingList(@PathVariable Long shoppingListId,@PathVariable String username, @PathVariable Long movieId){
+        shoppingListService.addMovieToShoppingList(shoppingListId,username, movieId);
         return ResponseEntity.ok("Movie successfully added to shopping list");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ShoppingListResponseDto>UpdateShoppingList(@PathVariable Long id, @RequestBody ShoppingListInputDto shoppingListInputDto){
-        var updateShoppingList = shoppingListService.updateShoppingList(id, shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto));
-        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(updateShoppingList);
-        return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
-    }
+        @PutMapping("/{id}/user/{username}")
+        public ResponseEntity<ShoppingListResponseDto>UpdateShoppingList(@PathVariable Long id, @PathVariable String username, @RequestBody ShoppingListInputDto shoppingListInputDto){
+            var updateShoppingList = shoppingListService.updateShoppingList(id, username, shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto));
+            var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(updateShoppingList);
+            return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id){
-        shoppingListService.deleteShoppingList(id);
+    @DeleteMapping("/{id}/user/{username}")
+    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id, @PathVariable String username){
+        shoppingListService.deleteShoppingList(id, username);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{shoppingListId}/games/{gameId}")
-    public ResponseEntity<Object>deleteGameFromShoppingList(@PathVariable Long shoppingListId,@PathVariable Long gameId){
-        shoppingListService.deleteGameWithinShoppingList(gameId, shoppingListId);
+    @DeleteMapping("/{shoppingListId}/user/{username}/games/{gameId}")
+    public ResponseEntity<Object>deleteGameFromShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long gameId){
+        shoppingListService.deleteGameWithinShoppingList(username, shoppingListId, gameId);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{shoppingListId}/movies/{movieId}")
-    public ResponseEntity<Object>removieMovieFromWishlist(@PathVariable Long shoppingListId, @PathVariable Long movieId){
-        shoppingListService.deleteMovieWithinShoppingList(shoppingListId,movieId);
+    @DeleteMapping("/{shoppingListId}/user/{username}/movies/{movieId}")
+    public ResponseEntity<Object>removeMovieFromWishlist(@PathVariable String username, @PathVariable Long shoppingListId, @PathVariable Long movieId){
+        shoppingListService.deleteMovieWithinShoppingList(username, shoppingListId,movieId);
         return ResponseEntity.noContent().build();
     }
 

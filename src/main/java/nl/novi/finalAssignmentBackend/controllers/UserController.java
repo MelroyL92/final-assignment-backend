@@ -76,7 +76,7 @@ import java.util.Map;
 
         @PutMapping("/{username}/orders/{orderId}")
         public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
-            userService.addOrderToUser(username, orderId);
+            userService.addUserToOrder(username, orderId);
             return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + orderId);
         }
 
@@ -98,17 +98,17 @@ import java.util.Map;
             return ResponseEntity.ok().body(userService.getAuthorities(username));
         }
 
-        //TODO: Als Requestbody wordt hier een Map<String, Object> gebruikt om de "authorityName" binnen te halen, dat werkt, maar kun je een beter oplossing bedenken?
         @PostMapping(value = "/{username}/authorities")
         public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-            try {
-                String authorityName = (String) fields.get("authority");
-                userService.addAuthority(username, authorityName);
-                return ResponseEntity.noContent().build();
-            } catch (Exception ex) {
-                throw new BadRequestException();
-            }
+        try {
+            String authorityName = (String) fields.get("authority");
+            userService.addAuthority(username, authorityName);
+            return ResponseEntity.noContent().build();
         }
+        catch (Exception ex) {
+            throw new BadRequestException();
+        }
+            }
 
             @PostMapping("/{username}/uploadOrder")
             public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {

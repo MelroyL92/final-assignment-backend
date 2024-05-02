@@ -128,7 +128,7 @@ public class UserService {
         return user;
     }
 
-    public void addOrderToUser(String username, Long orderId){
+    public void addUserToOrder(String username, Long orderId){
         User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new RecordNotFoundException("order with id " + orderId + " does not exist."));
 
