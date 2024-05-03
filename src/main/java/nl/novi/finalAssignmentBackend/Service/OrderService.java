@@ -5,7 +5,8 @@ import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
-import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.exceptions.*;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.helper.OrderHelpers;
 import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileOrder;
@@ -36,68 +37,58 @@ public class OrderService {
         this.loggedInCheck = loggedInCheck;
     }
 
-//    public List<OrderModel>getAllOrders(String username) {
-//        loggedInCheck.verifyLoggedInUser(username);
-//
-//        List<Order>orders=orderRepository.findAll();
-//        for(Order order: orders){
-//            loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(), username, "order" );
-//            if (order.getUser().getAuthorities().contains("ADMIN")){
-//                orders.add(order);
-//            }
-//            if (order.getUser().getAuthorities().equals("USER")){
-//                orders.add(order);
-//            }
-//            if (order.getUser().getUsername().isEmpty()){
-//                throw new EntityNotFoundException("Orders cannot excist without users, please add a user");
-//        }
 
-//
-//        {
-//
-//            List<Order>orderWithUsers = orders.stream()
-//                .filter(order -> order.getUser() != null)
-//                .collect(Collectors.toList());
-//
-//        }
-//        return orderWithUsers.stream()
-//                .map(orderMapper::fromEntity)
-//                .collect(Collectors.toList());
-//        }
-//        else if (username.equals("USER")){
-//            List<Order>orders=orderRepository.findOrderByUser(username);
-//            if (orders.isEmpty()){
-//                throw new EntityNotFoundException("No orders found with username " + username);
-//            }
-//            return orders.stream()
-//                    .map(orderMapper::fromEntity)
-//                    .collect(Collectors.toList());
-//        }
-//        throw new EntityNotFoundException("no orders found");
-//    }
-        public List<OrderModel> getAllOrders() {
 
-            List<Order> orders = orderRepository.findAll();
 
-            List<Order> orderWithUsers = orders.stream()
-                    .filter(order -> order.getUser() != null)
-                    .collect(Collectors.toList());
-            if (orderWithUsers.isEmpty()) {
-                throw new EntityNotFoundException("Orders cannot excist without users, please add a user");
-            }
+    private List<OrderModel> convert(List<Order> orders) {
 
-            return orderWithUsers.stream()
-                    .map(orderMapper::fromEntity)
-                    .collect(Collectors.toList());
+        List<Order> orderWithUsers = orders.stream()
+                .filter(order -> order.getUser() != null)
+                .collect(Collectors.toList());
+        if (orderWithUsers.isEmpty()) {
+            throw new NothingFoundWithinListException("orders");
         }
 
+        return orderWithUsers.stream()
+                .map(order -> {
+                    double profit = orderHelpers.calculateProfit(order);
+                    OrderModel orderModel = orderMapper.fromEntity(order);
+                    orderModel.setProfit(profit);
+                    orderModel.setTotalPrice(orderHelpers.calculateTotalPrice(order.getOrderNumber()));
+                    return orderModel;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderModel> getAllOrders() {
+
+        List<Order> orders = orderRepository.findAll();
+        return convert(orders);
+    }
+
+
+    public List<OrderModel> getAllOrdersForUser(String username) {
+        loggedInCheck.verifyLoggedInUser(username);
+        List<Order> orders = orderRepository.findAll();
+
+        List<Order> ordersForUser = orders.stream()
+                .filter(order -> {
+                    User user = order.getUser();
+                    return user != null && user.getUsername().equals(username);
+                })
+                .collect(Collectors.toList());
+
+        ordersForUser.forEach(order -> loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(), username, "order"));
+
+        return convert(ordersForUser);
+    }
 
     public OrderModel getOrderById(Long id, String username){
         loggedInCheck.verifyLoggedInUser(username);
 
         Order order= orderRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Order not found with id " + id));
         if(order.getUser() == null){
-            throw new EntityNotFoundException("please assign a user to the order");
+            throw new NoUserAssignedException("order");
         }
         loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(), username, "order" );
 
@@ -119,52 +110,57 @@ public class OrderService {
         Optional<Order> orderFound = orderRepository.findById(id);
 
         if(orderFound.isPresent()){
-            Order excistingOrder = orderFound.get();
-            loggedInCheck.verifyOwnerAuthorization(excistingOrder.getUser().getUsername(), username, "order" );
+            Order existingOrder = orderFound.get();
+            User user = existingOrder.getUser();
+            if (user == null || user.getUsername().isEmpty()) {
+                throw new NoUserAssignedException("order");
+            }
+            loggedInCheck.verifyOwnerAuthorization(existingOrder.getUser().getUsername(), username, "order" );
 
             if(orderModel.getOrderConfirmation() != null){
-                excistingOrder.setOrderConfirmation(orderModel.getOrderConfirmation());
+                existingOrder.setOrderConfirmation(orderModel.getOrderConfirmation());
                 orderHelpers.setOrderConfirmation(id);
             }
             if(orderModel.getDeliveryDate() != null){
-                excistingOrder.setDeliveryDate(orderModel.getDeliveryDate());
+                existingOrder.setDeliveryDate(orderModel.getDeliveryDate());
             }
-            if (orderModel.isCreatePdf()){
-                excistingOrder.setCreatePdf(orderModel.isCreatePdf());
+            if (orderModel.getCreatePdf()){
+                existingOrder.setCreatePdf(orderModel.getCreatePdf());
             }
-            if (orderModel.getOrderConfirmation() && orderModel.isCreatePdf()){
-                createPdfOfOrder(excistingOrder);
+            if (orderModel.getOrderConfirmation() && orderModel.getCreatePdf()){
+                createPdfOfOrder(existingOrder);
             }
-            excistingOrder = orderRepository.save(excistingOrder);
-            return orderMapper.fromEntity(excistingOrder);
+            existingOrder = orderRepository.save(existingOrder);
+            return orderMapper.fromEntity(existingOrder);
         } else {
-            throw new RecordNotFoundException("Order model with " + id + " has not been found");
+            throw new RecordNotFoundException("Order with " + id + " has not been found");
         }
     }
 
-    public void addShoppingListToOrder(Long orderId,Long shoppingListId, String username){
+        public void addShoppingListToOrder(Long orderId,Long shoppingListId, String username){
 
         loggedInCheck.verifyLoggedInUser(username);
 
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("Order with id " + orderId + " not found"));
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new EntityNotFoundException("Shopping list with id " + shoppingListId + " not found"));
-        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "order" );
 
         if(Objects.equals(shoppingList.getType(), "wishlist") || !Objects.equals(shoppingList.getType(), "shoppinglist")){
-            throw new EntityNotFoundException("please change the type of the wishlist with id " + shoppingListId + " to shoppingList before adding it to the order");
+            throw new EntityNotFoundException("please change the type of the wishlist with id " + shoppingListId + " to shoppinglist before adding it to the order");
         }
         if(order.getUser() == null){
-            throw new EntityNotFoundException("please assign a user to the order before adding a shoppingList");
+            throw new NoUserAssignedException("order");
         }
         if(shoppingList.getUser() == null){
-            throw new EntityNotFoundException("please add a user to the shoppingList before adding it to the order");
+            throw new NoUserAssignedException("shopping list");
         }
         if(!order.getUser().getUsername().equalsIgnoreCase(shoppingList.getUser().getUsername())){
-            throw new EntityNotFoundException("the user of the shoppingList with id " + shoppingList.getUser().getUsername() + " and the user of the order with id " + order.getUser().getUsername() + " do not match");
+            throw new UserMismatchException(shoppingList.getUser().getUsername(), "order", order.getUser().getUsername());
         }
-        if(shoppingList.getGames().isEmpty() || shoppingList.getMovies().isEmpty()){
+        if(shoppingList.getGames().isEmpty() && shoppingList.getMovies().isEmpty()){
             throw new EntityNotFoundException("the shoppinglist cannot be added to the order when empty, please add a game or movie to the shoppingList before adding it to the order!");
         }
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "order" );
+
         order.getShoppingList().add(shoppingList);
         orderRepository.save(order);
 
@@ -175,16 +171,20 @@ public class OrderService {
 
         Optional<Order>optionalOrder = orderRepository.findById(id);
         if(optionalOrder.isEmpty()){
-            throw new RecordNotFoundException("Order with id " + id + "does not exist!");
+            throw new RecordNotFoundException("Order with id " + id + " does not exist!");
         }
         Order order = optionalOrder.get();
         loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(),username,"order");
 
-        orderRepository.deleteById(id);
+        if(order.getOrderConfirmation().equals(false)){
+            orderRepository.deleteById(id);
+        } else {
+            throw new BadRequestException("when you already confirmed the order you cannot delete it");
+        }
     }
 
     public void createPdfOfOrder(Order order) {
-        if (order.isCreatePdf()) {
+        if (order.getCreatePdf()) {
             PdfFileOrder pdfFileOrder = new PdfFileOrder();
             try {
                 pdfFileOrder.createPdf(order);

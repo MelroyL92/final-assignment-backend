@@ -104,6 +104,9 @@ public class ShoppingListModel {
     }
 
     public Boolean getCreatePdf() {
+        if (createPdf == null){
+            setCreatePdf(false);
+        }
         return createPdf;
     }
 

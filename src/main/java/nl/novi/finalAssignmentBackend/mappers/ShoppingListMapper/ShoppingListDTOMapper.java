@@ -46,7 +46,7 @@ public class ShoppingListDTOMapper {
     }
 
     // Is being used or not? removing it did give a error, maybe its just not directly being used?
-    public List<ShoppingListResponseDto> toGameDTOs(List<ShoppingListModel> shoppingListModels) {
+    public List<ShoppingListResponseDto> toShoppingListDTOs(List<ShoppingListModel> shoppingListModels) {
         List<ShoppingListResponseDto> result = new ArrayList<>();
         for (ShoppingListModel shoppingListModel : shoppingListModels) {
             result.add(toShoppingListDto(shoppingListModel));

@@ -44,7 +44,6 @@ public class MovieService {
         return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
-    // deze ook nog toevoegen in de test
     public List<MovieModel> getMovieByName(String name){
         List<Movie>movies = movieRepository.findMovieByNameIsContainingIgnoreCase(name);
 
@@ -54,7 +53,6 @@ public class MovieService {
 
         return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
-
 
     public MovieModel createMovie(MovieModel movieModel) {
         Movie movie = movieMapper.toEntity(movieModel);

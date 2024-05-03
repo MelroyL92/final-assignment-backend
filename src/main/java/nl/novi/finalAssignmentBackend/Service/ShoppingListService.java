@@ -162,7 +162,7 @@ public class ShoppingListService {
         if (shoppingListFound.isPresent()) {
             ShoppingList existingShoppingList = shoppingListFound.get();
             if(existingShoppingList.getUser() == null){
-                throw new EntityNotFoundException("Add a user before adjusting the shoppingList");
+                throw new EntityNotFoundException("Add a user before adjusting the shopping list");
             }
             loggedInCheck.verifyOwnerAuthorization(existingShoppingList.getUser().getUsername(), username, "shopping list");
             if (shoppingListModel.getAtHomeDelivery() != null) {
@@ -238,7 +238,7 @@ public class ShoppingListService {
 
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(id);
         if (optionalShoppingList.isEmpty()) {
-            throw new RecordNotFoundException("ShoppingList with id " + id + " does not exist");
+            throw new RecordNotFoundException("Shopping list with id " + id + " does not exist");
         }
         ShoppingList shoppingList = optionalShoppingList.get();
 
@@ -254,7 +254,7 @@ public class ShoppingListService {
 
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
         if (optionalShoppingList.isEmpty()) {
-            throw new RecordNotFoundException("shoppingList with id " + shoppingListId + " does not exist");
+            throw new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist");
         }
         ShoppingList shoppingList = optionalShoppingList.get();
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list" );
@@ -278,7 +278,7 @@ public class ShoppingListService {
 
         Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
         if (optionalShoppingList.isEmpty()) {
-            throw new EntityNotFoundException("ShoppingList with id " + shoppingListId + " does not exist");
+            throw new EntityNotFoundException("Shopping list with id " + shoppingListId + " does not exist");
         }
         ShoppingList shoppingList = optionalShoppingList.get();
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list" );
@@ -293,6 +293,10 @@ public class ShoppingListService {
         } else {
             throw new RecordNotFoundException("The movie you requested to delete with id " + movieId + " does not exist");
         }
+    }
+
+    public void deleteShoppingList(Long id){
+        shoppingListRepository.deleteById(id);
     }
 
     public void createPDFFromWishlist(ShoppingList shoppingList){

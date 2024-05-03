@@ -32,7 +32,7 @@ public class OrderMapper implements EntityMapper<OrderModel, Order> {
         model.setProfit(entity.getProfit());
         model.setUserModel(usermapper.fromEntity(entity.getUser()));
         model.setTotalPrice(entity.getTotalPrice());
-        model.setCreatePdf(entity.isCreatePdf());
+        model.setCreatePdf(entity.getCreatePdf());
         model.setHasPaid(entity.getHasPaid());
         return model;
     }
@@ -53,7 +53,7 @@ public class OrderMapper implements EntityMapper<OrderModel, Order> {
         entity.setProfit(model.getProfit());
         entity.setUser(usermapper.toEntity(model.getUserModel()));
         entity.setTotalPrice(model.getTotalPrice());
-        entity.setCreatePdf(model.isCreatePdf());
+        entity.setCreatePdf(model.getCreatePdf());
         entity.setHasPaid(model.getHasPaid());
         return entity;
     }

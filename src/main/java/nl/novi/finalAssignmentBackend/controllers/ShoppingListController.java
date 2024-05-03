@@ -118,6 +118,12 @@ public class ShoppingListController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id){
+        shoppingListService.deleteShoppingList(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 }

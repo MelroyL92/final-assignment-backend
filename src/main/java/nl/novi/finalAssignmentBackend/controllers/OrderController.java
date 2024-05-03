@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.OrderService;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
 import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
+import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDtoMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
@@ -22,24 +23,31 @@ public class OrderController {
     private final OrderDtoMapper orderDtoMapper;
     private final OrderService orderService;
     private final HttpServletRequest request;
+    private final LoggedInCheck loggedInCheck;
 
-    public OrderController(OrderDtoMapper orderDtoMapper, OrderService orderService, HttpServletRequest request) {
+    public OrderController(OrderDtoMapper orderDtoMapper, OrderService orderService, HttpServletRequest request, LoggedInCheck loggedInCheck) {
         this.orderDtoMapper = orderDtoMapper;
         this.orderService = orderService;
         this.request = request;
+        this.loggedInCheck = loggedInCheck;
     }
 
 
-
-    @GetMapping
-    public ResponseEntity<List<OrderResponseDto>>getAllOrders(){
+    @GetMapping("/admin") // just added!
+    public ResponseEntity<List<OrderModel>>getAllOrdersAdmin(){
         var orders = orderService.getAllOrders();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<OrderResponseDto>>getAllOrders(@PathVariable String username){
+        var orders = orderService.getAllOrdersForUser(username);
         var orderDto = orders.stream().map(orderDtoMapper::toOrderDto).collect(Collectors.toList());
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/user/{username}")
-    public ResponseEntity<OrderResponseDto>getInvoiceById(@PathVariable Long id, @PathVariable String username){
+    public ResponseEntity<OrderResponseDto>getOrderById(@PathVariable Long id, @PathVariable String username){
 
         var orders = orderService.getOrderById(id, username);
         if(orders == null){

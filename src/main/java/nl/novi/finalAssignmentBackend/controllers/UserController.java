@@ -77,7 +77,7 @@ import java.util.Map;
         @PutMapping("/{username}/orders/{orderId}")
         public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
             userService.addUserToOrder(username, orderId);
-            return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + orderId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to order " + orderId);
         }
 
         @PutMapping("/{username}/shoppinglists/{shoppingListId}")
@@ -110,7 +110,7 @@ import java.util.Map;
         }
             }
 
-            @PostMapping("/{username}/uploadOrder")
+            @PostMapping("/{username}/upload_order")
             public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {
              String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                      .path("/users/{username}/uploadOrder")
@@ -124,7 +124,7 @@ import java.util.Map;
                 }
 
 
-         @GetMapping("/{username}/uploadOrder")
+         @GetMapping("/{username}/upload_order")
          public ResponseEntity<byte[]>getUploadedOrder(@PathVariable("username")String username){
 
             UploadOrder uploadOrder = userService.getUploadedOrderFromUser(username);

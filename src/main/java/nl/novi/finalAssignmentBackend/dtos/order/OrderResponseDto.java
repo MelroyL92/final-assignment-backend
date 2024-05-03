@@ -1,8 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.order;
 
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDto;
 import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
-import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +15,13 @@ public class OrderResponseDto {
     private LocalDate deliveryDate;
     private Boolean hasPaid;
     private Double totalPrice;
-    private boolean createPdf;// (nieuw inclusief getters + setters, test)
+    private boolean createPdf;
 
 
 
 
     private UserResponseDto user;
-    private List<ShoppingListModel> shoppingList = new ArrayList<>();
+    private List<ShoppingListResponseDto> shoppingList = new ArrayList<>();
 
 
 
@@ -51,11 +50,11 @@ public class OrderResponseDto {
         this.status = status;
     }
 
-    public List<ShoppingListModel> getShoppingList() {
+    public List<ShoppingListResponseDto> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<ShoppingListModel> shoppingList) {
+    public void setShoppingList(List<ShoppingListResponseDto> shoppingList) {
         this.shoppingList = shoppingList;
     }
 

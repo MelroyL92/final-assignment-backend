@@ -16,19 +16,18 @@ public class Order {
     private Long orderNumber;
 
     private LocalDate dateOrdered;
-//    private String dateOrdered;
+
     private Boolean orderConfirmation;
 
-    private String status; // maybe make a if statement with a few options
+    private String status;
 
     private LocalDate deliveryDate;
-//    private String deliveryDate; //maybe a if statement in the model that if the stock is valid to be delivered within ... else...
-    private Double profit;  // still need to calculate the profit based on the purchase and sell price
+    private Double profit;
     private Double totalPrice;
 
     private Boolean hasPaid;
 
-    private Boolean createPdf;// (nieuw inclusief getters + setters, test)
+    private Boolean createPdf;
 
 
     @ManyToMany()
@@ -42,7 +41,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "username")
     private User user;
-// Something to think about: maybe make a attribute for profit to only be shown to the admin so he/she can see what profit gets made on each order
+
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -100,7 +99,7 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public Boolean isCreatePdf() {
+    public Boolean getCreatePdf() {
         return createPdf;
     }
 

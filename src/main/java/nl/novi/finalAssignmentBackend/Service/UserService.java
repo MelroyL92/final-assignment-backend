@@ -8,8 +8,8 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
 import nl.novi.finalAssignmentBackend.entities.*;
-import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.exceptions.UserMismatchException;
 import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
@@ -137,7 +137,7 @@ public class UserService {
         User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException(username));
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new RecordNotFoundException("order with id " + orderId + " does not exist."));
         if (order.getUser() != null) {
-            throw new BadRequestException("Order with id " + orderId + " already has a user assigned to it");
+            throw new UserMismatchException("order",orderId);
         }
         loggedInCheck.verifyLoggedInUser(username);
         order.setUser(user);
@@ -149,7 +149,7 @@ public class UserService {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new RecordNotFoundException("shopping list with id " + shoppingListId + " does not exist"));
 
         if (shoppingList.getUser()!= null) {
-            throw new EntityNotFoundException("shoppinglist with id " + shoppingListId + "already has a user assigned to it");
+            throw new UserMismatchException("shopping list", shoppingListId);
         }
         loggedInCheck.verifyLoggedInUser(username);
         shoppingList.setUser(user);
@@ -158,7 +158,8 @@ public class UserService {
 
     @Transactional
     public User addOrderFile(String username, UploadOrder uploadOrder){
-        Optional<User> optionalUser = userRepository.findById(username); // big question if this will even work
+        loggedInCheck.verifyLoggedInUser(username);
+        Optional<User> optionalUser = userRepository.findById(username);
         if(optionalUser.isEmpty()){
             throw new RecordNotFoundException("user not found");
         }
@@ -170,10 +171,15 @@ public class UserService {
 
     @Transactional
     public UploadOrder getUploadedOrderFromUser (String username){
+        loggedInCheck.verifyLoggedInUser(username);
         Optional<User> optionalUser = userRepository.findById(username);
         if(optionalUser.isEmpty()){
             throw new EntityNotFoundException("user with name " + username + " has not been found");
         }
+        if(optionalUser.get().getUploadOrder().getUrl().isEmpty()){
+            throw new EntityNotFoundException("no record found"); //(werkt nog niet)
+        }
+        loggedInCheck.verifyOwnerAuthorization(optionalUser.get().getUsername(), username,"user");
         return optionalUser.get().getUploadOrder();
     }
 
