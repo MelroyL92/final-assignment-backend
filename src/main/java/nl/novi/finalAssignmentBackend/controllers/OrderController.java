@@ -2,12 +2,14 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.finalAssignmentBackend.Service.OrderService;
-import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDto;
-import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDto;
-import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
+import nl.novi.finalAssignmentBackend.dtos.order.ExtendedOrderResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.order.OrderInputDTO;
+import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDTO;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
-import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDtoMapper;
+import nl.novi.finalAssignmentBackend.mappers.OrderMapper.ExtendeOrderDTOMapper;
+import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDTOMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,46 +22,48 @@ import java.util.stream.Collectors;
 @RestController
 public class OrderController {
 
-    private final OrderDtoMapper orderDtoMapper;
+    private final OrderDTOMapper orderDtoMapper;
+    private final ExtendeOrderDTOMapper extendeOrderDTOMapper;
     private final OrderService orderService;
     private final HttpServletRequest request;
-    private final LoggedInCheck loggedInCheck;
 
-    public OrderController(OrderDtoMapper orderDtoMapper, OrderService orderService, HttpServletRequest request, LoggedInCheck loggedInCheck) {
+
+    public OrderController(@Qualifier("orderDTOMapper") OrderDTOMapper orderDtoMapper, ExtendeOrderDTOMapper extendeOrderDTOMapper, OrderService orderService, HttpServletRequest request) {
         this.orderDtoMapper = orderDtoMapper;
+        this.extendeOrderDTOMapper = extendeOrderDTOMapper;
         this.orderService = orderService;
         this.request = request;
-        this.loggedInCheck = loggedInCheck;
     }
 
 
-    @GetMapping("/admin") // just added!
-    public ResponseEntity<List<OrderModel>>getAllOrdersAdmin(){
+    @GetMapping("/admin")
+    public ResponseEntity<List<ExtendedOrderResponseDTO>>getAllOrdersAdmin(){
         var orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        var extendedOrderDTO = orders.stream().map(extendeOrderDTOMapper::toExtendedOrderDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(extendedOrderDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<OrderResponseDto>>getAllOrders(@PathVariable String username){
+    public ResponseEntity<List<OrderResponseDTO>>getAllOrders(@PathVariable String username){
         var orders = orderService.getAllOrdersForUser(username);
-        var orderDto = orders.stream().map(orderDtoMapper::toOrderDto).collect(Collectors.toList());
+        var orderDto = orders.stream().map(orderDtoMapper::toOrderDTO).collect(Collectors.toList());
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/user/{username}")
-    public ResponseEntity<OrderResponseDto>getOrderById(@PathVariable Long id, @PathVariable String username){
+    public ResponseEntity<OrderResponseDTO>getOrderById(@PathVariable Long id, @PathVariable String username){
 
         var orders = orderService.getOrderById(id, username);
         if(orders == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        var orderDto = orderDtoMapper.toOrderDto(orders);
+        var orderDto = orderDtoMapper.toOrderDTO(orders);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<OrderModel>createOrder(@RequestBody OrderInputDto orderInputDto){
+    public ResponseEntity<OrderModel>createOrder(){
         var newOrder = orderService.createOrder();
         return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newOrder.getOrderNumber())).body(newOrder);
     }
@@ -67,9 +71,9 @@ public class OrderController {
 
 
     @PutMapping("/{id}/user/{username}")
-    public ResponseEntity<OrderResponseDto>updateOrder(@PathVariable Long id, @PathVariable String username, @RequestBody OrderInputDto orderInputDto){
+    public ResponseEntity<OrderResponseDTO>updateOrder(@PathVariable Long id, @PathVariable String username, @RequestBody OrderInputDTO orderInputDto){
         var updateOrder = orderService.updateOrder(id, username,  orderDtoMapper.createOrderModel(orderInputDto));
-        var invoiceDto = orderDtoMapper.toOrderDto(updateOrder);
+        var invoiceDto = orderDtoMapper.toOrderDTO(updateOrder);
         return new ResponseEntity<>(invoiceDto, HttpStatus.OK);
     }
 

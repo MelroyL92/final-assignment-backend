@@ -1,11 +1,12 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import nl.novi.finalAssignmentBackend.Service.MovieService;
-import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
-import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.movie.ExtendedMovieResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDTO;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
+import nl.novi.finalAssignmentBackend.mappers.MovieMappers.ExtendedMovieDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.http.HttpStatus;
@@ -15,37 +16,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RequestMapping("/movies")
 @RestController
 public class MovieController {
 
     private final MovieDTOMapper movieDTOMapper;
+    private final ExtendedMovieDTOMapper extendedMovieDTOMapper;
     private final MovieService movieService;
     private final HttpServletRequest request;
 
-    public MovieController(MovieDTOMapper movieDTOMapper, MovieService movieService, HttpServletRequest request) {
+    public MovieController(MovieDTOMapper movieDTOMapper, ExtendedMovieDTOMapper extendedMovieDTOMapper, MovieService movieService, HttpServletRequest request) {
         this.movieDTOMapper = movieDTOMapper;
+        this.extendedMovieDTOMapper = extendedMovieDTOMapper;
         this.movieService = movieService;
         this.request = request;
     }
 
 
     @GetMapping("")
-    public ResponseEntity<List<MovieResponseDto>>getAllMovies(){
+    public ResponseEntity<List<MovieResponseDTO>>getAllMovies(){
         var movies = movieService.getMovies();
-        var albumDTO = movies.stream().map(movieDTOMapper::toMovieDTO).collect(Collectors.toList());
-        return new ResponseEntity<>(albumDTO, HttpStatus.OK);
+        var movieDTO = movies.stream().map(movieDTOMapper::toMovieDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/admin") //added for the admin still need to fix this in the security
-    public ResponseEntity<List<MovieModel>>getAllMoviesAdmin(){
+    @GetMapping("/admin")
+    public ResponseEntity<List<ExtendedMovieResponseDTO>>getAllMoviesAdmin(){
         var movies = movieService.getMovies();
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        var extendedMovieDTO = movies.stream().map(extendedMovieDTOMapper::toExtendedMovieDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(extendedMovieDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieResponseDto>getMovieById(@PathVariable Long id){
+    public ResponseEntity<MovieResponseDTO>getMovieById(@PathVariable Long id){
         var movie = movieService.getMovieById(id);
         if (movie == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,30 +57,33 @@ public class MovieController {
         return new ResponseEntity<>(movieDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/admin/{id}") //added for the admin still need to fix this in the security
-    public ResponseEntity<MovieModel>getMovieByIdAdmin(@PathVariable Long id){
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<ExtendedMovieResponseDTO>getMovieByIdAdmin(@PathVariable Long id){
         var movie = movieService.getMovieById(id);
         if (movie == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(movie, HttpStatus.OK);
+        var extendedMovieDTO = extendedMovieDTOMapper.toExtendedMovieDTO(movie);
+        return new ResponseEntity<>(extendedMovieDTO, HttpStatus.OK);
     }
 
-    // what to return when a non valid param is entered?
+
     @GetMapping("/genre")
-    public List<MovieModel> getMoviesByGenre(@RequestParam String genre) {
-        List<MovieModel> movies = movieService.getMoviesByGenre(genre);
-        return ResponseEntity.ok(movies).getBody();
+    public ResponseEntity<List<MovieResponseDTO>> getMoviesByGenre(@RequestParam String genre) {
+       var movies = movieService.getMoviesByGenre(genre);
+        var movieDto = movieDTOMapper.toMovieDTOs(movies);
+        return new ResponseEntity<>(movieDto, HttpStatus.OK);
     }
 
     @GetMapping("/name")
-    public List<MovieModel>getMoviesByName(@RequestParam String name){
+    public ResponseEntity<List<MovieResponseDTO>>getMoviesByName(@RequestParam String name){
         List<MovieModel> movies = movieService.getMovieByName(name);
-        return ResponseEntity.ok(movies).getBody();
+        var movieDto = movieDTOMapper.toMovieDTOs(movies);
+        return new ResponseEntity<>(movieDto, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<MovieResponseDto>createMovie(@RequestBody @Valid MovieInputDto movieInputDto){
+    public ResponseEntity<MovieResponseDTO>createMovie(@RequestBody MovieInputDTO movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
         var newMovie = movieService.createMovie(movieModel);
         var movieDto = movieDTOMapper.toMovieDTO(newMovie);
@@ -86,7 +92,7 @@ public class MovieController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<MovieResponseDto>updateMovie(@PathVariable Long id,@RequestBody MovieInputDto movieInputDto) {
+    public ResponseEntity<MovieResponseDTO>updateMovie(@PathVariable Long id, @RequestBody MovieInputDTO movieInputDto) {
         var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
         var movieDto = movieDTOMapper.toMovieDTO(updateMovie);
         return new ResponseEntity<>(movieDto, HttpStatus.OK);

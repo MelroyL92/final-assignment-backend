@@ -6,7 +6,7 @@ import nl.novi.finalAssignmentBackend.entities.UploadOrder;
 
 import java.util.Set;
 
-public class UserResponseDto {
+public class UserResponseDTO {
 
     public String username;
     public String email;

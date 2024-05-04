@@ -3,6 +3,7 @@ import nl.novi.finalAssignmentBackend.Repository.GameRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.MaxPurchasePrice;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,10 @@ public class GameServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    MaxPurchasePrice maxPurchasePrice;
+
+
     @InjectMocks
     private GameService gameService;
 
@@ -43,7 +48,6 @@ public class GameServiceTest {
     @Test
     @DisplayName("get all games")
     public void testGetGames() {
-        // Setup
         List<Game> mockGames = new ArrayList<>();
 
         Game game1 = new Game();
@@ -78,7 +82,6 @@ public class GameServiceTest {
 
         Mockito.when(gameRepository.findAll()).thenReturn(mockGames);
 
-        //        Mockito.when(gameMapper.fromEntity((mockGames))).thenAnswer(invocation -> {
         Mockito.when(gameMapper.fromEntity((Game) ArgumentMatchers.any())).thenAnswer(invocation -> {
             Game game = invocation.getArgument(0);
             if (game == null) {
@@ -110,7 +113,7 @@ public class GameServiceTest {
 
         List<GameModel> result = gameService.getGames();
 
-        // Assertions
+
         assertEquals(2, result.size());
         assertEquals("Platform 1", result.get(0).getPlatform());
         assertEquals("Publisher 1", result.get(0).getPublisher());
@@ -137,7 +140,6 @@ public class GameServiceTest {
     @Test
     @DisplayName("get gamebyID")
     public void testGetGameById() {
-        // Mocking the behavior of gameRepository.findById()
         Game game1 = new Game();
         game1.setId(1L);
         game1.setPlatform("Platform 1");
@@ -154,7 +156,6 @@ public class GameServiceTest {
 
         when(gameRepository.findById(1L)).thenReturn(Optional.of(game1));
 
-        // Mocking the behavior of gameMapper.fromEntity()
         Mockito.when(gameMapper.fromEntity((Game) ArgumentMatchers.any())).thenAnswer(invocation -> {
             Game game = invocation.getArgument(0);
             GameModel gameModel = new GameModel();
@@ -166,10 +167,8 @@ public class GameServiceTest {
             return gameModel;
         });
 
-        // Call the method under test
         GameModel result = gameService.getGameById(1L);
 
-        // Verify the result
         assertEquals(1L, result.getId());
         assertEquals("Platform 1", result.getPlatform());
         assertEquals("Publisher 1", result.getPublisher());
@@ -205,7 +204,6 @@ public class GameServiceTest {
     @Test
     @DisplayName("get games bij platform")
     public void testGetGamesByPlatform() {
-        // Define mockGames with some sample games
         List<Game> mockGames = new ArrayList<>();
         Game game1 = new Game();
         game1.setPlatform("pc");
@@ -215,13 +213,10 @@ public class GameServiceTest {
         game2.setPlatform("Playstation");
         mockGames.add(game2);
 
-        // Configure behavior of mock repository (have to test this better still to check for capital letters too
         Mockito.when(gameRepository.findByPlatformContainingIgnoreCase("pc")).thenReturn(mockGames);
 
-        // Call the method under test
         List<GameModel> result = gameService.getGamesByPlatform("pc");
 
-        // Assert the result
         assertFalse(result.isEmpty());
         assertEquals(mockGames.size(), result.size());
         verify(gameRepository).findByPlatformContainingIgnoreCase(argThat(arg -> arg.equalsIgnoreCase("pc")));
@@ -280,6 +275,7 @@ public class GameServiceTest {
         verifyNoMoreInteractions(gameRepository);
     }
 
+
     @Test
     @DisplayName("create game")
     public void testCreateGame() {
@@ -300,11 +296,20 @@ public class GameServiceTest {
             return gameModel;
         });
 
+        Mockito.when(maxPurchasePrice.isPurchasePriceValid(Mockito.anyDouble(), Mockito.anyDouble()))
+                .thenAnswer(invocation -> {
+                    double purchasePrice = invocation.getArgument(0);
+                    double sellingPrice = invocation.getArgument(1);
+                    return (purchasePrice < sellingPrice * 0.8) ? sellingPrice * 0.75 : purchasePrice;
+                });
+
         Mockito.when(gameMapper.toEntity(Mockito.any(GameModel.class))).thenAnswer(invocation -> {
             GameModel gameModelArgument = invocation.getArgument(0);
             Game gameEntity = new Game();
             gameEntity.setPlatform(gameModelArgument.getPlatform());
             gameEntity.setDescription(gameModelArgument.getDescription());
+            gameEntity.setPurchasePrice(gameModelArgument.getPurchasePrice());
+            gameEntity.setSellingPrice(gameModelArgument.getSellingPrice());
             return gameEntity;
         });
 
@@ -323,6 +328,21 @@ public class GameServiceTest {
         verifyNoMoreInteractions(gameMapper, gameRepository);
     }
 
+    @Test
+    @DisplayName("no games found while updating")
+    public void testUpdateGameNoGamesFound(){
+
+            Mockito.when(gameRepository.findById(1L)).thenReturn(Optional.empty());
+
+            GameModel updatedGameModel = new GameModel();
+            updatedGameModel.setDescription("hello this is a game");
+            updatedGameModel.setAmountSold(100);
+            updatedGameModel.setYearOfRelease(1950);
+
+            assertThrows(RecordNotFoundException.class, () -> gameService.updateGame(1L, updatedGameModel));
+        }
+
+
 
     @Test
     @DisplayName("test update Game")
@@ -336,8 +356,8 @@ public class GameServiceTest {
         existingGame.setPublisher("dont care");
         existingGame.setDescription("worst game");
         existingGame.setAmountSold(1);
-        existingGame.setSellingPrice(10.0);
-        existingGame.setPurchasePrice(5.0);
+        existingGame.setSellingPrice(150.0);
+        existingGame.setPurchasePrice(25.0);
         existingGame.setYearOfRelease(2000);
 
         Mockito.when(gameRepository.findById(1L)).thenReturn(Optional.of(existingGame));
@@ -355,6 +375,14 @@ public class GameServiceTest {
         updatedGameModel.setPurchasePrice(50.0);
         updatedGameModel.setYearOfRelease(2001);
 
+
+        Mockito.when(maxPurchasePrice.isPurchasePriceValid(Mockito.anyDouble(), Mockito.anyDouble()))
+                .thenAnswer(invocation -> {
+                    double purchasePrice = invocation.getArgument(0);
+                    double sellingPrice = invocation.getArgument(1);
+                    return (purchasePrice < sellingPrice * 0.8) ? sellingPrice * 0.75 : purchasePrice;
+                });
+;
         Mockito.when(gameRepository.save(Mockito.any(Game.class))).thenAnswer(invocation -> {
             Game game = invocation.getArgument(0);
             return game;
@@ -365,22 +393,18 @@ public class GameServiceTest {
         GameModel returnedUpdatedGameModel = gameService.updateGame(1L, updatedGameModel);
 
         assertEquals(updatedGameModel.getPlatform(), returnedUpdatedGameModel.getPlatform());
-        // add more assertions
     }
 
     @Test
     @DisplayName("update, game not found")
     public void testUpdateRecordNotFound(){
-        // Arrange
         GameModel model = new GameModel();
         model.setId(1L);
 
-        // Act & Assert
         RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> {
             gameService.updateGame(2L, model);
         });
 
-        // Assert
         assertEquals("Game with ID 2 does not exist", exception.getMessage());
     }
 

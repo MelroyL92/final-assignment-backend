@@ -56,13 +56,7 @@ public class MovieModel extends ProductModel {
             return id;
         }
 
-//        public List<ShoppingListModel> getShoppingList() {
-//        return shoppingList;
-//        }
-//
-//        public void setShoppingList(List<ShoppingListModel> shoppingList) {
-//        this.shoppingList = shoppingList;
-//        }
+
 }
 
 

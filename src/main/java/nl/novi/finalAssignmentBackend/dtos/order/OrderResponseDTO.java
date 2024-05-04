@@ -1,34 +1,27 @@
 package nl.novi.finalAssignmentBackend.dtos.order;
 
-import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
-import nl.novi.finalAssignmentBackend.model.UserModel;
-
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderInputDto {
+public class OrderResponseDTO {
 
     private Long orderNumber;
     private Boolean orderConfirmation;
     private String status;
-
-    private Double profit;
-
+    private LocalDate dateOrdered;
+    private LocalDate deliveryDate;
+    private Boolean hasPaid;
     private Double totalPrice;
-
     private boolean createPdf;
 
-    private LocalDate deliveryDate;
-
-    private LocalDate dateOrdered;
-
-    private Boolean hasPaid;
 
 
-    private List<ShoppingListModel> shoppingList = new ArrayList<>();
 
-    private UserModel user;
+    private UserResponseDTO user;
+    private List<ShoppingListResponseDTO> shoppingList = new ArrayList<>();
 
 
 
@@ -40,7 +33,6 @@ public class OrderInputDto {
     public void setOrderNumber(Long orderNumber) {
         this.orderNumber = orderNumber;
     }
-
 
     public Boolean getOrderConfirmation() {
         return orderConfirmation;
@@ -58,29 +50,12 @@ public class OrderInputDto {
         this.status = status;
     }
 
-
-    public List<ShoppingListModel> getShoppingList() {
+    public List<ShoppingListResponseDTO> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<ShoppingListModel> shoppingList) {
+    public void setShoppingList(List<ShoppingListResponseDTO> shoppingList) {
         this.shoppingList = shoppingList;
-    }
-
-    public Double getProfit() {
-        return profit;
-    }
-
-    public void setProfit(Double profit) {
-        this.profit = profit;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
     }
 
     public Double getTotalPrice() {
@@ -91,12 +66,27 @@ public class OrderInputDto {
         this.totalPrice = totalPrice;
     }
 
+    public UserResponseDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponseDTO user) {
+        this.user = user;
+    }
+
     public boolean isCreatePdf() {
         return createPdf;
     }
 
     public void setCreatePdf(boolean createPdf) {
         this.createPdf = createPdf;
+    }
+
+    public LocalDate getDateOrdered() {
+        return dateOrdered;
+    }
+    public void setDateOrdered(LocalDate dateOrdered) {
+        this.dateOrdered = dateOrdered;
     }
 
     public LocalDate getDeliveryDate() {
@@ -107,18 +97,9 @@ public class OrderInputDto {
         this.deliveryDate = deliveryDate;
     }
 
-    public LocalDate getDateOrdered() {
-        return dateOrdered;
-    }
-
-    public void setDateOrdered(LocalDate dateOrdered) {
-        this.dateOrdered = dateOrdered;
-    }
-
     public Boolean getHasPaid() {
         return hasPaid;
     }
-
     public void setHasPaid(Boolean hasPaid) {
         this.hasPaid = hasPaid;
     }

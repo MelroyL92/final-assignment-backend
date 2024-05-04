@@ -13,8 +13,8 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
 
 
     @Override
-    public MovieModel fromEntity(Movie entity){
-        if (entity == null){
+    public MovieModel fromEntity(Movie entity) {
+        if (entity == null) {
             return null;
         }
         MovieModel model = new MovieModel();
@@ -34,9 +34,26 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         return model;
     }
 
-        @Override
-    public Movie toEntity(MovieModel model){
-        if (model == null){
+
+    public List<Movie> toEntityList(List<MovieModel> movieModels) {
+        List<Movie> entityList = new ArrayList<>();
+        for (MovieModel model : movieModels) {
+            entityList.add(toEntity(model));
+        }
+        return entityList;
+    }
+
+    public List<MovieModel> fromEntity(List<Movie> movies) {
+        List<MovieModel> modelList = new ArrayList<>();
+        for (Movie movie : movies) {
+            modelList.add(fromEntity(movie));
+        }
+        return modelList;
+    }
+
+    @Override
+    public Movie toEntity(MovieModel model) {
+        if (model == null) {
             return null;
         }
         Movie entity = new Movie();
@@ -55,24 +72,10 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
         entity.setCurrentStock(model.getCurrentStock());
         return entity;
     }
-
-
-    public List<Movie> toEntityList(List<MovieModel> movieModels) {
-        List<Movie> entityList = new ArrayList<>();
-        for (MovieModel model : movieModels) {
-            entityList.add(toEntity(model));
-        }
-        return entityList;
-    }
-
-    public List<MovieModel>fromEntity(List<Movie>movies){
-        List<MovieModel>modelList = new ArrayList<>();
-        for(Movie movie : movies){
-            modelList.add(fromEntity(movie));
-        }
-        return modelList;
-    }
 }
+
+
+
 
 
 

@@ -6,7 +6,7 @@ import jakarta.transaction.Transactional;
 import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
-import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
+import nl.novi.finalAssignmentBackend.dtos.user.UserDTO;
 import nl.novi.finalAssignmentBackend.entities.*;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.exceptions.UserMismatchException;
@@ -40,8 +40,8 @@ public class UserService {
     }
 
 
-    public List<UserDto> getUsers() {
-        List<UserDto> collection = new ArrayList<>();
+    public List<UserDTO> getUsers() {
+        List<UserDTO> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
             collection.add(fromUser(user));
@@ -49,8 +49,8 @@ public class UserService {
         return collection;
     }
 
-    public UserDto getUser(String username) {
-        UserDto dto = new UserDto();
+    public UserDTO getUser(String username) {
+        UserDTO dto = new UserDTO();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()){
             dto = fromUser(user.get());
@@ -64,7 +64,7 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
-    public String createUser(UserDto userDto) {
+    public String createUser(UserDTO userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
@@ -75,7 +75,7 @@ public class UserService {
        userRepository.deleteById(username);
     }
 
-    public void updateUser(String username, UserDto newUser) {
+    public void updateUser(String username, UserDTO newUser) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
@@ -85,7 +85,7 @@ public class UserService {
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
-        UserDto userDto = fromUser(user);
+        UserDTO userDto = fromUser(user);
         return userDto.getAuthorities();
     }
 
@@ -105,9 +105,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public static UserDto fromUser(User user){
+    public static UserDTO fromUser(User user){
 
-        var dto = new UserDto();
+        var dto = new UserDTO();
 
         dto.username = user.getUsername();
         dto.password = user.getPassword();
@@ -119,7 +119,7 @@ public class UserService {
         return dto;
     }
 
-    public User toUser(UserDto userDto) {
+    public User toUser(UserDTO userDto) {
 
         var user = new User();
 

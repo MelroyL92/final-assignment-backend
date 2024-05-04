@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>nl.novi</groupId>
 	<artifactId>finalAssignmentBackend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>finalAssignmentBackend</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Final assignment backend</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>

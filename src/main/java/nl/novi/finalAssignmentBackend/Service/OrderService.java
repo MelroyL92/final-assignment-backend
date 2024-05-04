@@ -43,7 +43,7 @@ public class OrderService {
 
 
 
-    private List<OrderModel> convert(List<Order> orders) {
+    private List<OrderModel> convertOrder(List<Order> orders) {
 
         List<Order> orderWithUsers = orders.stream()
                 .filter(order -> order.getUser() != null)
@@ -66,7 +66,7 @@ public class OrderService {
     public List<OrderModel> getAllOrders() {
 
         List<Order> orders = orderRepository.findAll();
-        return convert(orders);
+        return convertOrder(orders);
     }
 
 
@@ -83,7 +83,7 @@ public class OrderService {
 
         ordersForUser.forEach(order -> loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(), username, "order"));
 
-        return convert(ordersForUser);
+        return convertOrder(ordersForUser);
     }
 
     public OrderModel getOrderById(Long id, String username){

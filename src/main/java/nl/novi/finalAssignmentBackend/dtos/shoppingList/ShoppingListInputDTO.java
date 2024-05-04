@@ -7,7 +7,7 @@ import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.util.List;
 
-public class ShoppingListInputDto {
+public class ShoppingListInputDTO {
 
         private Long id;
         private String type;

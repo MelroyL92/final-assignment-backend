@@ -3,7 +3,7 @@ package nl.novi.finalAssignmentBackend.dtos.game;
 
 import nl.novi.finalAssignmentBackend.entities.Product;
 
-public class GameInputDto extends Product {
+public class GameInputDTO extends Product {
 
         private Long id;
         private String platform;
@@ -39,7 +39,6 @@ public class GameInputDto extends Product {
         public Integer getPlayDurationInMin() {
             return playDurationInMin;
         }
-
         public void setPlayDurationInMin(Integer playDurationInMin) {
             this.playDurationInMin = playDurationInMin;
         }

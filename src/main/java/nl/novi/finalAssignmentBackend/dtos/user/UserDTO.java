@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class UserDto {
+public class UserDTO {
     public String username;
     public String password;
     public Boolean enabled;

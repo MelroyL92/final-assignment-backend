@@ -4,6 +4,7 @@ package nl.novi.finalAssignmentBackend.Service;
 import nl.novi.finalAssignmentBackend.Repository.MovieRepository;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.MaxPurchasePrice;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,9 @@ public class MovieServiceTest {
 
     @Mock
     private MovieMapper movieMapper;
+
+    @Mock
+    private MaxPurchasePrice maxPurchasePrice;
 
     @InjectMocks
     MovieService movieService;
@@ -301,6 +305,13 @@ public class MovieServiceTest {
             return movieModel;
         });
 
+        Mockito.when(maxPurchasePrice.isPurchasePriceValid(Mockito.anyDouble(), Mockito.anyDouble()))
+                .thenAnswer(invocation -> {
+                    double purchasePrice = invocation.getArgument(0);
+                    double sellingPrice = invocation.getArgument(1);
+                    return (purchasePrice < sellingPrice * 0.8) ? sellingPrice * 0.75 : purchasePrice;
+                });
+
         Mockito.when(movieMapper.toEntity(Mockito.any(MovieModel.class))).thenAnswer(invocation -> {
             MovieModel movieModelArgument = invocation.getArgument(0);
             Movie movieEntity = new Movie();
@@ -366,6 +377,13 @@ public class MovieServiceTest {
         updatedMovieModel.setType("blu ray");
         updatedMovieModel.setGenre("fantasy");
         updatedMovieModel.setWatchTimeInMin(200);
+
+        Mockito.when(maxPurchasePrice.isPurchasePriceValid(Mockito.anyDouble(), Mockito.anyDouble()))
+                .thenAnswer(invocation -> {
+                    double purchasePrice = invocation.getArgument(0);
+                    double sellingPrice = invocation.getArgument(1);
+                    return (purchasePrice < sellingPrice * 0.8) ? sellingPrice * 0.75 : purchasePrice;
+                });
 
         Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenAnswer(invocation -> {
             Movie movie = invocation.getArgument(0);

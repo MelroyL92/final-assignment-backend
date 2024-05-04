@@ -1,13 +1,13 @@
 package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
-import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDto;
-import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
-import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
 
 
 import java.util.List;
 
-public class ShoppingListResponseDto {
+public class ShoppingListResponseDTO {
 
     private Long id;
     private String type;
@@ -21,11 +21,11 @@ public class ShoppingListResponseDto {
 
 
 
-    private List<MovieResponseDto> movies;
+    private List<MovieResponseDTO> movies;
 
-    private List<GameResponseDto> games;
+    private List<GameResponseDTO> games;
 
-    private UserResponseDto user;
+    private UserResponseDTO user;
 
 
 
@@ -53,19 +53,19 @@ public class ShoppingListResponseDto {
         this.subtotal = subtotal;
     }
 
-    public List<MovieResponseDto> getMovies() {
+    public List<MovieResponseDTO> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<MovieResponseDto> movies) {
+    public void setMovies(List<MovieResponseDTO> movies) {
         this.movies = movies;
     }
 
-    public List<GameResponseDto> getGames() {
+    public List<GameResponseDTO> getGames() {
         return games;
     }
 
-    public void setGames(List<GameResponseDto> games) {
+    public void setGames(List<GameResponseDTO> games) {
         this.games = games;
     }
 
@@ -101,11 +101,11 @@ public class ShoppingListResponseDto {
         this.packagingCost = packagingCost;
     }
 
-    public UserResponseDto getUser() {
+    public UserResponseDTO getUser() {
         return user;
     }
 
-    public void setUser(UserResponseDto user) {
+    public void setUser(UserResponseDTO user) {
         this.user = user;
     }
 
