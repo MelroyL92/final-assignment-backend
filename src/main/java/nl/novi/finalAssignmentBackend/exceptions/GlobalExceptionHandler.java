@@ -61,4 +61,11 @@ public class GlobalExceptionHandler {
         return exception.getMessage();
     }
 
+    @ExceptionHandler(InsufficientStockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleInsufficientStockException(InsufficientStockException exception, HttpServletRequest request){
+        return exception.getMessage();
+    }
+
 }

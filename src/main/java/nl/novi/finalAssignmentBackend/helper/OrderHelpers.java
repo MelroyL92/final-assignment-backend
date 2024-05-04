@@ -8,6 +8,8 @@ import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderHelpers {
@@ -80,11 +82,6 @@ public class OrderHelpers {
             order.setDateOrdered(LocalDate.now());
         }
         orderRepository.save(order);
-    }
-
-    public void setDeliveryDate(Long id){
-        Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
-
     }
 
 }

@@ -10,6 +10,7 @@ import nl.novi.finalAssignmentBackend.exceptions.*;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.helper.OrderHelpers;
 import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileOrder;
+import nl.novi.finalAssignmentBackend.helper.deliveryHelpers.DeliveryTimeCalculator;
 import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.stereotype.Service;
@@ -28,13 +29,15 @@ public class OrderService {
     private final ShoppingListRepository shoppingListRepository;
     private final OrderHelpers orderHelpers;
     private final LoggedInCheck loggedInCheck;
+    private final DeliveryTimeCalculator deliveryTimeCalculator;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck, DeliveryTimeCalculator deliveryTimeCalculator) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.orderHelpers = orderHelpers;
         this.loggedInCheck = loggedInCheck;
+        this.deliveryTimeCalculator = deliveryTimeCalculator;
     }
 
 
@@ -117,9 +120,13 @@ public class OrderService {
             }
             loggedInCheck.verifyOwnerAuthorization(existingOrder.getUser().getUsername(), username, "order" );
 
+            if(existingOrder.getOrderConfirmation()){
+                throw new EntityNotFoundException("you cannot adjust the orderConfirmation anymore! please contact the admin if you want to make changes");
+            }
             if(orderModel.getOrderConfirmation() != null){
                 existingOrder.setOrderConfirmation(orderModel.getOrderConfirmation());
                 orderHelpers.setOrderConfirmation(id);
+                deliveryTimeCalculator.setDeliveryDate(id);
             }
             if(orderModel.getDeliveryDate() != null){
                 existingOrder.setDeliveryDate(orderModel.getDeliveryDate());
@@ -143,7 +150,9 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("Order with id " + orderId + " not found"));
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new EntityNotFoundException("Shopping list with id " + shoppingListId + " not found"));
-
+            if (!order.getShoppingList().isEmpty()) {
+                throw new EntityNotFoundException("Order already contains a shopping list.");
+            }
         if(Objects.equals(shoppingList.getType(), "wishlist") || !Objects.equals(shoppingList.getType(), "shoppinglist")){
             throw new EntityNotFoundException("please change the type of the wishlist with id " + shoppingListId + " to shoppinglist before adding it to the order");
         }
@@ -163,6 +172,7 @@ public class OrderService {
 
         order.getShoppingList().add(shoppingList);
         orderRepository.save(order);
+
 
     }
 

@@ -10,8 +10,10 @@ import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.exceptions.NoUserAssignedException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
+import nl.novi.finalAssignmentBackend.helper.OrderConfirmationHelper;
 import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileWishList;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
@@ -41,11 +43,12 @@ public class ShoppingListService {
     private final GameMapper gameMapper;
     private final MovieDTOMapper movieDTOMapper;
     private final MovieMapper movieMapper;
+    private final OrderConfirmationHelper orderConfirmationHelper;
 
 
 
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository
-                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper) {
+                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper, OrderConfirmationHelper orderConfirmationHelper) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
@@ -56,6 +59,7 @@ public class ShoppingListService {
         this.gameMapper = gameMapper;
         this.movieMapper = movieMapper;
         this.movieDTOMapper = movieDTOMapper;
+        this.orderConfirmationHelper = orderConfirmationHelper;
     }
 
     public List<ShoppingListModel> getAllShoppingLists() {
@@ -165,6 +169,9 @@ public class ShoppingListService {
                 throw new EntityNotFoundException("Add a user before adjusting the shopping list");
             }
             loggedInCheck.verifyOwnerAuthorization(existingShoppingList.getUser().getUsername(), username, "shopping list");
+            if(orderConfirmationHelper.isShoppingListConnectedToOrder(id)){
+                throw new EntityNotFoundException("it is not allowed to adjust fields of a shoppinglist within a order with the confirmation set to true");
+            }
             if (shoppingListModel.getAtHomeDelivery() != null) {
                 existingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
                 shoppingListHelpers.calculateDeliveryCost(existingShoppingList.getId());
@@ -197,9 +204,13 @@ public class ShoppingListService {
 
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
-
+        if(shoppingList.getUser() == null){
+            throw new NoUserAssignedException("shopping list");
+        }
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
-
+        if(orderConfirmationHelper.isShoppingListConnectedToOrder(shoppingListId)){
+            throw new EntityNotFoundException("it is not allowed to adjust fields of a shoppinglist within a order with the confirmation set to true");
+        }
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
@@ -214,12 +225,15 @@ public class ShoppingListService {
     public void addMovieToShoppingList(Long shoppingListId, String username,  Long movieId) {
         loggedInCheck.verifyLoggedInUser(username);
 
-
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found"));
-
+        if(shoppingList.getUser() == null){
+            throw new NoUserAssignedException("shopping list");
+        }
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
-
+        if(orderConfirmationHelper.isShoppingListConnectedToOrder(shoppingListId)){
+            throw new EntityNotFoundException("it is not allowed to adjust fields of a shoppinglist within a order with the confirmation set to true");
+        }
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("Movie not found"));
 
