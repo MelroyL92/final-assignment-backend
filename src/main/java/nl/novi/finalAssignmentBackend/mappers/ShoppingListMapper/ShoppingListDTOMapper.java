@@ -1,7 +1,7 @@
 package nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper;
 
-import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListInputDto;
-import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListInputDTO;
+import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDTO;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserDtoMapper;
@@ -26,11 +26,11 @@ public class ShoppingListDTOMapper {
     }
 
 
-    public ShoppingListResponseDto toShoppingListDto(ShoppingListModel shoppingList) {
-        return toShoppingListDto(shoppingList, new ShoppingListResponseDto());
+    public ShoppingListResponseDTO toShoppingListDto(ShoppingListModel shoppingList) {
+        return toShoppingListDto(shoppingList, new ShoppingListResponseDTO());
     }
 
-    public <D extends ShoppingListResponseDto> D toShoppingListDto(ShoppingListModel shoppingList, D target) {
+    public <D extends ShoppingListResponseDTO> D toShoppingListDto(ShoppingListModel shoppingList, D target) {
         target.setId(shoppingList.getId());
         target.setSubtotal(shoppingList.getSubtotal());
         target.setType(shoppingList.getType());
@@ -45,9 +45,8 @@ public class ShoppingListDTOMapper {
         return target;
     }
 
-    // Is being used or not? removing it did give a error, maybe its just not directly being used?
-    public List<ShoppingListResponseDto> toGameDTOs(List<ShoppingListModel> shoppingListModels) {
-        List<ShoppingListResponseDto> result = new ArrayList<>();
+    public List<ShoppingListResponseDTO> toShoppingListDTOs(List<ShoppingListModel> shoppingListModels) {
+        List<ShoppingListResponseDTO> result = new ArrayList<>();
         for (ShoppingListModel shoppingListModel : shoppingListModels) {
             result.add(toShoppingListDto(shoppingListModel));
         }
@@ -55,7 +54,7 @@ public class ShoppingListDTOMapper {
     }
 
 
-    public ShoppingListModel createShoppingListModel(ShoppingListInputDto dto) {
+    public ShoppingListModel createShoppingListModel(ShoppingListInputDTO dto) {
         var shoppingList = new ShoppingListModel();
         shoppingList.setId(dto.getId());
         shoppingList.setType(dto.getType());

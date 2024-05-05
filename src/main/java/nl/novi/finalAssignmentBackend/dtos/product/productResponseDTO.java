@@ -4,7 +4,7 @@ package nl.novi.finalAssignmentBackend.dtos.product;
 
 
 
-public class productResponseDto {
+public class productResponseDTO {
     private Double sellingPrice;
 
     private Integer originalStock;

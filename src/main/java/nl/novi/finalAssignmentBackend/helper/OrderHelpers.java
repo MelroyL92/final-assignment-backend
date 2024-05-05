@@ -1,12 +1,11 @@
 package nl.novi.finalAssignmentBackend.helper;
-
 import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
-
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -21,9 +20,7 @@ public class OrderHelpers {
     }
 
 
-    public void calculateProfit(Long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Invoice not found, the profit cannot be calculated"));
+    public double calculateProfit(Order order) {
 
         double profit = 0.00;
 
@@ -39,9 +36,8 @@ public class OrderHelpers {
                 }
             }
 
-        order.setProfit(profit);
-        orderRepository.save(order);
-        }
+       return profit;
+    }
 
 
     private Double calculateProfitGame(Game game) {
@@ -54,9 +50,9 @@ public class OrderHelpers {
 
 
 
-    public void calculateTotalPrice(Long id){
+    public double calculateTotalPrice(Long id){
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found, the profit cannot be calculated"));
+                .orElseThrow(() -> new RecordNotFoundException("Order not found, the profit cannot be calculated"));
 
         double totalPrice = 0.00;
 
@@ -70,26 +66,21 @@ public class OrderHelpers {
             orderRepository.save(order);
 
         }
+        return totalPrice;
     }
 
-    // automatically sets the date ordered based on the orderConfirmations value being true;
+
     public void setOrderConfirmation(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
 
 
         if(order.getShoppingList().isEmpty()){
-            throw new EntityNotFoundException("the order does not contain a shopping list and cant be set to true");
+            throw new RecordNotFoundException("the order does not contain a shopping list and cant be set to true");
         }
         if (order.getOrderConfirmation()) {
             order.setDateOrdered(LocalDate.now());
         }
         orderRepository.save(order);
-    }
-
-    public void setDeliveryDate(Long id){
-        Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
-
-
     }
 
 }

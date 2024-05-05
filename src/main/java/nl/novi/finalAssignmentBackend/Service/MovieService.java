@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.MovieRepository;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.MaxPurchasePrice;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieMapper;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,13 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
+    private final MaxPurchasePrice maxPurchasePrice;
 
 
-    public MovieService(MovieRepository movieRepository, MovieMapper movieMapper) {
+    public MovieService(MovieRepository movieRepository, MovieMapper movieMapper, MaxPurchasePrice maxPurchasePrice) {
         this.movieRepository = movieRepository;
         this.movieMapper = movieMapper;
+        this.maxPurchasePrice = maxPurchasePrice;
     }
 
 
@@ -44,7 +47,6 @@ public class MovieService {
         return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
-    // deze ook nog toevoegen in de test
     public List<MovieModel> getMovieByName(String name){
         List<Movie>movies = movieRepository.findMovieByNameIsContainingIgnoreCase(name);
 
@@ -55,11 +57,15 @@ public class MovieService {
         return movies.stream().map(movieMapper::fromEntity).collect(Collectors.toList());
     }
 
-
     public MovieModel createMovie(MovieModel movieModel) {
         Movie movie = movieMapper.toEntity(movieModel);
+        double purchasePrice = movie.getPurchasePrice();
+        double sellingPrice = movie.getSellingPrice();
+        double validatedPurchasePrice = maxPurchasePrice.isPurchasePriceValid(purchasePrice, sellingPrice);
+        movie.setPurchasePrice(validatedPurchasePrice);
         movie = movieRepository.save(movie);
         return movieMapper.fromEntity(movie);
+
     }
 
     public MovieModel updateMovie(Long id, MovieModel movieModel) {
@@ -76,7 +82,7 @@ public class MovieService {
             existingMovie.setAmountSold(movieModel.getAmountSold());
             existingMovie.setWatchTimeInMin(movieModel.getWatchTimeInMin());
             existingMovie.setSellingPrice(movieModel.getSellingPrice());
-            existingMovie.setPurchasePrice(movieModel.getPurchasePrice());
+            existingMovie.setPurchasePrice(maxPurchasePrice.isPurchasePriceValid(movieModel.getPurchasePrice(), movieModel.getSellingPrice()));
             existingMovie.setYearOfRelease(movieModel.getYearOfRelease());
             existingMovie = movieRepository.save(existingMovie);
             return movieMapper.fromEntity(existingMovie);

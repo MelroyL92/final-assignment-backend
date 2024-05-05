@@ -13,7 +13,7 @@ public class OrderModel {
     private Double totalPrice;
     private LocalDate dateOrdered;
     private LocalDate deliveryDate;
-    private Boolean createPdf;// (nieuw inclusief getters + setters, test)
+    private Boolean createPdf;
     private Boolean hasPaid;
 
 
@@ -79,7 +79,10 @@ public class OrderModel {
         this.shoppingLists = shoppingLists;
     }
 
-    public Boolean isCreatePdf() {
+    public Boolean getCreatePdf() {
+        if (createPdf == null){
+            setCreatePdf(false);
+        }
         return createPdf;
     }
 
@@ -102,6 +105,9 @@ public class OrderModel {
     }
 
     public Boolean getHasPaid() {
+        if (hasPaid == null){
+            setHasPaid(false);
+        }
         return hasPaid;
     }
 

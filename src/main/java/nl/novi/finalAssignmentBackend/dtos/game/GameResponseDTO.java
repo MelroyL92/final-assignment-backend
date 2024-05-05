@@ -1,8 +1,8 @@
 package nl.novi.finalAssignmentBackend.dtos.game;
 
-import nl.novi.finalAssignmentBackend.dtos.product.productResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.product.productResponseDTO;
 
-public class GameResponseDto extends productResponseDto {
+public class GameResponseDTO extends productResponseDTO {
     private Long id;
     private String platform;
     private String publisher;

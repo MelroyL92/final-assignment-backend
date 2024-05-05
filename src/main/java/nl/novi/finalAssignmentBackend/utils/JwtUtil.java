@@ -19,6 +19,7 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
+
     private final static String SECRET_KEY = "hiermoetdusblijkbaareensupergeheimesleutelstaandieniemandkanraden";
 
     private Key getSigningKey() {

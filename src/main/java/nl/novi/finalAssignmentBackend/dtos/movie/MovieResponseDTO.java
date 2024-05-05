@@ -1,8 +1,8 @@
 package nl.novi.finalAssignmentBackend.dtos.movie;
 
-import nl.novi.finalAssignmentBackend.entities.Product;
+import nl.novi.finalAssignmentBackend.dtos.product.productResponseDTO;
 
-public class MovieInputDto extends Product {
+public class MovieResponseDTO extends productResponseDTO {
     private Long id;
 
     private String genre;
@@ -10,7 +10,6 @@ public class MovieInputDto extends Product {
     private String director;
 
     private Integer watchTimeInMin;
-
 
     public Integer getWatchTimeInMin() {
         return watchTimeInMin;
@@ -24,12 +23,12 @@ public class MovieInputDto extends Product {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+   public void setGenre(String genre) {
+       this.genre = genre;
+   }
 
-    public String getType() {
-        return type;
+   public String getType() {
+       return type;
     }
 
     public void setType(String type) {
@@ -51,4 +50,6 @@ public class MovieInputDto extends Product {
     public Long getId() {
         return id;
     }
+
+
 }

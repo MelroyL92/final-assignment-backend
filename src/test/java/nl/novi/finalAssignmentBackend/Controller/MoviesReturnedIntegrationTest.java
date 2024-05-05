@@ -26,7 +26,7 @@ public class MoviesReturnedIntegrationTest {
 
             String requestJson = """
                            {
-                           "sellingPrice": 45.0,
+                           "sellingPrice": 60.0,
                            "originalStock": 1200,
                            "description": "Bilbo and company are forced to engage in a war against an array of combatants and keep the Lonely Mountain from falling into the hands of a rising darkness",
                            "name": "The Hobbit: The Battle of the Five Armies",
@@ -37,12 +37,13 @@ public class MoviesReturnedIntegrationTest {
                            "genre": "Fantasy",
                            "type": "blu ray",
                            "director": "Peter Jackson",
-                           "watchTimeInMin": 144
+                           "watchTimeInMin": 144,
+                           "purchasePrice": 15.0
                            }
                     """;
 
             this.mockMvc
-                    .perform(MockMvcRequestBuilders.post("/movies")
+                    .perform(MockMvcRequestBuilders.get("/movies")
                     .contentType(APPLICATION_JSON)
                     .content(requestJson))
                     .andDo(MockMvcResultHandlers.print())

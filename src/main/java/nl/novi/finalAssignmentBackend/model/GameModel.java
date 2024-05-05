@@ -46,11 +46,4 @@ public class GameModel extends ProductModel {
         this.playDurationInMin = playDurationInMin;
     }
 
-//    public List<ShoppingListModel> getShoppingList() {
-//        return shoppingList;
-//    }
-//
-//    public void setShoppingList(List<ShoppingListModel> shoppingList) {
-//        this.shoppingList = shoppingList;
-//    }
 }

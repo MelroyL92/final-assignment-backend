@@ -10,9 +10,13 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+@Component
 public class PdfFileWishList {
 
     public void createPdf(ShoppingList shoppingList) throws IOException {
@@ -81,7 +85,19 @@ public class PdfFileWishList {
                 contentStream.showText("Total price: €" + (shoppingList.getPackagingCost() + shoppingList.getDeliveryCost() + shoppingList.getSubtotal()));
                 contentStream.endText();
             }
-            document.save("order_" + shoppingList.getId() + ".pdf");
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            document.save("wishlist_" + shoppingList.getId() +  "_" + timestamp + ".pdf");
+        }
+    }
+
+    public void createPDFFromWishlist(ShoppingList shoppingList) {
+        if (shoppingList.getCreatePdf() && shoppingList.getType().contains("wishlist")) {
+            PdfFileWishList pdfFileWishList = new PdfFileWishList();
+            try {
+                pdfFileWishList.createPdf(shoppingList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 import nl.novi.finalAssignmentBackend.Service.UploadOrderService;
 import nl.novi.finalAssignmentBackend.Service.UserService;
-import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
+import nl.novi.finalAssignmentBackend.dtos.user.UserDTO;
 import nl.novi.finalAssignmentBackend.entities.UploadOrder;
 import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
@@ -35,49 +35,38 @@ import java.util.Map;
 
 
         @GetMapping(value = "")
-        public ResponseEntity<List<UserDto>> getUsers() {
-
-            List<UserDto> userDtos = userService.getUsers();
-
-            return ResponseEntity.ok().body(userDtos);
+        public ResponseEntity<List<UserDTO>> getUsers() {
+            List<UserDTO> userDTOS = userService.getUsers();
+            return ResponseEntity.ok().body(userDTOS);
         }
 
         @GetMapping(value = "/{username}")
-        public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
-
-            UserDto optionalUser = userService.getUser(username);
-
-
+        public ResponseEntity<UserDTO> getUser(@PathVariable("username") String username) {
+            UserDTO optionalUser = userService.getUser(username);
             return ResponseEntity.ok().body(optionalUser);
-
         }
 
         @PostMapping(value = "")
-        public ResponseEntity<UserDto> createCustomer(@RequestBody UserDto dto) {
-
+        public ResponseEntity<UserDTO> createCustomer(@RequestBody UserDTO dto) {
 
             String newUsername = userService.createUser(dto);
             userService.addAuthority(newUsername, "ROLE_USER");
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                     .buildAndExpand(newUsername).toUri();
-
             return ResponseEntity.created(location).build();
-
         }
 
         @PutMapping(value = "/{username}")
-        public ResponseEntity<UserDto> updateCustomer(@PathVariable("username") String username, @RequestBody UserDto dto) {
-
+        public ResponseEntity<UserDTO> updateCustomer(@PathVariable("username") String username, @RequestBody UserDTO dto) {
             userService.updateUser(username, dto);
-
             return ResponseEntity.noContent().build();
         }
 
         @PutMapping("/{username}/orders/{orderId}")
         public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
             userService.addUserToOrder(username, orderId);
-            return ResponseEntity.ok("the user with id " + username + " has been assigned to invoice " + orderId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to order " + orderId);
         }
 
         @PutMapping("/{username}/shoppinglists/{shoppingListId}")
@@ -110,13 +99,12 @@ import java.util.Map;
         }
             }
 
-            @PostMapping("/{username}/uploadOrder")
+            @PostMapping("/{username}/upload_order")
             public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {
              String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                      .path("/users/{username}/uploadOrder")
                      .buildAndExpand(username)
                      .toUriString();
-
                 UploadOrder uploadOrder = uploadOrderService.storeFile(file, url);
                 User user = userService.addOrderFile(username, uploadOrder);
 
@@ -124,11 +112,10 @@ import java.util.Map;
                 }
 
 
-         @GetMapping("/{username}/uploadOrder")
+         @GetMapping("/{username}/upload_order")
          public ResponseEntity<byte[]>getUploadedOrder(@PathVariable("username")String username){
 
-            UploadOrder uploadOrder = userService.getUploadedOrderFromUser(username);
-
+             UploadOrder uploadOrder = userService.getUploadedOrderFromUser(username);
              MediaType mediaType;
 
              try{

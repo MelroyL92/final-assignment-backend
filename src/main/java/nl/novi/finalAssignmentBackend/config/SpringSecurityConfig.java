@@ -49,11 +49,14 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-//
-                                .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers(HttpMethod.GET,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.POST,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.POST,"/users/{username}/authorities").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/users/{id}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/games/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/games/{id}").permitAll()
@@ -64,7 +67,7 @@ public class SpringSecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, "/movies/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/movies/{id}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/movies/").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/movies").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/movies").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/movies/**").hasAnyRole("ADMIN")
@@ -75,12 +78,16 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/{shoppingListId}/user/{username}/movies/{movieId}").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.PUT, "/shoppinglists/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.DELETE,"/shoppinglists/{id}/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
 
-                                .requestMatchers(HttpMethod.GET, "/orders/**").hasAnyRole("ADMIN","USER")
-                                .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/orders/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/orders/{username}").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET, "/orders/{id}/user/{username}").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.DELETE, "/orders/{id}/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/orders/**").hasAnyRole("ADMIN","USER")
 
                                 .requestMatchers("/authenticated").authenticated()
                                 .requestMatchers("/authenticate").permitAll()

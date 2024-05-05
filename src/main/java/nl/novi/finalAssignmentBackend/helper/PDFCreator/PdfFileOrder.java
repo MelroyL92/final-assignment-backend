@@ -11,9 +11,13 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-
+@Component
 public class PdfFileOrder {
 
 
@@ -94,9 +98,20 @@ public class PdfFileOrder {
                 contentStream.endText();
             }
 
-            // Save the document
-            document.save("order_" + order.getOrderNumber() + ".pdf");
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            document.save("order_" + order.getOrderNumber() + ". " + timestamp + ".pdf");
 
+        }
+    }
+
+    public void createPdfOfOrder(Order order) {
+        if (order.getCreatePdf()) {
+            PdfFileOrder pdfFileOrder = new PdfFileOrder();
+            try {
+                pdfFileOrder.createPdf(order);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

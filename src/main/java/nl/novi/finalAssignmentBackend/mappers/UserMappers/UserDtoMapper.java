@@ -1,7 +1,7 @@
 package nl.novi.finalAssignmentBackend.mappers.UserMappers;
 
-import nl.novi.finalAssignmentBackend.dtos.user.UserDto;
-import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.user.UserDTO;
+import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
 import nl.novi.finalAssignmentBackend.model.UserModel;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +13,12 @@ public class UserDtoMapper {
 
 
 
-    public UserResponseDto toUserDTO(UserModel model){
-        return toUserDTO(model, new UserResponseDto());
+    public UserResponseDTO toUserDTO(UserModel model){
+        return toUserDTO(model, new UserResponseDTO());
     }
 
 
-    public <D extends UserResponseDto> D toUserDTO(UserModel model, D target) {
+    public <D extends UserResponseDTO> D toUserDTO(UserModel model, D target) {
         target.setUsername(model.getUsername());
         target.setEmail(model.getEmail());
         target.setAuthorities(model.getAuthorities());
@@ -27,8 +27,8 @@ public class UserDtoMapper {
     }
 
 
-    public List<UserResponseDto> toUserDTOs(List<UserModel> userModels) {
-        List<UserResponseDto>result = new ArrayList<>();
+    public List<UserResponseDTO> toUserDTOs(List<UserModel> userModels) {
+        List<UserResponseDTO>result = new ArrayList<>();
         for (UserModel userModel : userModels) {
             result.add(toUserDTO(userModel));
         }
@@ -36,7 +36,7 @@ public class UserDtoMapper {
     }
 
 
-    public UserModel createUserModel(UserDto dto){
+    public UserModel createUserModel(UserDTO dto){
         var user = new UserModel();
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());

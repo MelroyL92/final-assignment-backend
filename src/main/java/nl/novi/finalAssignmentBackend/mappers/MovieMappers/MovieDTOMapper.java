@@ -1,7 +1,7 @@
 package nl.novi.finalAssignmentBackend.mappers.MovieMappers;
 
-import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDto;
-import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDto;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDTO;
+import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +12,11 @@ import java.util.List;
 public class MovieDTOMapper {
 
 
-    public MovieResponseDto toMovieDTO(MovieModel movie){
-        return toMovieDTO(movie, new MovieResponseDto());
+    public MovieResponseDTO toMovieDTO(MovieModel movie){
+        return toMovieDTO(movie, new MovieResponseDTO());
     }
 
-    public <D extends MovieResponseDto> D toMovieDTO(MovieModel movie, D target) {
+    public <D extends MovieResponseDTO> D toMovieDTO(MovieModel movie, D target) {
         target.setId(movie.getId());
         target.setDirector(movie.getDirector());
         target.setName(movie.getName());
@@ -31,21 +31,21 @@ public class MovieDTOMapper {
         target.setCurrentStock(movie.getCurrentStock());
         return target;
     }
-    public List<MovieResponseDto> toMovieDTOs(List<MovieModel>movieModels){
-        List<MovieResponseDto> result = new ArrayList<>();
+    public List<MovieResponseDTO> toMovieDTOs(List<MovieModel>movieModels){
+        List<MovieResponseDTO> result = new ArrayList<>();
         for (MovieModel movieModel: movieModels){
             result.add(toMovieDTO(movieModel));
         }
         return result;
     }
 
-    public MovieModel createMovieModel(MovieInputDto dto) {
+    public MovieModel createMovieModel(MovieInputDTO dto) {
         var movie = new MovieModel();
         movie.setId(dto.getId());
         movie.setName(dto.getName());
         movie.setType(dto.getType());
         movie.setSellingPrice(dto.getSellingPrice());
-        movie.setPurchasePrice(dto.getSellingPrice());
+        movie.setPurchasePrice(dto.getPurchasePrice());
         movie.setGenre(dto.getGenre());
         movie.setDirector(dto.getDirector());
         movie.setWatchTimeInMin(dto.getWatchTimeInMin());
