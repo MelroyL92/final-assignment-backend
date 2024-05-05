@@ -77,14 +77,14 @@ public class ShoppingListController {
     }
 
 
-    @PutMapping("/{shoppingListId}/user/{username}/games/{gameId}")
+    @PostMapping("/{shoppingListId}/user/{username}/games/{gameId}")
     public ResponseEntity<String> addGameToShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long gameId) {
         shoppingListService.addGameToShoppingList(shoppingListId, username, gameId);
         return ResponseEntity.ok("Game successfully added to shopping list");
     }
 
 
-    @PutMapping("/{shoppingListId}/user/{username}/movies/{movieId}")
+    @PostMapping("/{shoppingListId}/user/{username}/movies/{movieId}")
     public ResponseEntity<String>addMovieToShoppingList(@PathVariable Long shoppingListId,@PathVariable String username, @PathVariable Long movieId){
         shoppingListService.addMovieToShoppingList(shoppingListId,username, movieId);
         return ResponseEntity.ok("Movie successfully added to shopping list");

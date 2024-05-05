@@ -1,5 +1,7 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
+import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.authentication.AuthenticationRequest;
 import nl.novi.finalAssignmentBackend.utils.JwtUtil;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -20,11 +22,13 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, UserRepository userRepository, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -40,9 +44,15 @@ public class AuthenticationController {
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
 
+
+        if (!userRepository.existsById(username)) {
+            throw new EntityNotFoundException("User not found, please try again and check your spelling");
+        }
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
+
             );
         }
         catch (BadCredentialsException ex) {

@@ -63,13 +63,13 @@ import java.util.Map;
             return ResponseEntity.noContent().build();
         }
 
-        @PutMapping("/{username}/orders/{orderId}")
+        @PostMapping("/{username}/orders/{orderId}")
         public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
             userService.addUserToOrder(username, orderId);
             return ResponseEntity.ok("the user with id " + username + " has been assigned to order " + orderId);
         }
 
-        @PutMapping("/{username}/shoppinglists/{shoppingListId}")
+        @PostMapping("/{username}/shoppinglists/{shoppingListId}")
         public ResponseEntity<String>addUserToShoppingList(@PathVariable String username, @PathVariable Long shoppingListId){
             userService.addUserToShoppingList(username,shoppingListId);
             return ResponseEntity.ok("the user with id " + username + " has been assigned to the shoppinglist");

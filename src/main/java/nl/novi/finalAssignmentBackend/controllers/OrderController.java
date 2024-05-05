@@ -77,7 +77,7 @@ public class OrderController {
         return new ResponseEntity<>(invoiceDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{orderId}/shoppinglists/{shoppingListId}/user/{username}")
+    @PostMapping("/{orderId}/shoppinglists/{shoppingListId}/user/{username}")
     public ResponseEntity<String>addShoppingListToOrder(@PathVariable Long orderId, @PathVariable Long shoppingListId, @PathVariable String username){
         orderService.addShoppingListToOrder(orderId,shoppingListId, username);
         return ResponseEntity.ok("the shopping list has been added to the order");
