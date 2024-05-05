@@ -52,10 +52,11 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST,"/users/{username}/authorities").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,"/users/{id}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/users/{username}/shoppinglists/{id}").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.POST, "/users/{username}/orders/{id}").hasAnyRole("ADMIN","USER")                                .requestMatchers(HttpMethod.GET,"/users/{id}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/games/admin").hasRole("ADMIN")
@@ -81,8 +82,9 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/{id}/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
 
-                                .requestMatchers(HttpMethod.GET, "/orders/admin").hasRole("ADMIN")
+
                                 .requestMatchers(HttpMethod.GET, "/orders/{username}").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET, "/orders/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/orders/{id}/user/{username}").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN","USER")

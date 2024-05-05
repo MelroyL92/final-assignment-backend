@@ -63,6 +63,7 @@ public class MovieService {
         double sellingPrice = movie.getSellingPrice();
         double validatedPurchasePrice = maxPurchasePrice.isPurchasePriceValid(purchasePrice, sellingPrice);
         movie.setPurchasePrice(validatedPurchasePrice);
+
         movie = movieRepository.save(movie);
         return movieMapper.fromEntity(movie);
 
