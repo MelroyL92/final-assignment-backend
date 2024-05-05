@@ -15,7 +15,6 @@ import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,14 +29,16 @@ public class OrderService {
     private final OrderHelpers orderHelpers;
     private final LoggedInCheck loggedInCheck;
     private final DeliveryTimeCalculator deliveryTimeCalculator;
+    private final PdfFileOrder pdfFileOrder;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck, DeliveryTimeCalculator deliveryTimeCalculator) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck, DeliveryTimeCalculator deliveryTimeCalculator, PdfFileOrder pdfFileOrder) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.orderHelpers = orderHelpers;
         this.loggedInCheck = loggedInCheck;
         this.deliveryTimeCalculator = deliveryTimeCalculator;
+        this.pdfFileOrder = pdfFileOrder;
     }
 
 
@@ -135,7 +136,7 @@ public class OrderService {
                 existingOrder.setCreatePdf(orderModel.getCreatePdf());
             }
             if (orderModel.getOrderConfirmation() && orderModel.getCreatePdf()){
-                createPdfOfOrder(existingOrder);
+                pdfFileOrder.createPdfOfOrder(existingOrder);
             }
             existingOrder = orderRepository.save(existingOrder);
             return orderMapper.fromEntity(existingOrder);
@@ -169,7 +170,7 @@ public class OrderService {
             throw new EntityNotFoundException("the shoppinglist cannot be added to the order when empty, please add a game or movie to the shoppingList before adding it to the order!");
         }
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "order" );
-
+        shoppingList.setCreatePdf(false);
         order.getShoppingList().add(shoppingList);
         orderRepository.save(order);
 
@@ -184,6 +185,11 @@ public class OrderService {
             throw new RecordNotFoundException("Order with id " + id + " does not exist!");
         }
         Order order = optionalOrder.get();
+
+        if (order.getUser() == null || order.getUser().getUsername() == null || order.getUser().getUsername().isEmpty()) {
+            throw new NoUserAssignedException("order", username);
+        }
+
         loggedInCheck.verifyOwnerAuthorization(order.getUser().getUsername(),username,"order");
 
         if(order.getOrderConfirmation().equals(false)){
@@ -193,14 +199,8 @@ public class OrderService {
         }
     }
 
-    public void createPdfOfOrder(Order order) {
-        if (order.getCreatePdf()) {
-            PdfFileOrder pdfFileOrder = new PdfFileOrder();
-            try {
-                pdfFileOrder.createPdf(order);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void deleteOrder(Long id){
+        orderRepository.deleteById(id);
     }
+
 }

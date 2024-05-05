@@ -2,6 +2,7 @@ package nl.novi.finalAssignmentBackend.controllers;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import nl.novi.finalAssignmentBackend.Service.ShoppingListService;
 import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListInputDTO;
 import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDTO;
@@ -9,6 +10,7 @@ import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
+import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class ShoppingListController {
         this.request = request;
     }
 
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<List<ShoppingListResponseDTO>> getAllShoppingLists() {
         var shoppingList = shoppingListService.getAllShoppingLists();
         var shoppingListDTO = shoppingList.stream().map(shoppingListDTOMapper::toShoppingListDto).collect(Collectors.toList());
@@ -67,11 +69,10 @@ public class ShoppingListController {
         }
 
     @PostMapping("")
-    public ResponseEntity<ShoppingListResponseDTO>createShoppingList(@RequestBody ShoppingListInputDTO shoppingListInputDto){
+    public ResponseEntity<ShoppingListModel>createShoppingList(@Valid @RequestBody ShoppingListInputDTO shoppingListInputDto){
         var shoppingListModel = shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto);
         var newShoppingList = shoppingListService.createShoppingList(shoppingListModel);
-        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(newShoppingList);
-        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newShoppingList.getId())).body(shoppingListDto);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newShoppingList.getId())).body(newShoppingList);
 
     }
 
@@ -96,11 +97,6 @@ public class ShoppingListController {
         return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/user/{username}")
-    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id, @PathVariable String username){
-        shoppingListService.deleteShoppingList(id, username);
-        return ResponseEntity.noContent().build();
-    }
 
     @DeleteMapping("/{shoppingListId}/user/{username}/games/{gameId}")
     public ResponseEntity<Object>deleteGameFromShoppingList(@PathVariable Long shoppingListId, @PathVariable String username, @PathVariable Long gameId){
@@ -115,7 +111,13 @@ public class ShoppingListController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}/user/{username}")
+    public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id, @PathVariable String username){
+        shoppingListService.deleteShoppingList(id, username);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/admin")
     public ResponseEntity<Object>deleteShoppingList(@PathVariable Long id){
         shoppingListService.deleteShoppingList(id);
         return ResponseEntity.noContent().build();

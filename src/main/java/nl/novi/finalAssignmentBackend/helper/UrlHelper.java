@@ -7,7 +7,7 @@ import java.net.URI;
 public class UrlHelper {
 
     public static String getCurrentUrlString(HttpServletRequest request) {
-        return request.getRequestURI(); // deze nog controleren
+        return request.getRequestURI();
     }
 
     public static String getCurrentUrlString(HttpServletRequest request, Long id){

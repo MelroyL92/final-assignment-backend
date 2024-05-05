@@ -13,5 +13,9 @@ public class UserMismatchException extends RuntimeException {
         public UserMismatchException(String type, Long id){
             super (type + " with id " + id +  " already has a user assigned to it");
         }
+
+        public UserMismatchException(String username){
+            super ("Mismatch in usernames: " + username + " does not match the logged-in user.");
+        }
     }
 

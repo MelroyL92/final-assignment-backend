@@ -89,4 +89,10 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}/admin")
+    public ResponseEntity<Object>deleteOrderAdmin(@PathVariable Long id){
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

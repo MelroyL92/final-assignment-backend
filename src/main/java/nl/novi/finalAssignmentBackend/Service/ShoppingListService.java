@@ -24,7 +24,6 @@ import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListMap
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -44,11 +43,12 @@ public class ShoppingListService {
     private final MovieDTOMapper movieDTOMapper;
     private final MovieMapper movieMapper;
     private final OrderConfirmationHelper orderConfirmationHelper;
+    private final PdfFileWishList pdfFileWishList;
 
 
 
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository
-                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper, OrderConfirmationHelper orderConfirmationHelper) {
+                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper, OrderConfirmationHelper orderConfirmationHelper, PdfFileWishList pdfFileWishList) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
@@ -60,6 +60,7 @@ public class ShoppingListService {
         this.movieMapper = movieMapper;
         this.movieDTOMapper = movieDTOMapper;
         this.orderConfirmationHelper = orderConfirmationHelper;
+        this.pdfFileWishList = pdfFileWishList;
     }
 
     public List<ShoppingListModel> getAllShoppingLists() {
@@ -96,7 +97,6 @@ public class ShoppingListService {
         shoppingList.setType(shoppingListModel.getType());
         shoppingList.setPackaging(shoppingListModel.getPackaging());
         shoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
-
         shoppingList = shoppingListRepository.save(shoppingList);
         return shoppingListMapper.fromEntity(shoppingList);
     }
@@ -187,7 +187,7 @@ public class ShoppingListService {
                 existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
             }
             if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
-                createPDFFromWishlist(existingShoppingList);
+                pdfFileWishList.createPDFFromWishlist(existingShoppingList);
             }
             existingShoppingList = shoppingListRepository.save(existingShoppingList);
             return shoppingListMapper.fromEntity(existingShoppingList);
@@ -256,7 +256,10 @@ public class ShoppingListService {
         }
         ShoppingList shoppingList = optionalShoppingList.get();
 
-        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list");
+        if (shoppingList.getUser() == null || shoppingList.getUser().getUsername() == null || shoppingList.getUser().getUsername().isEmpty()) {
+            throw new NoUserAssignedException("shopping list", username);
+        }
+        loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "shopping list be");
 
         shoppingListRepository.deleteById(id);
     }
@@ -313,17 +316,9 @@ public class ShoppingListService {
         shoppingListRepository.deleteById(id);
     }
 
-    public void createPDFFromWishlist(ShoppingList shoppingList){
-        if (shoppingList.getCreatePdf() &&  shoppingList.getType().contains("wishlist")){
-            PdfFileWishList pdfFileWishList = new PdfFileWishList();
-            try {
-                pdfFileWishList.createPdf(shoppingList);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+
 }
+
 
 
 

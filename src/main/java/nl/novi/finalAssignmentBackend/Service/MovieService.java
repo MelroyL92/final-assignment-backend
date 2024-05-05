@@ -65,6 +65,7 @@ public class MovieService {
         movie.setPurchasePrice(validatedPurchasePrice);
         movie = movieRepository.save(movie);
         return movieMapper.fromEntity(movie);
+
     }
 
     public MovieModel updateMovie(Long id, MovieModel movieModel) {

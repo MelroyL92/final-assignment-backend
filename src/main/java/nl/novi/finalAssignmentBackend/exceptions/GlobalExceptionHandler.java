@@ -4,10 +4,16 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @ControllerAdvice
@@ -18,10 +24,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public String handleGenericException(Exception exception, HttpServletRequest request){
-        return "We have to look into this error and we will fix it as soon as we can";
+        return "We have to look into this error and we will fix it as soon as we can! Be sure to check for any typos!";
     }
 
     @ExceptionHandler(value = RecordNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> exception(RecordNotFoundException exception) {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
@@ -66,6 +73,16 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public String handleInsufficientStockException(InsufficientStockException exception, HttpServletRequest request){
         return exception.getMessage();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        BindingResult result = ex.getBindingResult();
+        List<String> errors = result.getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }

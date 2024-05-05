@@ -45,7 +45,7 @@ public class MovieDTOMapper {
         movie.setName(dto.getName());
         movie.setType(dto.getType());
         movie.setSellingPrice(dto.getSellingPrice());
-        movie.setPurchasePrice(dto.getSellingPrice());
+        movie.setPurchasePrice(dto.getPurchasePrice());
         movie.setGenre(dto.getGenre());
         movie.setDirector(dto.getDirector());
         movie.setWatchTimeInMin(dto.getWatchTimeInMin());

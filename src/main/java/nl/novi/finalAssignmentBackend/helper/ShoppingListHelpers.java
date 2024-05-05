@@ -43,17 +43,17 @@ public class ShoppingListHelpers {
         int gameAmount = shoppingList.getGames().size();
         int totalAmount = movieAmount + gameAmount;
 
-        int deliveryCost = 0; // Initialize deliveryCost to 0 by default
+        int deliveryCost = 0;
 
         if (shoppingList.getAtHomeDelivery()) {
             if (totalAmount < 5) {
                 deliveryCost = 5;
             } else if (totalAmount < 10) {
                 deliveryCost = 10;
-            } // No need for an else, as it defaults to 0
-            // Add a comment or a notification here to indicate that delivery is free for larger orders
+            }
+
         }
-        // Set deliveryCost only if atHomeDelivery is true
+
         shoppingList.setDeliveryCost(deliveryCost);
         shoppingListRepository.save(shoppingList);
     }

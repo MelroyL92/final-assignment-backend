@@ -1,6 +1,5 @@
 package nl.novi.finalAssignmentBackend.Service;
 import nl.novi.finalAssignmentBackend.Repository.GameRepository;
-import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.MaxPurchasePrice;
@@ -27,9 +26,6 @@ public class GameServiceTest {
 
     @Mock
     private GameMapper gameMapper;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     MaxPurchasePrice maxPurchasePrice;
@@ -321,7 +317,6 @@ public class GameServiceTest {
 
         assertNotNull(result);
 
-        // Verify interactions with mocks
         verify(gameMapper).toEntity(gameModel);
         verify(gameRepository).save(Mockito.any(Game.class));
         verify(gameMapper).fromEntity(savedGameEntity);
@@ -382,7 +377,7 @@ public class GameServiceTest {
                     double sellingPrice = invocation.getArgument(1);
                     return (purchasePrice < sellingPrice * 0.8) ? sellingPrice * 0.75 : purchasePrice;
                 });
-;
+
         Mockito.when(gameRepository.save(Mockito.any(Game.class))).thenAnswer(invocation -> {
             Game game = invocation.getArgument(0);
             return game;

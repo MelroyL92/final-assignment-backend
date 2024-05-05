@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import nl.novi.finalAssignmentBackend.Service.MovieService;
 import nl.novi.finalAssignmentBackend.dtos.movie.ExtendedMovieResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieInputDTO;
@@ -83,7 +84,7 @@ public class MovieController {
     }
 
     @PostMapping("")
-    public ResponseEntity<MovieResponseDTO>createMovie(@RequestBody MovieInputDTO movieInputDto){
+    public ResponseEntity<MovieResponseDTO>createMovie(@Valid @RequestBody MovieInputDTO movieInputDto){
         var movieModel = movieDTOMapper.createMovieModel(movieInputDto);
         var newMovie = movieService.createMovie(movieModel);
         var movieDto = movieDTOMapper.toMovieDTO(newMovie);
@@ -92,7 +93,7 @@ public class MovieController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<MovieResponseDTO>updateMovie(@PathVariable Long id, @RequestBody MovieInputDTO movieInputDto) {
+    public ResponseEntity<MovieResponseDTO>updateMovie(@Valid @PathVariable Long id, @RequestBody MovieInputDTO movieInputDto) {
         var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
         var movieDto = movieDTOMapper.toMovieDTO(updateMovie);
         return new ResponseEntity<>(movieDto, HttpStatus.OK);

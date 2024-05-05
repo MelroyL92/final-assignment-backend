@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import nl.novi.finalAssignmentBackend.Service.GameService;
 import nl.novi.finalAssignmentBackend.dtos.game.ExtendedGameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.game.GameInputDTO;
@@ -78,7 +79,7 @@ public class GameController {
     }
 
     @PostMapping("")
-    public ResponseEntity<GameResponseDTO>CreateGame(@RequestBody GameInputDTO gameInputDto){
+    public ResponseEntity<GameResponseDTO>CreateGame(@Valid @RequestBody GameInputDTO gameInputDto){
         var gameModel = gameDTOMapper.createGameModel(gameInputDto);
         var newGame = gameService.createGame(gameModel);
         var gameDto = gameDTOMapper.toGameDto(newGame);
@@ -86,7 +87,7 @@ public class GameController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<GameResponseDTO>updateGame(@PathVariable Long id, @RequestBody GameInputDTO gameInputDto){
+    public ResponseEntity<GameResponseDTO>updateGame(@Valid  @PathVariable Long id, @RequestBody GameInputDTO gameInputDto){
         var updateGame = gameService.updateGame(id, gameDTOMapper.createGameModel(gameInputDto));
         var gameDto = gameDTOMapper.toGameDto(updateGame);
         return new ResponseEntity<>(gameDto, HttpStatus.OK);

@@ -5,11 +5,10 @@ import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class OrderHelpers {
@@ -53,7 +52,7 @@ public class OrderHelpers {
 
     public double calculateTotalPrice(Long id){
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found, the profit cannot be calculated"));
+                .orElseThrow(() -> new RecordNotFoundException("Order not found, the profit cannot be calculated"));
 
         double totalPrice = 0.00;
 
@@ -76,7 +75,7 @@ public class OrderHelpers {
 
 
         if(order.getShoppingList().isEmpty()){
-            throw new EntityNotFoundException("the order does not contain a shopping list and cant be set to true");
+            throw new RecordNotFoundException("the order does not contain a shopping list and cant be set to true");
         }
         if (order.getOrderConfirmation()) {
             order.setDateOrdered(LocalDate.now());
