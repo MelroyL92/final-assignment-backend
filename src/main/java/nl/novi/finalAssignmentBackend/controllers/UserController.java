@@ -46,71 +46,10 @@ import java.util.Map;
             return ResponseEntity.ok().body(optionalUser);
         }
 
-        @PostMapping(value = "")
-        public ResponseEntity<UserDTO> createCustomer(@RequestBody UserDTO dto) {
-
-            String newUsername = userService.createUser(dto);
-            userService.addAuthority(newUsername, "ROLE_USER");
-
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                    .buildAndExpand(newUsername).toUri();
-            return ResponseEntity.created(location).build();
-        }
-
-        @PutMapping(value = "/{username}")
-        public ResponseEntity<UserDTO> updateCustomer(@PathVariable("username") String username, @RequestBody UserDTO dto) {
-            userService.updateUser(username, dto);
-            return ResponseEntity.noContent().build();
-        }
-
-        @PostMapping("/{username}/orders/{orderId}")
-        public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
-            userService.addUserToOrder(username, orderId);
-            return ResponseEntity.ok("the user with id " + username + " has been assigned to order " + orderId);
-        }
-
-        @PostMapping("/{username}/shoppinglists/{shoppingListId}")
-        public ResponseEntity<String>addUserToShoppingList(@PathVariable String username, @PathVariable Long shoppingListId){
-            userService.addUserToShoppingList(username,shoppingListId);
-            return ResponseEntity.ok("the user with id " + username + " has been assigned to the shoppinglist");
-        }
-
-
-        @DeleteMapping(value = "/{username}")
-        public ResponseEntity<Object> deleteCustomer(@PathVariable("username") String username) {
-            userService.deleteUser(username);
-            return ResponseEntity.noContent().build();
-        }
-
-        @GetMapping(value = "/{username}/authorities")
-        public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
-            return ResponseEntity.ok().body(userService.getAuthorities(username));
-        }
-
-        @PostMapping(value = "/{username}/authorities")
-        public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-        try {
-            String authorityName = (String) fields.get("authority");
-            userService.addAuthority(username, authorityName);
-            return ResponseEntity.noContent().build();
-        }
-        catch (Exception ex) {
-            throw new BadRequestException();
-        }
-            }
-
-            @PostMapping("/{username}/upload_order")
-            public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {
-             String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                     .path("/users/{username}/uploadOrder")
-                     .buildAndExpand(username)
-                     .toUriString();
-                UploadOrder uploadOrder = uploadOrderService.storeFile(file, url);
-                User user = userService.addOrderFile(username, uploadOrder);
-
-                return ResponseEntity.created(URI.create(url)).body(user);
-                }
-
+         @GetMapping(value = "/{username}/authorities")
+         public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+             return ResponseEntity.ok().body(userService.getAuthorities(username));
+         }
 
          @GetMapping("/{username}/upload_order")
          public ResponseEntity<byte[]>getUploadedOrder(@PathVariable("username")String username){
@@ -131,6 +70,67 @@ import java.util.Map;
                      .body(uploadOrder.getContents());
          }
 
+
+          @PostMapping(value = "")
+              public ResponseEntity<UserDTO> createCustomer(@RequestBody UserDTO dto) {
+
+                  String newUsername = userService.createUser(dto);
+                  userService.addAuthority(newUsername, "ROLE_USER");
+
+                  URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+                          .buildAndExpand(newUsername).toUri();
+                  return ResponseEntity.created(location).build();
+              }
+
+
+        @PostMapping("/{username}/orders/{orderId}")
+        public ResponseEntity<String>addUserToOrder(@PathVariable String username, @PathVariable  Long orderId) {
+            userService.addUserToOrder(username, orderId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to order " + orderId);
+        }
+
+        @PostMapping("/{username}/shoppinglists/{shoppingListId}")
+        public ResponseEntity<String>addUserToShoppingList(@PathVariable String username, @PathVariable Long shoppingListId){
+            userService.addUserToShoppingList(username,shoppingListId);
+            return ResponseEntity.ok("the user with id " + username + " has been assigned to the shoppinglist");
+        }
+
+         @PostMapping(value = "/{username}/authorities")
+         public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+             try {
+                 String authorityName = (String) fields.get("authority");
+                 userService.addAuthority(username, authorityName);
+                 return ResponseEntity.noContent().build();
+             }
+             catch (Exception ex) {
+                 throw new BadRequestException();
+             }
+         }
+
+         @PostMapping("/{username}/upload_order")
+         public ResponseEntity<User>addOrderFileToUser(@PathVariable("username")String username, @RequestBody MultipartFile file) throws IOException {
+             String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                     .path("/users/{username}/uploadOrder")
+                     .buildAndExpand(username)
+                     .toUriString();
+             UploadOrder uploadOrder = uploadOrderService.storeFile(file, url);
+             User user = userService.addOrderFile(username, uploadOrder);
+
+             return ResponseEntity.created(URI.create(url)).body(user);
+         }
+
+         @PutMapping(value = "/{username}")
+         public ResponseEntity<UserDTO> updateCustomer(@PathVariable("username") String username, @RequestBody UserDTO dto) {
+             userService.updateUser(username, dto);
+             return ResponseEntity.noContent().build();
+         }
+
+
+        @DeleteMapping(value = "/{username}")
+        public ResponseEntity<Object> deleteCustomer(@PathVariable("username") String username) {
+            userService.deleteUser(username);
+            return ResponseEntity.noContent().build();
+        }
 
         @DeleteMapping(value = "/{username}/authorities/{authority}")
         public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {

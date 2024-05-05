@@ -73,7 +73,7 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/movies/**").hasAnyRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/shoppinglists").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/shoppinglists/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/{id}/user/{username}").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/{shoppingListId}/user/{username}/games/{gameId}").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/shoppinglists/{shoppingListId}/user/{username}/movies/{movieId}").hasAnyRole("USER","ADMIN")
@@ -82,9 +82,8 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/{id}/admin").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/shoppinglists/**").hasAnyRole("ADMIN","USER")
 
-
-                                .requestMatchers(HttpMethod.GET, "/orders/{username}").hasRole("USER")
                                 .requestMatchers(HttpMethod.GET, "/orders/admin").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/orders/{username}").hasRole("USER")
                                 .requestMatchers(HttpMethod.GET, "/orders/{id}/user/{username}").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST, "/orders/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyRole("ADMIN","USER")
