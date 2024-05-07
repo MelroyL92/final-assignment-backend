@@ -56,7 +56,7 @@ public class GameServiceTest {
         game1.setAmountSold(50);
         game1.setCurrentStock(50);
         game1.setSellingPrice(40.0);
-        game1.setDescription("dfafafafafasasfafsasf");
+        game1.setDescription("description 1");
         game1.setPurchasePrice(10.00);
         game1.setYearOfRelease(2002);
         mockGames.add(game1);
@@ -71,7 +71,7 @@ public class GameServiceTest {
         game2.setAmountSold(50);
         game2.setCurrentStock(50);
         game2.setSellingPrice(40.0);
-        game2.setDescription("wehlfbsdgbhsldgskdglsdgsdg");
+        game2.setDescription("description 2");
         game2.setPurchasePrice(20.0);
         game2.setYearOfRelease(2001);
         mockGames.add(game2);
@@ -115,7 +115,7 @@ public class GameServiceTest {
         assertEquals("Publisher 1", result.get(0).getPublisher());
         assertEquals(60, result.get(0).getPlayDurationInMin());
         assertEquals("name", result.get(0).getName());
-        assertEquals("dfafafafafasasfafsasf", result.get(0).getDescription());
+        assertEquals("description 1", result.get(0).getDescription());
         assertEquals(10.00, result.get(0).getPurchasePrice());
         assertEquals(50, result.get(0).getCurrentStock());
         assertEquals(50, result.get(0).getAmountSold());
@@ -125,7 +125,7 @@ public class GameServiceTest {
         assertEquals("Publisher 2", result.get(1).getPublisher());
         assertEquals(60, result.get(1).getPlayDurationInMin());
         assertEquals("name2", result.get(1).getName());
-        assertEquals("wehlfbsdgbhsldgskdglsdgsdg", result.get(1).getDescription());
+        assertEquals("description 2", result.get(1).getDescription());
         assertEquals(20.0, result.get(1).getPurchasePrice());
         assertEquals(50, result.get(1).getCurrentStock());
         assertEquals(50, result.get(1).getAmountSold());
@@ -283,6 +283,7 @@ public class GameServiceTest {
         gameModel.setYearOfRelease(2015);
         gameModel.setOriginalStock(100);
         gameModel.setAmountSold(50);
+        gameModel.setCurrentStock(50);
         gameModel.setPlayDurationInMin(200);
         gameModel.setPublisher("Whatever works");
         gameModel.setSellingPrice(120.0);
@@ -316,11 +317,21 @@ public class GameServiceTest {
         GameModel result = gameService.createGame(gameModel);
 
         assertNotNull(result);
-
         verify(gameMapper).toEntity(gameModel);
         verify(gameRepository).save(Mockito.any(Game.class));
         verify(gameMapper).fromEntity(savedGameEntity);
         verifyNoMoreInteractions(gameMapper, gameRepository);
+        assertEquals(gameModel.getPublisher(), "Whatever works");
+        assertEquals(gameModel.getOriginalStock(), 100);
+        assertEquals(gameModel.getYearOfRelease(), 2015);
+        assertEquals(gameModel.getAmountSold(), 50);
+        assertEquals(gameModel.getOriginalStock(), 100);
+        assertEquals(gameModel.getCurrentStock(), 50);
+        assertEquals(gameModel.getPlayDurationInMin(),200);
+        assertEquals(gameModel.getPlatform(), "pc");
+        assertEquals(gameModel.getDescription(),"the best game ever");
+        assertEquals(gameModel.getSellingPrice(), 120.0);
+        assertEquals(gameModel.getPurchasePrice(), 100);
     }
 
     @Test
@@ -388,6 +399,16 @@ public class GameServiceTest {
         GameModel returnedUpdatedGameModel = gameService.updateGame(1L, updatedGameModel);
 
         assertEquals(updatedGameModel.getPlatform(), returnedUpdatedGameModel.getPlatform());
+        assertEquals(updatedGameModel.getPublisher(), returnedUpdatedGameModel.getPublisher());
+        assertEquals(updatedGameModel.getCurrentStock(),returnedUpdatedGameModel.getCurrentStock());
+        assertEquals(updatedGameModel.getName(), returnedUpdatedGameModel.getName());
+        assertEquals(updatedGameModel.getSellingPrice(), returnedUpdatedGameModel.getSellingPrice());
+        assertEquals(updatedGameModel.getPurchasePrice(),returnedUpdatedGameModel.getPurchasePrice());
+        assertEquals(updatedGameModel.getPlayDurationInMin(),returnedUpdatedGameModel.getPlayDurationInMin());
+        assertEquals(updatedGameModel.getDescription(),returnedUpdatedGameModel.getDescription());
+        assertEquals(updatedGameModel.getYearOfRelease(),returnedUpdatedGameModel.getYearOfRelease());
+        assertEquals(updatedGameModel.getOriginalStock(),returnedUpdatedGameModel.getOriginalStock());
+        assertEquals(updatedGameModel.getId(), returnedUpdatedGameModel.getId());
     }
 
     @Test

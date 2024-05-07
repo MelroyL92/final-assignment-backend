@@ -37,7 +37,6 @@ public class ShoppingList {
     )
     private List<Game> games = new ArrayList<>();
 
-    // is this relation made correctly???
     @ManyToMany(mappedBy = "shoppingList")
     private List<Order>orders = new ArrayList<>();
 
