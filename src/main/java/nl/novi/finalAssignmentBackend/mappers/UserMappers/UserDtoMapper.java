@@ -41,7 +41,6 @@ public class UserDtoMapper {
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
         user.setAuthorities(dto.getAuthorities());
-//        user.setUploadOrder(dto.getUploadOrder());
         return user;
     }
 }

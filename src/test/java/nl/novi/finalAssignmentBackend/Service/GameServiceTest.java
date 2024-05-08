@@ -120,6 +120,7 @@ public class GameServiceTest {
         assertEquals(50, result.get(0).getCurrentStock());
         assertEquals(50, result.get(0).getAmountSold());
         assertEquals(40.0, result.get(0).getSellingPrice());
+        assertEquals(2002, result.get(0).getYearOfRelease());
 
         assertEquals("Platform 2", result.get(1).getPlatform());
         assertEquals("Publisher 2", result.get(1).getPublisher());
@@ -130,6 +131,7 @@ public class GameServiceTest {
         assertEquals(50, result.get(1).getCurrentStock());
         assertEquals(50, result.get(1).getAmountSold());
         assertEquals(40.0, result.get(1).getSellingPrice());
+        assertEquals(2001, result.get(1).getYearOfRelease());
     }
 
 
@@ -142,13 +144,13 @@ public class GameServiceTest {
         game1.setPublisher("Publisher 1");
         game1.setYearOfRelease(2007);
         game1.setSellingPrice(60.00);
+        game1.setOriginalStock(200);
+        game1.setAmountSold(100);
         game1.setCurrentStock(100);
         game1.setName("some game");
         game1.setPlayDurationInMin(100);
-        game1.setPurchasePrice(100.00);
-        game1.setAmountSold(100);
-
-        game1.setPlayDurationInMin(60);
+        game1.setPurchasePrice(30.00);
+        game1.setDescription("what a good game");
 
         when(gameRepository.findById(1L)).thenReturn(Optional.of(game1));
 
@@ -160,6 +162,13 @@ public class GameServiceTest {
             gameModel.setPublisher(game.getPublisher());
             gameModel.setPlayDurationInMin(game.getPlayDurationInMin());
             gameModel.setName(game.getName());
+            gameModel.setYearOfRelease(game.getYearOfRelease());
+            gameModel.setOriginalStock(game.getOriginalStock());
+            gameModel.setAmountSold(game.getAmountSold());
+            gameModel.setCurrentStock(game.getCurrentStock());
+            gameModel.setPurchasePrice(game.getPurchasePrice());
+            gameModel.setSellingPrice(game.getSellingPrice());
+            gameModel.setDescription(game.getDescription());
             return gameModel;
         });
 
@@ -168,7 +177,13 @@ public class GameServiceTest {
         assertEquals(1L, result.getId());
         assertEquals("Platform 1", result.getPlatform());
         assertEquals("Publisher 1", result.getPublisher());
-        assertEquals(60, result.getPlayDurationInMin());
+        assertEquals(2007, result.getYearOfRelease());
+        assertEquals(100, result.getCurrentStock());
+        assertEquals("some game", result.getName());
+        assertEquals(100, result.getPlayDurationInMin());
+        assertEquals(30.00, result.getPurchasePrice());
+        assertEquals(100, result.getAmountSold());
+        assertEquals("what a good game", result.getDescription());
     }
 
 
@@ -221,7 +236,7 @@ public class GameServiceTest {
     }
 
     @Test
-    @DisplayName("find game by name no games found")
+    @DisplayName("find game exception")
     public void testFindGamesByNameNoFound(){
         List<Game>mockGames = new ArrayList<>();
         Game game1 = new Game();
@@ -307,6 +322,14 @@ public class GameServiceTest {
             gameEntity.setDescription(gameModelArgument.getDescription());
             gameEntity.setPurchasePrice(gameModelArgument.getPurchasePrice());
             gameEntity.setSellingPrice(gameModelArgument.getSellingPrice());
+            gameEntity.setName(gameModelArgument.getName());
+            gameEntity.setYearOfRelease(gameModelArgument.getYearOfRelease());
+            gameEntity.setAmountSold(gameModelArgument.getAmountSold());
+            gameEntity.setCurrentStock(gameModelArgument.getCurrentStock());
+            gameEntity.setPlayDurationInMin(gameModelArgument.getPlayDurationInMin());
+            gameEntity.setPublisher(gameModelArgument.getPublisher());
+            gameEntity.setSellingPrice(gameModelArgument.getSellingPrice());
+
             return gameEntity;
         });
 
