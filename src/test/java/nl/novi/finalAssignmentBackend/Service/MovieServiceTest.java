@@ -304,7 +304,7 @@ public class MovieServiceTest {
     @Test
     @DisplayName("testing updating movie")
     public void testUpdateMovie() {
-        Movie existingMovie = createMovie(1L, 50.0, 20,0,100, 50, "the hobbit",
+        Movie existingMovie = createMovie(1L, 50.0, 20.0,0,100, 50, "the hobbit",
                 "Peter Jackson", 2016,"worst of the lotr movies but still great","blu ray", "fantasy", 200);
 
 

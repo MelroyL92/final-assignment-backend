@@ -6,19 +6,19 @@ import nl.novi.finalAssignmentBackend.model.MovieModel;
 public class ServiceHelperMovieCreation {
 
     public static Movie createMovie(
-            long id,
-            double purchasePrice,
-            double sellingPrice,
-            int originalStock,
-            int amountSold,
-            int currentStock,
+            Long id,
+            Double purchasePrice,
+            Double sellingPrice,
+            Integer originalStock,
+            Integer amountSold,
+            Integer currentStock,
             String name,
             String director,
-            int yearOfRelease,
+            Integer yearOfRelease,
             String description,
             String type,
             String genre,
-            int watchTimeInMin
+            Integer watchTimeInMin
     ) {
         Movie movie = new Movie();
         movie.setId(id);
@@ -38,18 +38,18 @@ public class ServiceHelperMovieCreation {
     }
 
     public static MovieModel createMovieModel(
-            double purchasePrice,
-            double sellingPrice,
-            int originalStock,
-            int amountSold,
-            int currentStock,
+            Double purchasePrice,
+            Double sellingPrice,
+            Integer originalStock,
+            Integer amountSold,
+            Integer currentStock,
             String name,
             String director,
-            int yearOfRelease,
+            Integer yearOfRelease,
             String description,
             String type,
             String genre,
-            int watchTimeInMin
+            Integer watchTimeInMin
     ){
         MovieModel movieModel = new MovieModel();
         movieModel.setPurchasePrice(purchasePrice);
@@ -66,5 +66,4 @@ public class ServiceHelperMovieCreation {
         movieModel.setWatchTimeInMin(watchTimeInMin);
         return movieModel;
     }
-
 }

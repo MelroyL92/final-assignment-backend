@@ -15,6 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperGameCreation.createGame;
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperGameCreation.createGameModel;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -45,36 +48,12 @@ public class GameServiceTest {
     @DisplayName("get all games")
     public void testGetGames() {
         List<Game> mockGames = new ArrayList<>();
-
-        Game game1 = new Game();
-        game1.setId(1L);
-        game1.setPlatform("Platform 1");
-        game1.setPublisher("Publisher 1");
-        game1.setPlayDurationInMin(60);
-        game1.setName("name");
-        game1.setOriginalStock(100);
-        game1.setAmountSold(50);
-        game1.setCurrentStock(50);
-        game1.setSellingPrice(40.0);
-        game1.setDescription("description 1");
-        game1.setPurchasePrice(10.00);
-        game1.setYearOfRelease(2002);
-        mockGames.add(game1);
-
-        Game game2 = new Game();
-        game2.setId(2L);
-        game2.setPlatform("Platform 2");
-        game2.setPublisher("Publisher 2");
-        game2.setPlayDurationInMin(60);
-        game2.setName("name2");
-        game2.setOriginalStock(100);
-        game2.setAmountSold(50);
-        game2.setCurrentStock(50);
-        game2.setSellingPrice(40.0);
-        game2.setDescription("description 2");
-        game2.setPurchasePrice(20.0);
-        game2.setYearOfRelease(2001);
-        mockGames.add(game2);
+        mockGames.add(createGame(1L,"Platform 1","Publisher 1", 60, "name",
+                100,50,50,40.0,
+                "description 1", 10.0,2002));
+        mockGames.add(createGame(2L,"Platform 2","Publisher 2",60,"name2",
+                100,50,50,40.0,
+                "description 2", 20.0, 2001));
 
         Mockito.when(gameRepository.findAll()).thenReturn(mockGames);
 
@@ -138,19 +117,10 @@ public class GameServiceTest {
     @Test
     @DisplayName("get gamebyID")
     public void testGetGameById() {
-        Game game1 = new Game();
-        game1.setId(1L);
-        game1.setPlatform("Platform 1");
-        game1.setPublisher("Publisher 1");
-        game1.setYearOfRelease(2007);
-        game1.setSellingPrice(60.00);
-        game1.setOriginalStock(200);
-        game1.setAmountSold(100);
-        game1.setCurrentStock(100);
-        game1.setName("some game");
-        game1.setPlayDurationInMin(100);
-        game1.setPurchasePrice(30.00);
-        game1.setDescription("what a good game");
+        Game game1 = createGame(1L,"Platform 1", "Publisher 1",
+        100,"some game", 200,100,100,
+        60.0,"what a good game",30.0,2007);
+
 
         when(gameRepository.findById(1L)).thenReturn(Optional.of(game1));
 
@@ -290,18 +260,10 @@ public class GameServiceTest {
     @Test
     @DisplayName("create game")
     public void testCreateGame() {
-        GameModel gameModel = new GameModel();
-        gameModel.setPlatform("pc");
-        gameModel.setDescription("the best game ever");
-        gameModel.setPurchasePrice(100.0);
-        gameModel.setName("game of thrones");
-        gameModel.setYearOfRelease(2015);
-        gameModel.setOriginalStock(100);
-        gameModel.setAmountSold(50);
-        gameModel.setCurrentStock(50);
-        gameModel.setPlayDurationInMin(200);
-        gameModel.setPublisher("Whatever works");
-        gameModel.setSellingPrice(120.0);
+        GameModel gameModel = createGameModel("pc","Whatever works",200,"game of thrones",
+                100,50,50,80.0,"the best game ever", 120.0,
+                2015);
+
 
         Mockito.when(gameMapper.fromEntity(Mockito.any(Game.class))).thenAnswer(invocation -> {
             Game gameArgument = invocation.getArgument(0);
@@ -353,8 +315,8 @@ public class GameServiceTest {
         assertEquals(gameModel.getPlayDurationInMin(),200);
         assertEquals(gameModel.getPlatform(), "pc");
         assertEquals(gameModel.getDescription(),"the best game ever");
-        assertEquals(gameModel.getSellingPrice(), 120.0);
-        assertEquals(gameModel.getPurchasePrice(), 100);
+        assertEquals(gameModel.getSellingPrice(), 80.0);
+        assertEquals(gameModel.getPurchasePrice(), 120.0);
     }
 
     @Test
