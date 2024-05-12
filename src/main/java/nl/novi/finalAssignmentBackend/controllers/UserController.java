@@ -60,7 +60,7 @@ import java.util.Map;
              try{
                  mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
              } catch (InvalidMediaTypeException ignore){
-                 mediaType = MediaType.APPLICATION_OCTET_STREAM;
+                 mediaType = MediaType.APPLICATION_PDF;
              }
 
              return ResponseEntity
