@@ -70,6 +70,23 @@ import java.util.Map;
                      .body(uploadOrder.getContents());
          }
 
+         @GetMapping("/{username}/upload_order/{id}")
+         public ResponseEntity<byte[]>getUploadOrderById(@PathVariable("username")String username, @PathVariable Long id) {
+             UploadOrder uploadOrder = uploadOrderService.getOrderById(id,username);
+             MediaType mediaType;
+
+             try {
+                 mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
+             } catch (InvalidMediaTypeException ignore) {
+                 mediaType = MediaType.APPLICATION_PDF;
+             }
+             return ResponseEntity
+                     .ok()
+                     .contentType(mediaType)
+                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + uploadOrder.getTitle())
+                     .body(uploadOrder.getContents());
+         }
+
 
           @PostMapping(value = "")
               public ResponseEntity<UserDTO> createCustomer(@RequestBody UserDTO dto) {
