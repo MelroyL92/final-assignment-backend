@@ -8,6 +8,6 @@ public class InsufficientStockException extends  RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public InsufficientStockException(String type, String name){
-        super("not enough games in stock for"+ type + " with the name " + name);
+        super("not enough items in stock for the " + type + " with the name " + name);
     }
 }
