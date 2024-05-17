@@ -54,6 +54,7 @@ public class ShoppingListDTOMapper {
     }
 
 
+
     public ShoppingListModel createShoppingListModel(ShoppingListInputDTO dto) {
         var shoppingList = new ShoppingListModel();
         shoppingList.setId(dto.getId());

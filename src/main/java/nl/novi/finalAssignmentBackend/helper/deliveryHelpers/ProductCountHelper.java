@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ProductCountHelper {
 
-    private Map<Long, Integer> productCounts;
+    private final Map<Long, Integer> productCounts;
 
     public ProductCountHelper(){
         this.productCounts = new HashMap<>();

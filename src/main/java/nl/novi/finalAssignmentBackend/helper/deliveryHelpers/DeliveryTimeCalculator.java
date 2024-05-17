@@ -16,7 +16,6 @@ import nl.novi.finalAssignmentBackend.model.MovieModel;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -39,23 +38,24 @@ public class DeliveryTimeCalculator {
 
     public void setDeliveryDate(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Order not found"));
-        List<ShoppingList> shoppingLists = order.getShoppingList();
+        ShoppingList shoppingList = order.getShoppingList();
+
+        if (shoppingList == null) {
+            throw new EntityNotFoundException("Shopping list not found for the order with id: " + id);
+        }
 
         ProductCountHelper gameCount = new ProductCountHelper();
         ProductCountHelper movieCount = new ProductCountHelper();
 
-        for (ShoppingList shoppingList : shoppingLists) {
-            for (Game game : shoppingList.getGames()) {
-                gameCount.increment(game.getId());
-            }
-            for (Movie movie : shoppingList.getMovies()) {
-                movieCount.increment(movie.getId());
-            }
-
+        for (Game game : shoppingList.getGames()) {
+            gameCount.increment(game.getId());
         }
+        for (Movie movie : shoppingList.getMovies()) {
+            movieCount.increment(movie.getId());
+        }
+
         checkStockAndSetDeliveryDate(order, gameCount, movieCount);
     }
-
 
     private void checkStockAndSetDeliveryDate(Order order, ProductCountHelper gamecount, ProductCountHelper movieCount) {
         for (Map.Entry<Long, Integer> entry : gamecount.getProductCounts().entrySet()) {

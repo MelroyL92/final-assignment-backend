@@ -1,8 +1,6 @@
 package nl.novi.finalAssignmentBackend.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OrderModel {
 
@@ -16,8 +14,7 @@ public class OrderModel {
     private Boolean createPdf;
     private Boolean hasPaid;
 
-
-    private List<ShoppingListModel> shoppingLists = new ArrayList<>();
+    private ShoppingListModel shoppingLists;
     private UserModel userModel;
 
 
@@ -71,11 +68,12 @@ public class OrderModel {
         this.totalPrice = totalPrice;
     }
 
-    public List<ShoppingListModel> getShoppingLists() {
+
+    public ShoppingListModel getShoppingLists() {
         return shoppingLists;
     }
 
-    public void setShoppingLists(List<ShoppingListModel> shoppingLists) {
+    public void setShoppingLists(ShoppingListModel shoppingLists) {
         this.shoppingLists = shoppingLists;
     }
 

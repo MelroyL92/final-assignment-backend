@@ -37,8 +37,9 @@ public class ShoppingList {
     )
     private List<Game> games = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "shoppingList")
-    private List<Order>orders = new ArrayList<>();
+
+    @OneToOne(mappedBy = "shoppingList")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "username")
