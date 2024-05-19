@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.entities;
 
 import jakarta.persistence.*;
+import nl.novi.finalAssignmentBackend.helper.enums;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,8 @@ public class Order {
 
     private Boolean orderConfirmation;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private enums.OrderStatus status;
 
     private LocalDate deliveryDate;
     private Double profit;
@@ -52,11 +54,11 @@ public class Order {
         this.orderConfirmation = orderConfirmation;
     }
 
-    public String getStatus() {
+    public enums.OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(enums.OrderStatus status) {
         this.status = status;
     }
 

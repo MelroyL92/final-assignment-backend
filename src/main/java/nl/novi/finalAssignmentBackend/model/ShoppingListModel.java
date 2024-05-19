@@ -1,12 +1,17 @@
 package nl.novi.finalAssignmentBackend.model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import nl.novi.finalAssignmentBackend.helper.enums;
+
 import java.util.List;
 
 public class ShoppingListModel {
 
 
     private Long id;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private enums.ShoppingListType type;
     private Double subtotal;
 
     private Boolean packaging;
@@ -37,6 +42,14 @@ public class ShoppingListModel {
 
     public void setAtHomeDelivery(Boolean atHomeDelivery) {
         this.atHomeDelivery = atHomeDelivery;
+    }
+
+    public enums.ShoppingListType getType() {
+        return type;
+    }
+
+    public void setType(enums.ShoppingListType type) {
+        this.type = type;
     }
 
     public Integer getDeliverCost() {
@@ -71,13 +84,7 @@ public class ShoppingListModel {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Double getSubtotal() {
         return subtotal;

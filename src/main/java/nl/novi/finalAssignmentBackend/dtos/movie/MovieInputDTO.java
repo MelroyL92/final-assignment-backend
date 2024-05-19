@@ -1,8 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.movie;
+import nl.novi.finalAssignmentBackend.model.ProductModel;
 
-import nl.novi.finalAssignmentBackend.entities.Product;
-
-public class MovieInputDTO extends Product {
+public class MovieInputDTO extends ProductModel {
     private Long id;
 
     private String genre;

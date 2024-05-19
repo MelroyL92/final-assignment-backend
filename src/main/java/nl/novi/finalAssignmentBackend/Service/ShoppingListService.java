@@ -16,6 +16,7 @@ import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.helper.OrderConfirmationHelper;
 import nl.novi.finalAssignmentBackend.helper.PDFCreator.PdfFileWishList;
 import nl.novi.finalAssignmentBackend.helper.ShoppingListHelpers;
+import nl.novi.finalAssignmentBackend.helper.enums;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.GameMappers.GameMapper;
 import nl.novi.finalAssignmentBackend.mappers.MovieMappers.MovieDTOMapper;
@@ -186,7 +187,7 @@ public class ShoppingListService {
             if(shoppingListModel.getCreatePdf() != null){
                 existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
             }
-            if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
+            if(shoppingListModel.getType().equals(enums.ShoppingListType.WISHLIST) && shoppingListModel.getCreatePdf()){
                 pdfFileWishList.createPDFFromWishlist(existingShoppingList);
             }
             existingShoppingList = shoppingListRepository.save(existingShoppingList);
