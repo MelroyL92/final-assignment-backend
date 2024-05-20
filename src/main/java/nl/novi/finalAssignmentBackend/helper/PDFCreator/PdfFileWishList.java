@@ -4,7 +4,6 @@ import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
-import nl.novi.finalAssignmentBackend.helper.enums;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -27,7 +26,7 @@ public class PdfFileWishList {
         }
 
 
-        if(!shoppingList.getType().equals(enums.ShoppingListType.WISHLIST)){
+        if(!shoppingList.getType().contains("wishlist")){
             throw new  RecordNotFoundException("you cant make a pdf file from anything but a wishlist");
         }
 
@@ -92,7 +91,7 @@ public class PdfFileWishList {
     }
 
     public void createPDFFromWishlist(ShoppingList shoppingList) {
-        if (shoppingList.getCreatePdf() && shoppingList.getType().equals(enums.ShoppingListType.WISHLIST)) {
+        if (shoppingList.getCreatePdf() && shoppingList.getType().contains("wishlist")) {
             PdfFileWishList pdfFileWishList = new PdfFileWishList();
             try {
                 pdfFileWishList.createPdf(shoppingList);

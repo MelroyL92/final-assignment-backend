@@ -1,8 +1,5 @@
 package nl.novi.finalAssignmentBackend.dtos.order;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import nl.novi.finalAssignmentBackend.helper.enums;
 import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import nl.novi.finalAssignmentBackend.model.UserModel;
 
@@ -12,8 +9,7 @@ public class OrderInputDTO {
 
     private Long orderNumber;
     private Boolean orderConfirmation;
-    @Enumerated(EnumType.STRING)
-    private enums.OrderStatus status;
+    private String status;
 
     private Double profit;
 
@@ -52,11 +48,11 @@ public class OrderInputDTO {
         this.orderConfirmation = orderConfirmation;
     }
 
-    public enums.OrderStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(enums.OrderStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

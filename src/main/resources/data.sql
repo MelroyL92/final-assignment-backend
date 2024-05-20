@@ -31,8 +31,8 @@ INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, de
 INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, description, name, platform, play_duration_in_min, publisher, year_of_release) VALUES (200, 400, 10,28,'Fight, farm, build and work alongside mysterious creatures called "Pals" in this completely new multiplayer, open world survival and crafting game!','Pal World','PC and XBOX', 1200, 'Pocket Pair', '2024' );
 INSERT INTO games(amount_sold, original_stock, purchase_price, selling_price, description, name, platform, play_duration_in_min, publisher, year_of_release) VALUES (100, 130, 10,30, 'Star Trek: Infinite is a 4X grand strategy video game. Players take control of one of four Star Trek civilizations interstellar civilization on the galactic stage and are tasked with exploring, colonizing, and engaging minor nations and other major civilizations with diplomacy, trade, or warfare.', 'Star Trek Infinite','PC', 600, 'Nimble Giant Entertainment',2023);
 
-INSERT INTO shopping_list (type, subtotal, at_home_delivery, packaging) VALUES ('SHOPPING_LIST', 0, true, true);
-INSERT INTO orders (date_ordered, order_confirmation, status, delivery_date, create_pdf) VALUES ('2024-04-15', false, 'PENDING_DELIVERY', '2024-05-20', false);
+INSERT INTO shopping_list (type, subtotal, at_home_delivery, packaging) VALUES ('shoppinglist', 0, true, true);
+INSERT INTO orders (date_ordered, order_confirmation, status, delivery_date, create_pdf) VALUES ('2024-04-15', false, 'pending delivery', '2024-05-20', false);
 
 INSERT INTO users (username, password, enabled, apikey, email) VALUES ('admin', '$2a$12$46LxSceN4XVxVXbePOrWquxu5cMk056uKhnVAWbNKgYN6d4u23TJG', true, '', 'admin@admin.nl');
 INSERT INTO users (username, password, enabled, apikey, email) VALUES ('user', '$2a$12$46LxSceN4XVxVXbePOrWquxu5cMk056uKhnVAWbNKgYN6d4u23TJG', true,'', 'user@user.nl');

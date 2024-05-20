@@ -1,9 +1,6 @@
 package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import nl.novi.finalAssignmentBackend.helper.enums;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import nl.novi.finalAssignmentBackend.model.UserModel;
@@ -13,8 +10,7 @@ import java.util.List;
 public class ShoppingListInputDTO {
 
         private Long id;
-        @Enumerated(EnumType.STRING)
-        private enums.ShoppingListType type;
+        private String type;
         private Double subtotal;
 
         private Boolean packaging;
@@ -62,11 +58,11 @@ public class ShoppingListInputDTO {
         this.id = id;
     }
 
-    public enums.ShoppingListType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(enums.ShoppingListType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

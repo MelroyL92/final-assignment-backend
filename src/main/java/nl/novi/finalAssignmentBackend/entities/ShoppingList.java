@@ -1,6 +1,5 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
-import nl.novi.finalAssignmentBackend.helper.enums;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +11,8 @@ public class ShoppingList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private enums.ShoppingListType type;
+
+    private String type;
     private Double subtotal;
 
     private Boolean packaging;
@@ -57,11 +56,11 @@ public class ShoppingList {
         this.id = id;
     }
 
-    public enums.ShoppingListType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(enums.ShoppingListType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

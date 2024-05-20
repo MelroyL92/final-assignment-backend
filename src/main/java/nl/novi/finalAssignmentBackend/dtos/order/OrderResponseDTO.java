@@ -1,10 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.order;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
-import nl.novi.finalAssignmentBackend.helper.enums;
 
 import java.time.LocalDate;
 
@@ -12,8 +9,8 @@ public class OrderResponseDTO {
 
     private Long orderNumber;
     private Boolean orderConfirmation;
-    @Enumerated(EnumType.STRING)
-    private enums.OrderStatus status;
+    private String status;
+
     private LocalDate dateOrdered;
     private LocalDate deliveryDate;
     private Boolean hasPaid;
@@ -44,11 +41,11 @@ public class OrderResponseDTO {
         this.orderConfirmation = orderConfirmation;
     }
 
-    public enums.OrderStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(enums.OrderStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
