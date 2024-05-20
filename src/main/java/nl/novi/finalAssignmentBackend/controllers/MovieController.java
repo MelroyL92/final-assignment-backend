@@ -93,7 +93,7 @@ public class MovieController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<MovieResponseDTO>updateMovie(@Valid @PathVariable Long id, @RequestBody MovieInputDTO movieInputDto) {
+    public ResponseEntity<MovieResponseDTO>updateMovie(@PathVariable Long id, @Valid @RequestBody MovieInputDTO movieInputDto) {
         var updateMovie = movieService.updateMovie(id,  movieDTOMapper.createMovieModel(movieInputDto));
         var movieDto = movieDTOMapper.toMovieDTO(updateMovie);
         return new ResponseEntity<>(movieDto, HttpStatus.OK);

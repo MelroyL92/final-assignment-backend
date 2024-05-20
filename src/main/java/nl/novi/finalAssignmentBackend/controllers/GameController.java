@@ -87,7 +87,7 @@ public class GameController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<GameResponseDTO>updateGame(@Valid  @PathVariable Long id, @RequestBody GameInputDTO gameInputDto){
+    public ResponseEntity<GameResponseDTO>updateGame(@PathVariable Long id, @Valid @RequestBody GameInputDTO gameInputDto){
         var updateGame = gameService.updateGame(id, gameDTOMapper.createGameModel(gameInputDto));
         var gameDto = gameDTOMapper.toGameDto(updateGame);
         return new ResponseEntity<>(gameDto, HttpStatus.OK);

@@ -26,7 +26,7 @@ public abstract class Product {
         @Min(0)
         private Integer amountSold;
 
-        @NotNull
+        @NotNull(message = "has to be between 1970 and 2100")
         @Min(1970)
         @Max(2100)
         @Column(name = "year_of_release")
