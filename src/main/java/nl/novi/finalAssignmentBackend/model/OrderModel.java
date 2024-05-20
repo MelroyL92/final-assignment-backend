@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.model;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class OrderModel {
 
@@ -16,7 +17,7 @@ public class OrderModel {
     private Boolean createPdf;
     private Boolean hasPaid;
 
-    private ShoppingListModel shoppingLists;
+    private List<ShoppingListModel> shoppingLists;
     private UserModel userModel;
 
 
@@ -70,12 +71,11 @@ public class OrderModel {
         this.totalPrice = totalPrice;
     }
 
-
-    public ShoppingListModel getShoppingLists() {
+    public List<ShoppingListModel> getShoppingLists() {
         return shoppingLists;
     }
 
-    public void setShoppingLists(ShoppingListModel shoppingLists) {
+    public void setShoppingLists(List<ShoppingListModel> shoppingLists) {
         this.shoppingLists = shoppingLists;
     }
 

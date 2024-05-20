@@ -4,6 +4,7 @@ import nl.novi.finalAssignmentBackend.dtos.shoppingList.ShoppingListResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class OrderResponseDTO {
 
@@ -22,8 +23,7 @@ public class OrderResponseDTO {
 
     private UserResponseDTO user;
 
-    private ShoppingListResponseDTO shoppingList;
-
+    private List<ShoppingListResponseDTO> shoppingList;
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -49,11 +49,11 @@ public class OrderResponseDTO {
         this.status = status;
     }
 
-    public ShoppingListResponseDTO getShoppingList() {
+    public List<ShoppingListResponseDTO> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(ShoppingListResponseDTO shoppingList) {
+    public void setShoppingList(List<ShoppingListResponseDTO> shoppingList) {
         this.shoppingList = shoppingList;
     }
 

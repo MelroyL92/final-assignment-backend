@@ -4,6 +4,7 @@ import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import nl.novi.finalAssignmentBackend.model.UserModel;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class OrderInputDTO {
 
@@ -24,7 +25,8 @@ public class OrderInputDTO {
     private Boolean hasPaid;
 
 
-    private ShoppingListModel shoppingList;
+    private List<ShoppingListModel> shoppingList;
+
 
     private UserModel user;
 
@@ -56,11 +58,11 @@ public class OrderInputDTO {
         this.status = status;
     }
 
-    public ShoppingListModel getShoppingList() {
+    public List<ShoppingListModel> getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(ShoppingListModel shoppingList) {
+    public void setShoppingList(List<ShoppingListModel> shoppingList) {
         this.shoppingList = shoppingList;
     }
 

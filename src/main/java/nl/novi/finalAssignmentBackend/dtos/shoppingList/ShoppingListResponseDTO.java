@@ -122,13 +122,5 @@ public class ShoppingListResponseDTO {
     public void setCreatePdf(Boolean createPdf) {
         this.createPdf = createPdf;
     }
-
-    public OrderResponseDTO getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderResponseDTO order) {
-        this.order = order;
-    }
 }
 

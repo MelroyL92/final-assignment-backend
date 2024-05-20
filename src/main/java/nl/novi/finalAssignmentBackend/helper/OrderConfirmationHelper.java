@@ -19,22 +19,15 @@ public class OrderConfirmationHelper {
         this.shoppingListRepository = shoppingListRepository;
     }
 
-//    public boolean isShoppingListConnectedToOrder(Long shoppingListId) {
-//        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
-//                .orElseThrow(() -> new EntityNotFoundException("Shopping list not found with id: " + shoppingListId));
-//
-//        return orderRepository.findAll().stream()
-//                .filter(order -> order.getOrderConfirmation())
-//                .flatMap(order -> order.getShoppingList().stream())
-//                .anyMatch(list -> list.getId().equals(shoppingList.getId()));
-//    }
-
     public boolean isShoppingListConnectedToOrder(Long shoppingListId) {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found with id: " + shoppingListId));
 
         return orderRepository.findAll().stream()
-                .filter(Order::getOrderConfirmation)
-                .anyMatch(order -> order.getShoppingList().getId().equals(shoppingList.getId()));
+                .filter(order -> order.getOrderConfirmation())
+                .flatMap(order -> order.getShoppingList().stream())
+                .anyMatch(list -> list.getId().equals(shoppingList.getId()));
     }
+
+
 }

@@ -83,8 +83,8 @@ public class GameService {
             existingGame.setPublisher(gameModel.getPublisher());
             existingGame.setDescription(gameModel.getDescription());
             existingGame.setAmountSold(gameModel.getAmountSold());
-            existingGame.setSellingPrice(gameModel.getSellingPrice());
             existingGame.setPurchasePrice(maxPurchasePrice.isPurchasePriceValid(gameModel.getPurchasePrice(),gameModel.getSellingPrice()));
+            existingGame.setSellingPrice(gameModel.getSellingPrice());
             existingGame.setYearOfRelease(gameModel.getYearOfRelease());
 
             existingGame = gameRepository.save(existingGame);

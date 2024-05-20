@@ -1,8 +1,5 @@
 package nl.novi.finalAssignmentBackend.dtos.product;
 
-//created a dto for the product to exclude some fields for the response dto of both movies and the games
-
-
 
 public class productResponseDTO {
     private Double sellingPrice;

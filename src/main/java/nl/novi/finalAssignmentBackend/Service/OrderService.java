@@ -151,7 +151,7 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("Order with id " + orderId + " not found"));
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow(()-> new EntityNotFoundException("Shopping list with id " + shoppingListId + " not found"));
-            if (order.getShoppingList() != null) {
+            if (!order.getShoppingList().isEmpty()) {
                 throw new EntityNotFoundException("Order already contains a shopping list.");
             }
         if(Objects.equals(shoppingList.getType(), "wishlist") || !Objects.equals(shoppingList.getType(), "shoppinglist")){
@@ -171,7 +171,7 @@ public class OrderService {
         }
         loggedInCheck.verifyOwnerAuthorization(shoppingList.getUser().getUsername(), username, "order" );
         shoppingList.setCreatePdf(false);
-        order.setShoppingList(shoppingList);
+        order.getShoppingList().add(shoppingList);
         orderRepository.save(order);
 
 

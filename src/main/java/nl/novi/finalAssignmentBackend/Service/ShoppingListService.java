@@ -63,6 +63,13 @@ public class ShoppingListService {
         this.pdfFileWishList = pdfFileWishList;
     }
 
+    private void extracted(Long shoppingListId, ShoppingList shoppingList) {
+        shoppingListHelpers.updateSubtotal(shoppingListId);
+        shoppingListHelpers.calculateDeliveryCost(shoppingListId);
+        shoppingListHelpers.calculatePackagingCost(shoppingListId);
+        shoppingListRepository.save(shoppingList);
+    }
+
     public List<ShoppingListModel> getAllShoppingLists() {
         List<ShoppingList> shoppingLists = shoppingListRepository.findAll();
 
@@ -186,10 +193,9 @@ public class ShoppingListService {
             if (!shoppingListModel.getType().equalsIgnoreCase("shoppinglist") && shoppingListModel.getCreatePdf() != null) {
                 existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
             } else if (shoppingListModel.getCreatePdf() != null && shoppingListModel.getType().equalsIgnoreCase("shoppinglist")) {
-                throw new EntityNotFoundException("Cannot set createPdf to true for type 'shoppinglist'");
-            }
-            if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
-                pdfFileWishList.createPDFFromWishlist(existingShoppingList);
+                existingShoppingList.setCreatePdf(false);
+                throw new EntityNotFoundException("pdf creation only possible for either a order or wishlist, createPDF automatically set to false");
+
             }
             if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
                 pdfFileWishList.createPDFFromWishlist(existingShoppingList);
@@ -221,11 +227,10 @@ public class ShoppingListService {
 
         shoppingList.getGames().add(game);
 
-        shoppingListHelpers.updateSubtotal(shoppingListId);
-        shoppingListHelpers.calculateDeliveryCost(shoppingListId);
-        shoppingListHelpers.calculatePackagingCost(shoppingListId);
-        shoppingListRepository.save(shoppingList);
+        extracted(shoppingListId, shoppingList);
     }
+
+
 
     public void addMovieToShoppingList(Long shoppingListId, String username,  Long movieId) {
         loggedInCheck.verifyLoggedInUser(username);
@@ -245,10 +250,7 @@ public class ShoppingListService {
         shoppingList.getMovies().add(movie);
 
 
-        shoppingListHelpers.updateSubtotal(shoppingListId);
-        shoppingListHelpers.calculateDeliveryCost(shoppingListId);
-        shoppingListHelpers.calculatePackagingCost(shoppingListId);
-        shoppingListRepository.save(shoppingList);
+        extracted(shoppingListId, shoppingList);
     }
 
 

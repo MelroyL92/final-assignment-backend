@@ -1,9 +1,10 @@
 package nl.novi.finalAssignmentBackend.dtos.movie;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
+import nl.novi.finalAssignmentBackend.dtos.product.ProductInputDTO;
 import nl.novi.finalAssignmentBackend.model.ProductModel;
 
-public class MovieInputDTO extends ProductModel {
+public class MovieInputDTO extends ProductInputDTO {
     private Long id;
     @NotBlank(message = "genre cannot be empty")
     @Size(min =3, max = 100, message = "please fill in a genre between 3 and 100 characters")
@@ -20,7 +21,6 @@ public class MovieInputDTO extends ProductModel {
     @NotNull(message = "please fill in a valid playtime between 10 and 400 min")
     @Min(10)
     @Max(400)
-    @Column(name = "watch_time_in_min")
     private Integer watchTimeInMin;
 
 
