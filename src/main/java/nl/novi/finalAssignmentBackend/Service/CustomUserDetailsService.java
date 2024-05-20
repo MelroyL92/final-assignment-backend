@@ -28,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         UserDTO userDto = userService.getUser(username);
 
-
         String password = userDto.getPassword();
 
         Set<Authority> authorities = userDto.getAuthorities();

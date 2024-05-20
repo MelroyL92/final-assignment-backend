@@ -183,8 +183,13 @@ public class ShoppingListService {
                 existingShoppingList.setPackaging(shoppingListModel.getPackaging());
                 shoppingListHelpers.calculatePackagingCost(existingShoppingList.getId());
             }
-            if(shoppingListModel.getCreatePdf() != null){
+            if (!shoppingListModel.getType().equalsIgnoreCase("shoppinglist") && shoppingListModel.getCreatePdf() != null) {
                 existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
+            } else if (shoppingListModel.getCreatePdf() != null && shoppingListModel.getType().equalsIgnoreCase("shoppinglist")) {
+                throw new EntityNotFoundException("Cannot set createPdf to true for type 'shoppinglist'");
+            }
+            if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
+                pdfFileWishList.createPDFFromWishlist(existingShoppingList);
             }
             if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
                 pdfFileWishList.createPDFFromWishlist(existingShoppingList);

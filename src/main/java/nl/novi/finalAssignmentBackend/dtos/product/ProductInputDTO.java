@@ -1,24 +1,42 @@
 package nl.novi.finalAssignmentBackend.dtos.product;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
+
 public class ProductInputDTO {
 
 
-        private Double sellingPrice;
+          @NotNull(message = "the selling price should be between 1 and 500 euro")
+          @Min(1)
+          @Max(500)
+          private Double sellingPrice;
 
-        private Integer originalStock;
+          @Column(name = "original_stock")
+          private Integer originalStock;
 
-        private String description;
+          @NotBlank(message = "please fill in a description for this product")
+          @Size(min =10, max = 300, message = "please fill in a description between 3 and 300 characters")
+          private String description;
 
-        private String name;
+          @NotBlank(message = "name must not be empty")
+          private String name;
 
-        private Integer amountSold;
+          @Column(name = "amount_sold")
+          @Min(0)
+          private Integer amountSold;
 
-        private Integer yearOfRelease;
+          @NotNull
+          @Min(1970)
+          @Max(2100)
+          @Column(name = "year_of_release")
+          private Integer yearOfRelease;
 
+          @NotNull(message = "please fill in a valid purchase price")
+          @Min(1)
+          @Max(200)
+          private Double purchasePrice;
 
-        private Double purchasePrice;
-
-        private Integer currentStock;
+          private Integer currentStock;
 
 
         public Double getSellingPrice() {
