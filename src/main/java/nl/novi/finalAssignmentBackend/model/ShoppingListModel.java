@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.model;
 
+
 import java.util.List;
 
 public class ShoppingListModel {
@@ -39,6 +40,14 @@ public class ShoppingListModel {
         this.atHomeDelivery = atHomeDelivery;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Integer getDeliverCost() {
         return deliveryCost;
     }
@@ -71,13 +80,7 @@ public class ShoppingListModel {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Double getSubtotal() {
         return subtotal;

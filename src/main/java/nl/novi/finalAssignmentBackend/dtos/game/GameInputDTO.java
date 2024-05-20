@@ -1,9 +1,9 @@
 package nl.novi.finalAssignmentBackend.dtos.game;
 
 
-import nl.novi.finalAssignmentBackend.entities.Product;
+import nl.novi.finalAssignmentBackend.model.ProductModel;
 
-public class GameInputDTO extends Product {
+public class GameInputDTO extends ProductModel {
 
         private Long id;
         private String platform;

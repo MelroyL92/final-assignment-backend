@@ -49,26 +49,6 @@ public class GameMapper implements EntityMapper<GameModel, Game> {
         return  modelList;
     }
 
-//    public List<Game> toEntity(List<GameModel> gameModels) {
-//        List<Game> entityList = new ArrayList<>();
-//        for (GameModel model : gameModels) {
-//            Game game = new Game();
-//            game.setId(model.getId());
-//            game.setName(model.getName());
-//            game.setDescription(model.getDescription());
-//            game.setSellingPrice(model.getSellingPrice());
-//            game.setYearOfRelease(model.getYearOfRelease());
-//            game.setOriginalStock(model.getOriginalStock());
-//            game.setPlatform(model.getPlatform());
-//            game.setPlayDurationInMin(model.getPlayDurationInMin());
-//            game.setPublisher(model.getPublisher());
-//            game.setPurchasePrice(model.getPurchasePrice());
-//            game.setAmountSold(model.getAmountSold());
-//            game.setCurrentStock(model.getCurrentStock());
-//            entityList.add(game);
-//        }
-//        return entityList;
-//    }
 
     public Game toEntity(GameModel gameModel) {
         Game game = new Game();

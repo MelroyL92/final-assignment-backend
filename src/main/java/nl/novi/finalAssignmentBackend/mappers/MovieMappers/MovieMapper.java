@@ -77,11 +77,3 @@ public class MovieMapper implements EntityMapper<MovieModel,Movie> {
 
 
 
-
-
-// nog wel kijken naar de velden die de user niet mag zien en de admin wel zoals bijvoorbeeld de inkoopprijs
-
-
-
-
-

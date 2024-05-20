@@ -15,6 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperGameCreation.createGame;
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperGameCreation.createGameModel;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -45,36 +48,12 @@ public class GameServiceTest {
     @DisplayName("get all games")
     public void testGetGames() {
         List<Game> mockGames = new ArrayList<>();
-
-        Game game1 = new Game();
-        game1.setId(1L);
-        game1.setPlatform("Platform 1");
-        game1.setPublisher("Publisher 1");
-        game1.setPlayDurationInMin(60);
-        game1.setName("name");
-        game1.setOriginalStock(100);
-        game1.setAmountSold(50);
-        game1.setCurrentStock(50);
-        game1.setSellingPrice(40.0);
-        game1.setDescription("dfafafafafasasfafsasf");
-        game1.setPurchasePrice(10.00);
-        game1.setYearOfRelease(2002);
-        mockGames.add(game1);
-
-        Game game2 = new Game();
-        game2.setId(2L);
-        game2.setPlatform("Platform 2");
-        game2.setPublisher("Publisher 2");
-        game2.setPlayDurationInMin(60);
-        game2.setName("name2");
-        game2.setOriginalStock(100);
-        game2.setAmountSold(50);
-        game2.setCurrentStock(50);
-        game2.setSellingPrice(40.0);
-        game2.setDescription("wehlfbsdgbhsldgskdglsdgsdg");
-        game2.setPurchasePrice(20.0);
-        game2.setYearOfRelease(2001);
-        mockGames.add(game2);
+        mockGames.add(createGame(1L,"Platform 1","Publisher 1", 60, "name",
+                100,50,50,40.0,
+                "description 1", 10.0,2002));
+        mockGames.add(createGame(2L,"Platform 2","Publisher 2",60,"name2",
+                100,50,50,40.0,
+                "description 2", 20.0, 2001));
 
         Mockito.when(gameRepository.findAll()).thenReturn(mockGames);
 
@@ -115,40 +94,33 @@ public class GameServiceTest {
         assertEquals("Publisher 1", result.get(0).getPublisher());
         assertEquals(60, result.get(0).getPlayDurationInMin());
         assertEquals("name", result.get(0).getName());
-        assertEquals("dfafafafafasasfafsasf", result.get(0).getDescription());
+        assertEquals("description 1", result.get(0).getDescription());
         assertEquals(10.00, result.get(0).getPurchasePrice());
         assertEquals(50, result.get(0).getCurrentStock());
         assertEquals(50, result.get(0).getAmountSold());
         assertEquals(40.0, result.get(0).getSellingPrice());
+        assertEquals(2002, result.get(0).getYearOfRelease());
 
         assertEquals("Platform 2", result.get(1).getPlatform());
         assertEquals("Publisher 2", result.get(1).getPublisher());
         assertEquals(60, result.get(1).getPlayDurationInMin());
         assertEquals("name2", result.get(1).getName());
-        assertEquals("wehlfbsdgbhsldgskdglsdgsdg", result.get(1).getDescription());
+        assertEquals("description 2", result.get(1).getDescription());
         assertEquals(20.0, result.get(1).getPurchasePrice());
         assertEquals(50, result.get(1).getCurrentStock());
         assertEquals(50, result.get(1).getAmountSold());
         assertEquals(40.0, result.get(1).getSellingPrice());
+        assertEquals(2001, result.get(1).getYearOfRelease());
     }
 
 
     @Test
     @DisplayName("get gamebyID")
     public void testGetGameById() {
-        Game game1 = new Game();
-        game1.setId(1L);
-        game1.setPlatform("Platform 1");
-        game1.setPublisher("Publisher 1");
-        game1.setYearOfRelease(2007);
-        game1.setSellingPrice(60.00);
-        game1.setCurrentStock(100);
-        game1.setName("some game");
-        game1.setPlayDurationInMin(100);
-        game1.setPurchasePrice(100.00);
-        game1.setAmountSold(100);
+        Game game1 = createGame(1L,"Platform 1", "Publisher 1",
+        100,"some game", 200,100,100,
+        60.0,"what a good game",30.0,2007);
 
-        game1.setPlayDurationInMin(60);
 
         when(gameRepository.findById(1L)).thenReturn(Optional.of(game1));
 
@@ -160,6 +132,13 @@ public class GameServiceTest {
             gameModel.setPublisher(game.getPublisher());
             gameModel.setPlayDurationInMin(game.getPlayDurationInMin());
             gameModel.setName(game.getName());
+            gameModel.setYearOfRelease(game.getYearOfRelease());
+            gameModel.setOriginalStock(game.getOriginalStock());
+            gameModel.setAmountSold(game.getAmountSold());
+            gameModel.setCurrentStock(game.getCurrentStock());
+            gameModel.setPurchasePrice(game.getPurchasePrice());
+            gameModel.setSellingPrice(game.getSellingPrice());
+            gameModel.setDescription(game.getDescription());
             return gameModel;
         });
 
@@ -168,7 +147,13 @@ public class GameServiceTest {
         assertEquals(1L, result.getId());
         assertEquals("Platform 1", result.getPlatform());
         assertEquals("Publisher 1", result.getPublisher());
-        assertEquals(60, result.getPlayDurationInMin());
+        assertEquals(2007, result.getYearOfRelease());
+        assertEquals(100, result.getCurrentStock());
+        assertEquals("some game", result.getName());
+        assertEquals(100, result.getPlayDurationInMin());
+        assertEquals(30.00, result.getPurchasePrice());
+        assertEquals(100, result.getAmountSold());
+        assertEquals("what a good game", result.getDescription());
     }
 
 
@@ -221,7 +206,7 @@ public class GameServiceTest {
     }
 
     @Test
-    @DisplayName("find game by name no games found")
+    @DisplayName("find game exception")
     public void testFindGamesByNameNoFound(){
         List<Game>mockGames = new ArrayList<>();
         Game game1 = new Game();
@@ -275,17 +260,10 @@ public class GameServiceTest {
     @Test
     @DisplayName("create game")
     public void testCreateGame() {
-        GameModel gameModel = new GameModel();
-        gameModel.setPlatform("pc");
-        gameModel.setDescription("the best game ever");
-        gameModel.setPurchasePrice(100.0);
-        gameModel.setName("game of thrones");
-        gameModel.setYearOfRelease(2015);
-        gameModel.setOriginalStock(100);
-        gameModel.setAmountSold(50);
-        gameModel.setPlayDurationInMin(200);
-        gameModel.setPublisher("Whatever works");
-        gameModel.setSellingPrice(120.0);
+        GameModel gameModel = createGameModel("pc","Whatever works",200,"game of thrones",
+                100,50,50,80.0,"the best game ever", 120.0,
+                2015);
+
 
         Mockito.when(gameMapper.fromEntity(Mockito.any(Game.class))).thenAnswer(invocation -> {
             Game gameArgument = invocation.getArgument(0);
@@ -306,6 +284,14 @@ public class GameServiceTest {
             gameEntity.setDescription(gameModelArgument.getDescription());
             gameEntity.setPurchasePrice(gameModelArgument.getPurchasePrice());
             gameEntity.setSellingPrice(gameModelArgument.getSellingPrice());
+            gameEntity.setName(gameModelArgument.getName());
+            gameEntity.setYearOfRelease(gameModelArgument.getYearOfRelease());
+            gameEntity.setAmountSold(gameModelArgument.getAmountSold());
+            gameEntity.setCurrentStock(gameModelArgument.getCurrentStock());
+            gameEntity.setPlayDurationInMin(gameModelArgument.getPlayDurationInMin());
+            gameEntity.setPublisher(gameModelArgument.getPublisher());
+            gameEntity.setSellingPrice(gameModelArgument.getSellingPrice());
+
             return gameEntity;
         });
 
@@ -316,11 +302,21 @@ public class GameServiceTest {
         GameModel result = gameService.createGame(gameModel);
 
         assertNotNull(result);
-
         verify(gameMapper).toEntity(gameModel);
         verify(gameRepository).save(Mockito.any(Game.class));
         verify(gameMapper).fromEntity(savedGameEntity);
         verifyNoMoreInteractions(gameMapper, gameRepository);
+        assertEquals(gameModel.getPublisher(), "Whatever works");
+        assertEquals(gameModel.getOriginalStock(), 100);
+        assertEquals(gameModel.getYearOfRelease(), 2015);
+        assertEquals(gameModel.getAmountSold(), 50);
+        assertEquals(gameModel.getOriginalStock(), 100);
+        assertEquals(gameModel.getCurrentStock(), 50);
+        assertEquals(gameModel.getPlayDurationInMin(),200);
+        assertEquals(gameModel.getPlatform(), "pc");
+        assertEquals(gameModel.getDescription(),"the best game ever");
+        assertEquals(gameModel.getSellingPrice(), 80.0);
+        assertEquals(gameModel.getPurchasePrice(), 120.0);
     }
 
     @Test
@@ -388,6 +384,16 @@ public class GameServiceTest {
         GameModel returnedUpdatedGameModel = gameService.updateGame(1L, updatedGameModel);
 
         assertEquals(updatedGameModel.getPlatform(), returnedUpdatedGameModel.getPlatform());
+        assertEquals(updatedGameModel.getPublisher(), returnedUpdatedGameModel.getPublisher());
+        assertEquals(updatedGameModel.getCurrentStock(),returnedUpdatedGameModel.getCurrentStock());
+        assertEquals(updatedGameModel.getName(), returnedUpdatedGameModel.getName());
+        assertEquals(updatedGameModel.getSellingPrice(), returnedUpdatedGameModel.getSellingPrice());
+        assertEquals(updatedGameModel.getPurchasePrice(),returnedUpdatedGameModel.getPurchasePrice());
+        assertEquals(updatedGameModel.getPlayDurationInMin(),returnedUpdatedGameModel.getPlayDurationInMin());
+        assertEquals(updatedGameModel.getDescription(),returnedUpdatedGameModel.getDescription());
+        assertEquals(updatedGameModel.getYearOfRelease(),returnedUpdatedGameModel.getYearOfRelease());
+        assertEquals(updatedGameModel.getOriginalStock(),returnedUpdatedGameModel.getOriginalStock());
+        assertEquals(updatedGameModel.getId(), returnedUpdatedGameModel.getId());
     }
 
     @Test

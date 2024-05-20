@@ -49,7 +49,7 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.GET,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
+                                .requestMatchers(HttpMethod.GET,"/users/{username}/upload_order/**").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST,"/users/{username}/upload_order").hasAnyRole("ADMIN","USER")
                                 .requestMatchers(HttpMethod.POST,"/users/{username}/authorities").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/users/{username}/shoppinglists/{id}").hasAnyRole("ADMIN","USER")

@@ -3,8 +3,6 @@ package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -30,13 +28,8 @@ public class Order {
     private Boolean createPdf;
 
 
-    @ManyToMany()
-    @JoinTable(
-            name = "Order_shopping_list",
-            joinColumns = @JoinColumn(name = "order_number_id"),
-            inverseJoinColumns = @JoinColumn(name = "shopping_list_id")
-    )
-    private List<ShoppingList> shoppingList = new ArrayList<>();
+    @OneToOne()
+    private ShoppingList shoppingList;
 
     @ManyToOne
     @JoinColumn(name = "username")
@@ -75,15 +68,16 @@ public class Order {
         this.profit = profit;
     }
 
-    public List<ShoppingList> getShoppingList() {
+
+    public ShoppingList getShoppingList() {
         return shoppingList;
     }
 
-    public void setShoppingList(List<ShoppingList> shoppingList) {
+    public void setShoppingList(ShoppingList shoppingList) {
         this.shoppingList = shoppingList;
     }
 
-   public User getUser() {
+    public User getUser() {
        return user;
    }
 

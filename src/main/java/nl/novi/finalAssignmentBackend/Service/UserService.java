@@ -177,11 +177,13 @@ public class UserService {
             throw new EntityNotFoundException("user with name " + username + " has not been found");
         }
         if(optionalUser.get().getUploadOrder().getUrl().isEmpty()){
-            throw new EntityNotFoundException("no record found"); //(werkt nog niet)
+            throw new EntityNotFoundException("no record found");
         }
         loggedInCheck.verifyOwnerAuthorization(optionalUser.get().getUsername(), username,"user");
         return optionalUser.get().getUploadOrder();
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class ShoppingList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String type;
     private Double subtotal;
 
@@ -37,9 +39,9 @@ public class ShoppingList {
     )
     private List<Game> games = new ArrayList<>();
 
-    // is this relation made correctly???
-    @ManyToMany(mappedBy = "shoppingList")
-    private List<Order>orders = new ArrayList<>();
+
+    @OneToOne(mappedBy = "shoppingList")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "username")

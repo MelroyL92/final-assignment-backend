@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.Service;
 import nl.novi.finalAssignmentBackend.Repository.UploadOrderRepository;
 import nl.novi.finalAssignmentBackend.entities.UploadOrder;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
+import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,9 +13,11 @@ import java.io.IOException;
 public class UploadOrderService {
 
     private final UploadOrderRepository uploadOrderRepository;
+    private final LoggedInCheck loggedInCheck;
 
-    public UploadOrderService(UploadOrderRepository uploadOrderRepository) {
+    public UploadOrderService(UploadOrderRepository uploadOrderRepository, LoggedInCheck loggedInCheck) {
         this.uploadOrderRepository = uploadOrderRepository;
+        this.loggedInCheck = loggedInCheck;
     }
 
 
@@ -29,7 +32,9 @@ public class UploadOrderService {
             return uploadOrderRepository.save(uploadOrder);
         }
 
-    public UploadOrder getOrderById(Long id){
+        public UploadOrder getOrderById(Long id, String username){
+            loggedInCheck.verifyLoggedInUser(username);
         return uploadOrderRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("the order with id " + id + " does not excist"));
     }
+
 }

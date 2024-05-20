@@ -7,8 +7,6 @@ import nl.novi.finalAssignmentBackend.mappers.UserMappers.UserDtoMapper;
 import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class OrderDTOMapper {
@@ -39,21 +37,21 @@ public class OrderDTOMapper {
         target.setStatus(order.getStatus());
         target.setOrderNumber(order.getOrderNumber());
         target.setOrderConfirmation(order.getOrderConfirmation());
-        target.setShoppingList(shoppingListDTOMapper.toShoppingListDTOs(order.getShoppingLists()));
+        target.setShoppingList(shoppingListDTOMapper.toShoppingListDto(order.getShoppingLists()));
         target.setUser(userDtoMapper.toUserDTO(order.getUserModel()));
         target.setTotalPrice(order.getTotalPrice());
         target.setCreatePdf(order.getCreatePdf());
         target.setHasPaid(order.getHasPaid());
         return target;
     }
-
-    public List<OrderResponseDTO> toOrderDTOs(List<OrderModel>orderModels){
-        List<OrderResponseDTO> result = new ArrayList<>();
-        for (OrderModel model: orderModels){
-            result.add(toOrderDTO(model));
-        }
-        return result;
-    }
+//
+//    public List<OrderResponseDTO> toOrderDTOs(List<OrderModel>orderModels){
+//        List<OrderResponseDTO> result = new ArrayList<>();
+//        for (OrderModel model: orderModels){
+//            result.add(toOrderDTO(model));
+//        }
+//        return result;
+//    }
 
 
     public OrderModel createOrderModel(OrderInputDTO dto){

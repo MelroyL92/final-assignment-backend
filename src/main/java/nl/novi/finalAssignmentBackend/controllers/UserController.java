@@ -60,13 +60,30 @@ import java.util.Map;
              try{
                  mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
              } catch (InvalidMediaTypeException ignore){
-                 mediaType = MediaType.APPLICATION_OCTET_STREAM;
+                 mediaType = MediaType.APPLICATION_PDF;
              }
 
              return ResponseEntity
                      .ok()
                      .contentType(mediaType)
                      .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + uploadOrder.getTitle())
+                     .body(uploadOrder.getContents());
+         }
+
+         @GetMapping("/{username}/upload_order/{id}")
+         public ResponseEntity<byte[]>getUploadOrderById(@PathVariable("username")String username, @PathVariable Long id) {
+             UploadOrder uploadOrder = uploadOrderService.getOrderById(id,username);
+             MediaType mediaType;
+
+             try {
+                 mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
+             } catch (InvalidMediaTypeException ignore) {
+                 mediaType = MediaType.APPLICATION_PDF;
+             }
+             return ResponseEntity
+                     .ok()
+                     .contentType(mediaType)
+                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + uploadOrder.getTitle())
                      .body(uploadOrder.getContents());
          }
 

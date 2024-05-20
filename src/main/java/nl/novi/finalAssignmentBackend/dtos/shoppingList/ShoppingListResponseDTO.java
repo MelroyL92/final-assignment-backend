@@ -1,7 +1,9 @@
 package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
+
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
+import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.user.UserResponseDTO;
 
 
@@ -10,6 +12,7 @@ import java.util.List;
 public class ShoppingListResponseDTO {
 
     private Long id;
+
     private String type;
     private Double subtotal;
 
@@ -26,6 +29,9 @@ public class ShoppingListResponseDTO {
     private List<GameResponseDTO> games;
 
     private UserResponseDTO user;
+
+    private OrderResponseDTO order;
+
 
 
 
@@ -115,6 +121,14 @@ public class ShoppingListResponseDTO {
 
     public void setCreatePdf(Boolean createPdf) {
         this.createPdf = createPdf;
+    }
+
+    public OrderResponseDTO getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderResponseDTO order) {
+        this.order = order;
     }
 }
 

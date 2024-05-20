@@ -17,28 +17,20 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
 @Component
 public class PdfFileOrder {
 
-
     public void createPdf(Order order) throws IOException {
-
         if (order.getUser() == null) {
             throw new RecordNotFoundException("Order does not have a user associated with it.");
         }
 
-        boolean hasGamesOrMovies = false;
+        ShoppingList shoppingList = order.getShoppingList();
 
-        for (ShoppingList shoppingList : order.getShoppingList()) {
-            if (!shoppingList.getGames().isEmpty() || !shoppingList.getMovies().isEmpty()) {
-                hasGamesOrMovies = true;
-                break;
-            }
-        }
-        if (!hasGamesOrMovies) {
+        if (shoppingList == null || (shoppingList.getGames().isEmpty() && shoppingList.getMovies().isEmpty())) {
             throw new RecordNotFoundException("Invoice does not contain any games or movies.");
         }
-
 
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
@@ -50,7 +42,7 @@ public class PdfFileOrder {
                 float yPosition = 700;
                 contentStream.beginText();
                 contentStream.newLineAtOffset(100, yPosition);
-                contentStream.showText("Ordernumber: " + order.getOrderNumber());
+                contentStream.showText("Order number: " + order.getOrderNumber());
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.showText("Delivery date: " + order.getDeliveryDate());
@@ -60,55 +52,46 @@ public class PdfFileOrder {
                 yPosition -= 20;
                 contentStream.newLineAtOffset(0, -50);
 
+                contentStream.newLineAtOffset(0, -0);
+                contentStream.showText("Shopping List ID: " + shoppingList.getId());
+                yPosition -= 20;
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Subtotal: €" + shoppingList.getSubtotal());
+                yPosition -= 20;
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Delivery cost: €" + shoppingList.getDeliveryCost());
+                yPosition -= 20;
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Packaging cost: €" + shoppingList.getPackagingCost());
+                yPosition -= 20;
+                contentStream.newLineAtOffset(0, -40);
 
-                for (ShoppingList shoppingList : order.getShoppingList()) {
-                    contentStream.newLineAtOffset(0, -0);
-                    contentStream.showText("Shopping List ID: " + shoppingList.getId());
-                    yPosition -= 20;
-
+                for (Game game : shoppingList.getGames()) {
                     contentStream.newLineAtOffset(0, -20);
-                    contentStream.showText("Subtotal: €" + shoppingList.getSubtotal());
+                    contentStream.showText("Game: " + game.getName() + " - Price: €" + game.getSellingPrice());
                     yPosition -= 20;
-                    contentStream.newLineAtOffset(0, -20);
-                    contentStream.showText("Delivery cost: €" + shoppingList.getDeliveryCost());
-                    yPosition -= 20;
-                    contentStream.newLineAtOffset(0, -20);
-                    contentStream.showText("Packaging cost: €" + shoppingList.getPackagingCost());
-                    yPosition -= 20;
-                    contentStream.newLineAtOffset(0, -40);
-
-
-                    // Loop through games
-                    for (Game game : shoppingList.getGames()) {
-                        contentStream.newLineAtOffset(0, -20);
-                        contentStream.showText("Game: " + game.getName() + " - Price: €" + game.getSellingPrice());
-                        yPosition -= 20;
-                    }
-
-                    // Loop through movies
-                    for (Movie movie : shoppingList.getMovies()) {
-                        contentStream.newLineAtOffset(0, -20);
-                        contentStream.showText("Movie: " + movie.getName() + " - Price: €" + movie.getSellingPrice());
-                        yPosition -= 20;
-                    }
-
                 }
+
+                for (Movie movie : shoppingList.getMovies()) {
+                    contentStream.newLineAtOffset(0, -20);
+                    contentStream.showText("Movie: " + movie.getName() + " - Price: €" + movie.getSellingPrice());
+                    yPosition -= 20;
+                }
+
                 contentStream.newLineAtOffset(0, -40);
                 contentStream.showText("Total price: €" + order.getTotalPrice());
                 contentStream.endText();
             }
 
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-            document.save("order_" + order.getOrderNumber() + ". " + timestamp + ".pdf");
-
+            document.save("order_" + order.getOrderNumber() + "_" + timestamp + ".pdf");
         }
     }
 
     public void createPdfOfOrder(Order order) {
         if (order.getCreatePdf()) {
-            PdfFileOrder pdfFileOrder = new PdfFileOrder();
             try {
-                pdfFileOrder.createPdf(order);
+                createPdf(order);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperMovieCreation.createMovie;
+import static nl.novi.finalAssignmentBackend.helpers.ServiceHelperMovieCreation.createMovieModel;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -48,42 +50,19 @@ public class MovieServiceTest {
 
     }
 
+
     @Test
     @DisplayName("get all movies")
     public void testGetAllMovies() {
         List<Movie> mockMovies = new ArrayList<>();
+        mockMovies.add(createMovie(1L,50.0,20.0,100,50,50,
+                "the hobbit", "Peter Jackson", 2016,"worst of the lotr movies but still great",
+                "blu ray", "fantasy", 200));
 
-        Movie movie1 = new Movie();
-        movie1.setId(1L);
-        movie1.setPurchasePrice(50.0);
-        movie1.setSellingPrice(20.0);
-        movie1.setOriginalStock(100);
-        movie1.setAmountSold(50);
-        movie1.setCurrentStock(50);
-        movie1.setName("the hobbit");
-        movie1.setDirector("peter Jackson");
-        movie1.setYearOfRelease(2016);
-        movie1.setDescription("worst of the lotr movies but still great");
-        movie1.setType("blu ray");
-        movie1.setGenre("fantasy");
-        movie1.setWatchTimeInMin(200);
-        mockMovies.add(movie1);
+        mockMovies.add(createMovie(2L, 80.0, 30.0, 200, 100, 100,
+                "the hobbit 2", "Peter Jackson", 2017, "worst of the lotr movies but still great",
+                "blu ray", "fantasy",300));
 
-        Movie movie2 = new Movie();
-        movie2.setId(2L);
-        movie2.setPurchasePrice(80.0);
-        movie2.setSellingPrice(30.0);
-        movie2.setOriginalStock(200);
-        movie2.setAmountSold(100);
-        movie2.setCurrentStock(100);
-        movie2.setName("the hobbit2");
-        movie2.setDirector("peter Jackson");
-        movie2.setYearOfRelease(2017);
-        movie2.setDescription("worst of the lotr movies but still great");
-        movie2.setType("blu ray");
-        movie2.setGenre("fantasy");
-        movie2.setWatchTimeInMin(300);
-        mockMovies.add(movie2);
 
         when(movieRepository.findAll()).thenReturn(mockMovies);
 
@@ -118,7 +97,7 @@ public class MovieServiceTest {
         assertEquals(50, result.get(0).getAmountSold());
         assertEquals(50, result.get(0).getCurrentStock());
         assertEquals("the hobbit", result.get(0).getName());
-        assertEquals("peter Jackson", result.get(0).getDirector());
+        assertEquals("Peter Jackson", result.get(0).getDirector());
         assertEquals(2016, result.get(0).getYearOfRelease());
         assertEquals("worst of the lotr movies but still great", result.get(0).getDescription());
         assertEquals("blu ray", result.get(0).getType());
@@ -130,8 +109,8 @@ public class MovieServiceTest {
         assertEquals(200, result.get(1).getOriginalStock());
         assertEquals(100, result.get(1).getAmountSold());
         assertEquals(100, result.get(1).getCurrentStock());
-        assertEquals("the hobbit2", result.get(1).getName());
-        assertEquals("peter Jackson", result.get(1).getDirector());
+        assertEquals("the hobbit 2", result.get(1).getName());
+        assertEquals("Peter Jackson", result.get(1).getDirector());
         assertEquals(2017, result.get(1).getYearOfRelease());
         assertEquals("worst of the lotr movies but still great", result.get(1).getDescription());
         assertEquals("blu ray", result.get(1).getType());
@@ -142,20 +121,9 @@ public class MovieServiceTest {
     @Test
     @DisplayName("test by ID")
     public void testMovieById() {
-        Movie movie1 = new Movie();
-        movie1.setId(1L);
-        movie1.setPurchasePrice(50.0);
-        movie1.setSellingPrice(20.0);
-        movie1.setOriginalStock(100);
-        movie1.setAmountSold(50);
-        movie1.setCurrentStock(50);
-        movie1.setName("the hobbit");
-        movie1.setDirector("peter Jackson");
-        movie1.setYearOfRelease(2016);
-        movie1.setDescription("worst of the lotr movies but still great");
-        movie1.setType("blu ray");
-        movie1.setGenre("fantasy");
-        movie1.setWatchTimeInMin(200);
+        Movie movie1 = createMovie(1L, 50.0,20.0,100,50,50
+        ,"the hobbit","Peter Jackson", 2016, "worst of the lotr movies but still great",
+                "blu ray", "fantasy", 200);
 
         when(movieRepository.findById(1L)).thenReturn(Optional.of(movie1));
 
@@ -186,7 +154,7 @@ public class MovieServiceTest {
         assertEquals(50, result.getAmountSold());
         assertEquals(50, result.getCurrentStock());
         assertEquals("the hobbit", result.getName());
-        assertEquals("peter Jackson", result.getDirector());
+        assertEquals("Peter Jackson", result.getDirector());
         assertEquals(2016, result.getYearOfRelease());
         assertEquals("worst of the lotr movies but still great", result.getDescription());
         assertEquals("blu ray", result.getType());
@@ -286,19 +254,9 @@ public class MovieServiceTest {
     @Test
     @DisplayName("create Movie")
     public void testCreateMovie() {
-        MovieModel movieModel = new MovieModel();
-        movieModel.setPurchasePrice(50.0);
-        movieModel.setSellingPrice(20.0);
-        movieModel.setOriginalStock(100);
-        movieModel.setAmountSold(50);
-        movieModel.setCurrentStock(50);
-        movieModel.setName("the hobbit");
-        movieModel.setDirector("peter Jackson");
-        movieModel.setYearOfRelease(2016);
-        movieModel.setDescription("worst of the lotr movies but still great");
-        movieModel.setType("blu ray");
-        movieModel.setGenre("fantasy");
-        movieModel.setWatchTimeInMin(200);
+        MovieModel movieModel = createMovieModel(50.0,20.0,100,50,50,
+        "the hobbit", "Peter Jackson", 2016, "worst of the lotr movies but still great",
+                "blu ray", "fantasy", 200);
 
         Mockito.when(movieMapper.fromEntity(Mockito.any(Movie.class))).thenAnswer(invocation -> {
             Movie movieArgument = invocation.getArgument(0);
@@ -346,20 +304,9 @@ public class MovieServiceTest {
     @Test
     @DisplayName("testing updating movie")
     public void testUpdateMovie() {
-        Movie existingMovie = new Movie();
-        existingMovie.setId(1L);
-        existingMovie.setPurchasePrice(50.0);
-        existingMovie.setSellingPrice(20.0);
-        existingMovie.setOriginalStock(100);
-        existingMovie.setAmountSold(50);
-        existingMovie.setCurrentStock(50);
-        existingMovie.setName("the hobbit");
-        existingMovie.setDirector("peter Jackson");
-        existingMovie.setYearOfRelease(2016);
-        existingMovie.setDescription("worst of the lotr movies but still great");
-        existingMovie.setType("blu ray");
-        existingMovie.setGenre("fantasy");
-        existingMovie.setWatchTimeInMin(200);
+        Movie existingMovie = createMovie(1L, 50.0, 20.0,0,100, 50, "the hobbit",
+                "Peter Jackson", 2016,"worst of the lotr movies but still great","blu ray", "fantasy", 200);
+
 
         Mockito.when(movieRepository.findById(1L)).thenReturn(Optional.of(existingMovie));
 

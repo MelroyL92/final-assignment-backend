@@ -91,7 +91,7 @@ public class ShoppingListController {
     }
 
     @PutMapping("/{id}/user/{username}")
-    public ResponseEntity<ShoppingListResponseDTO>UpdateShoppingList(@PathVariable Long id, @PathVariable String username, @RequestBody ShoppingListInputDTO shoppingListInputDto){
+    public ResponseEntity<ShoppingListResponseDTO>UpdateShoppingList(@PathVariable Long id, @PathVariable String username, @Valid @RequestBody ShoppingListInputDTO shoppingListInputDto){
         var updateShoppingList = shoppingListService.updateShoppingList(id, username, shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto));
         var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(updateShoppingList);
         return new ResponseEntity<>(shoppingListDto, HttpStatus.OK);
