@@ -3,6 +3,7 @@ package nl.novi.finalAssignmentBackend.Service;
 import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.OrderRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
+import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import nl.novi.finalAssignmentBackend.entities.User;
@@ -30,8 +31,9 @@ public class OrderService {
     private final LoggedInCheck loggedInCheck;
     private final DeliveryTimeCalculator deliveryTimeCalculator;
     private final PdfFileOrder pdfFileOrder;
+    private final UserRepository userRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck, DeliveryTimeCalculator deliveryTimeCalculator, PdfFileOrder pdfFileOrder) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ShoppingListRepository shoppingListRepository, OrderHelpers orderHelpers, LoggedInCheck loggedInCheck, DeliveryTimeCalculator deliveryTimeCalculator, PdfFileOrder pdfFileOrder, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.shoppingListRepository = shoppingListRepository;
@@ -39,6 +41,7 @@ public class OrderService {
         this.loggedInCheck = loggedInCheck;
         this.deliveryTimeCalculator = deliveryTimeCalculator;
         this.pdfFileOrder = pdfFileOrder;
+        this.userRepository = userRepository;
     }
 
 
@@ -101,9 +104,19 @@ public class OrderService {
         return orderMapper.fromEntity(order);
     }
 
-    public OrderModel createOrder(){
+    public OrderModel createOrder(String username){
+        loggedInCheck.verifyLoggedInUser(username);
+
         Order order = new Order();
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalStateException("User not found");
+        }
+
+        order.setUser(user);
+
         order = orderRepository.save(order);
+
         return orderMapper.fromEntity(order);
     }
 

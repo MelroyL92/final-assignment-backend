@@ -5,11 +5,13 @@ import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Repository.GameRepository;
 import nl.novi.finalAssignmentBackend.Repository.MovieRepository;
 import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
+import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.entities.User;
 import nl.novi.finalAssignmentBackend.exceptions.NoUserAssignedException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
@@ -44,11 +46,12 @@ public class ShoppingListService {
     private final MovieMapper movieMapper;
     private final OrderConfirmationHelper orderConfirmationHelper;
     private final PdfFileWishList pdfFileWishList;
+    private final UserRepository userRepository;
 
 
 
     public ShoppingListService(ShoppingListMapper shoppingListMapper, ShoppingListRepository shoppingListRepository, GameRepository gameRepository, MovieRepository movieRepository
-                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper, OrderConfirmationHelper orderConfirmationHelper, PdfFileWishList pdfFileWishList) {
+                              , ShoppingListHelpers shoppingListHelpers, LoggedInCheck loggedInCheck, GameDTOMapper gameDTOMapper, GameMapper gameMapper, MovieMapper movieMapper, MovieDTOMapper movieDTOMapper, OrderConfirmationHelper orderConfirmationHelper, PdfFileWishList pdfFileWishList, UserRepository userRepository) {
         this.shoppingListMapper = shoppingListMapper;
         this.shoppingListRepository = shoppingListRepository;
         this.gameRepository = gameRepository;
@@ -61,6 +64,7 @@ public class ShoppingListService {
         this.movieDTOMapper = movieDTOMapper;
         this.orderConfirmationHelper = orderConfirmationHelper;
         this.pdfFileWishList = pdfFileWishList;
+        this.userRepository = userRepository;
     }
 
     private void extracted(Long shoppingListId, ShoppingList shoppingList) {
@@ -99,8 +103,16 @@ public class ShoppingListService {
         return shoppingListMapper.fromEntity(shoppingList);
     }
 
-    public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel) {
+    public ShoppingListModel createShoppingList(ShoppingListModel shoppingListModel, String username) {
+        loggedInCheck.verifyLoggedInUser(username);
+
         ShoppingList shoppingList = new ShoppingList();
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalStateException("User not found");
+        }
+        shoppingList.setUser(user);
         shoppingList.setType(shoppingListModel.getType());
         shoppingList.setPackaging(shoppingListModel.getPackaging());
         shoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
