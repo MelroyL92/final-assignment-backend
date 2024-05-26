@@ -1,6 +1,5 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +13,12 @@ public class Game extends Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Platform must not be empty")
-    @Size(min =1, max = 100, message = "please fill in a description between 3 and 100 characters")
+    @Column(name = "platform")
     private String platform;
 
-    @NotBlank(message = "Publisher must not be empty")
-    @Size(min =3, max = 100, message = "please fill in a description between 3 and 100 characters")
+    @Column(name = "publisher")
     private String publisher;
     @Column(name = "play_duration_in_min")
-    @NotNull(message = "the playtime should be between 1 and 10000 minutes")
-    @Min(1)
-    @Max(10000)
     private Integer playDurationInMin;
 
     @ManyToMany(mappedBy = "games")

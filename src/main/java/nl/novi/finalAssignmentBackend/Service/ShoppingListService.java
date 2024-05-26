@@ -195,20 +195,21 @@ public class ShoppingListService {
                 existingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
                 shoppingListHelpers.calculateDeliveryCost(existingShoppingList.getId());
             }
-            if (shoppingListModel.getType() != null) {
-                existingShoppingList.setType(shoppingListModel.getType());
+            if (shoppingListModel.getType() != null &&
+                    (shoppingListModel.getType().equalsIgnoreCase("wishlist") ||
+                            shoppingListModel.getType().equalsIgnoreCase("shoppinglist"))) {
+                existingShoppingList.setType(shoppingListModel.getType().toLowerCase());
+            } else {
+                throw new EntityNotFoundException("please fill in a correct type, either shoppinglist or wishlist");
             }
             if (shoppingListModel.getPackaging() != null) {
                 existingShoppingList.setPackaging(shoppingListModel.getPackaging());
                 shoppingListHelpers.calculatePackagingCost(existingShoppingList.getId());
             }
-            if (!shoppingListModel.getType().equalsIgnoreCase("shoppinglist") && shoppingListModel.getCreatePdf() != null) {
+            if (shoppingListModel.getCreatePdf() != null){
                 existingShoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
-            } else if (shoppingListModel.getCreatePdf() != null && shoppingListModel.getType().equalsIgnoreCase("shoppinglist")) {
-                existingShoppingList.setCreatePdf(false);
-                throw new EntityNotFoundException("pdf creation only possible for either a order or wishlist, createPDF automatically set to false");
-
             }
+
             if(shoppingListModel.getType().contains("wishlist") && shoppingListModel.getCreatePdf()){
                 pdfFileWishList.createPDFFromWishlist(existingShoppingList);
             }

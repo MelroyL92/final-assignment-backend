@@ -1,8 +1,6 @@
 package nl.novi.finalAssignmentBackend.dtos.movie;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import nl.novi.finalAssignmentBackend.dtos.product.ProductInputDTO;
-import nl.novi.finalAssignmentBackend.model.ProductModel;
 
 public class MovieInputDTO extends ProductInputDTO {
     private Long id;
@@ -19,8 +17,8 @@ public class MovieInputDTO extends ProductInputDTO {
     private String director;
 
     @NotNull(message = "please fill in a valid playtime between 10 and 400 min")
-    @Min(10)
-    @Max(400)
+    @Min(value = 10, message = "watch time should be at least 10 min")
+    @Max(value = 400, message = "watch time cannot exceed 400 min")
     private Integer watchTimeInMin;
 
 

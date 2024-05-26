@@ -12,14 +12,25 @@ public class ShoppingList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "type")
     private String type;
+
+    @Column(name = "subtotal")
     private Double subtotal;
 
+    @Column(name = "packaging")
     private Boolean packaging;
+
+    @Column(name = "packaging_cost")
     private Double packagingCost;
+
+    @Column(name = "at_home_delivery")
     private Boolean atHomeDelivery;
+
+    @Column(name = "delivery_cost")
     private Integer deliveryCost;
 
+    @Column(name = "create_pdf")
     private Boolean createPdf;
 
     @ManyToMany()

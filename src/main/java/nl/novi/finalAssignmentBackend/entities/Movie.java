@@ -1,6 +1,5 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +13,16 @@ public class Movie extends Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "genre cannot be empty")
-    @Size(min =3, max = 100, message = "please fill in a genre between 3 and 100 characters")
+    @Column(name = "genre")
     private String genre;
 
-    @NotBlank(message = "type cannot be empty")
-    @Size(min =3, max = 100, message = "please fill in a type between 3 and 100 characters")
+    @Column(name = "type")
     private String type;
 
-    @NotBlank(message = "director cannot be empty")
-    @Size(min =3, max = 100, message = "please fill in the director between 3 and 100 characters")
+    @Column(name = "director")
     private String director;
 
-    @NotNull(message = "please fill in a valid playtime between 10 and 400 min")
-    @Min(10)
-    @Max(400)
+
     @Column(name = "watch_time_in_min")
     private Integer watchTimeInMin;
 
