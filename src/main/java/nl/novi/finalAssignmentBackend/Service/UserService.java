@@ -8,9 +8,7 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDTO;
 import nl.novi.finalAssignmentBackend.entities.*;
-import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
-import nl.novi.finalAssignmentBackend.exceptions.UserMismatchException;
-import nl.novi.finalAssignmentBackend.exceptions.UsernameNotFoundException;
+import nl.novi.finalAssignmentBackend.exceptions.*;
 import nl.novi.finalAssignmentBackend.helper.LoggedInCheck;
 import nl.novi.finalAssignmentBackend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -177,8 +175,8 @@ public class UserService {
         if(optionalUser.isEmpty()){
             throw new EntityNotFoundException("user with name " + username + " has not been found");
         }
-        if(optionalUser.get().getUploadOrder().getUrl().isEmpty()){
-            throw new EntityNotFoundException("no record found");
+        if(optionalUser.get().getUploadOrder() == null){
+            throw new EntityNotFoundException("no uploaded order found");
         }
         loggedInCheck.verifyOwnerAuthorization(optionalUser.get().getUsername(), username,"user");
         return optionalUser.get().getUploadOrder();

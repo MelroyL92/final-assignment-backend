@@ -1,12 +1,12 @@
 package nl.novi.finalAssignmentBackend.controllers;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import nl.novi.finalAssignmentBackend.Service.UploadOrderService;
 import nl.novi.finalAssignmentBackend.Service.UserService;
 import nl.novi.finalAssignmentBackend.dtos.user.UserDTO;
 import nl.novi.finalAssignmentBackend.entities.UploadOrder;
 import nl.novi.finalAssignmentBackend.entities.User;
-import nl.novi.finalAssignmentBackend.exceptions.BadRequestException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
@@ -56,6 +56,7 @@ import java.util.Map;
 
              UploadOrder uploadOrder = userService.getUploadedOrderFromUser(username);
              MediaType mediaType;
+
 
              try{
                  mediaType = MediaType.parseMediaType(uploadOrder.getContentType());
@@ -120,7 +121,7 @@ import java.util.Map;
                  return ResponseEntity.noContent().build();
              }
              catch (Exception ex) {
-                 throw new BadRequestException();
+                 throw new EntityNotFoundException("no valid user found");
              }
          }
 
