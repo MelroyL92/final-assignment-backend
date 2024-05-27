@@ -44,9 +44,6 @@ public class OrderService {
         this.userRepository = userRepository;
     }
 
-
-
-
     private List<OrderModel> convertOrder(List<Order> orders) {
 
         List<Order> orderWithUsers = orders.stream()
@@ -114,6 +111,9 @@ public class OrderService {
         }
 
         order.setUser(user);
+        order.setCreatePdf(false);
+        order.setOrderConfirmation(false);
+        order.setStatus("pending");
 
         order = orderRepository.save(order);
 
@@ -145,13 +145,15 @@ public class OrderService {
             if(orderModel.getDeliveryDate() != null){
                 existingOrder.setDeliveryDate(orderModel.getDeliveryDate());
             }
-            if (orderModel.getCreatePdf()){
+            if (orderModel.getCreatePdf() != null){
                 existingOrder.setCreatePdf(orderModel.getCreatePdf());
             }
             if (orderModel.getOrderConfirmation() && orderModel.getCreatePdf()){
+                orderModel.setTotalPrice(orderHelpers.calculateTotalPrice(id));
                 pdfFileOrder.createPdfOfOrder(existingOrder);
             }
             existingOrder = orderRepository.save(existingOrder);
+
             return orderMapper.fromEntity(existingOrder);
         } else {
             throw new RecordNotFoundException("Order with " + id + " has not been found");

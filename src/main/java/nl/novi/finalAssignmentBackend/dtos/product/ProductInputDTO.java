@@ -6,11 +6,12 @@ import jakarta.validation.constraints.*;
 public class ProductInputDTO {
 
 
-
-    @Min(value = 1, message = "the selling price should be 1 or above")
-    @Max(value = 500, message = "the selling price should be less then 500")
+    @NotNull(message = "selling price should be between 1.0 and 500.0")
+    @Min(value = 1, message = "the selling price should be 1.0 or above")
+    @Max(value = 500, message = "the selling price should be less then 500.0")
     private Double sellingPrice;
 
+    @NotNull(message = "the original stock should be between 0 and 500")
     @Min(value = 0 ,message = "the original stock should be at least 0")
     @Max(value = 5000, message = "the original stock should be less then 5000")
     private Integer originalStock;
@@ -23,17 +24,18 @@ public class ProductInputDTO {
     private String name;
 
 
+    @NotNull(message = "the amount sold should be set to 0 or above")
     @Min(value = 0, message = "the amount sold should be set to 0 or above")
     private Integer amountSold;
 
-    @NotNull
+    @NotNull(message = "the year of release should be between 1970 and 2100")
     @Min(value = 1970, message = "the year of release is at least 1970")
     @Max(value = 2100, message = "check the year of release, cant be set above 2100")
     private Integer yearOfRelease;
 
     @NotNull(message = "please fill in a valid purchase price")
-    @Min(value = 1, message = "purchase price should be at least 1")
-    @Max(value = 200, message = "purchase price cannot exceed 200")
+    @Min(value = 1, message = "purchase price should be at least 1.0")
+    @Max(value = 200, message = "purchase price cannot exceed 200.0")
     private Double purchasePrice;
 
     @Min(value = 0, message = "current stock should be set to 0 or above")

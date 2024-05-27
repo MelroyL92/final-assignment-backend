@@ -113,9 +113,10 @@ public class ShoppingListService {
             throw new IllegalStateException("User not found");
         }
         shoppingList.setUser(user);
-        shoppingList.setType(shoppingListModel.getType());
+        shoppingListHelpers.TypeCheck(shoppingListModel, shoppingList);
         shoppingList.setPackaging(shoppingListModel.getPackaging());
         shoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
+        shoppingList.setCreatePdf(shoppingListModel.getCreatePdf());
         shoppingList = shoppingListRepository.save(shoppingList);
         return shoppingListMapper.fromEntity(shoppingList);
     }
@@ -191,17 +192,11 @@ public class ShoppingListService {
             if(orderConfirmationHelper.isShoppingListConnectedToOrder(id)){
                 throw new EntityNotFoundException("it is not allowed to adjust fields of a shoppinglist within a order with the confirmation set to true");
             }
-            if (shoppingListModel.getAtHomeDelivery() != null) {
+            if (shoppingListModel.getAtHomeDelivery() != null ) {
                 existingShoppingList.setAtHomeDelivery(shoppingListModel.getAtHomeDelivery());
                 shoppingListHelpers.calculateDeliveryCost(existingShoppingList.getId());
             }
-            if (shoppingListModel.getType() != null &&
-                    (shoppingListModel.getType().equalsIgnoreCase("wishlist") ||
-                            shoppingListModel.getType().equalsIgnoreCase("shoppinglist"))) {
-                existingShoppingList.setType(shoppingListModel.getType().toLowerCase());
-            } else {
-                throw new EntityNotFoundException("please fill in a correct type, either shoppinglist or wishlist");
-            }
+            shoppingListHelpers.TypeCheck(shoppingListModel, existingShoppingList);
             if (shoppingListModel.getPackaging() != null) {
                 existingShoppingList.setPackaging(shoppingListModel.getPackaging());
                 shoppingListHelpers.calculatePackagingCost(existingShoppingList.getId());
@@ -220,7 +215,6 @@ public class ShoppingListService {
         }
 
     }
-
 
 
     public void addGameToShoppingList(Long shoppingListId, String username, Long gameId) {

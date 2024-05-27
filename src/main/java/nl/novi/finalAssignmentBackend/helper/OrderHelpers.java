@@ -73,7 +73,7 @@ public class OrderHelpers {
 
 
         if(order.getShoppingList().isEmpty()){
-            throw new RecordNotFoundException("the order does not contain a shopping list and cant be set to true");
+            throw new RecordNotFoundException("the order does not contain a shopping list. Add a shoppinglist before you continue");
         }
         if (order.getOrderConfirmation()) {
             order.setDateOrdered(LocalDate.now());

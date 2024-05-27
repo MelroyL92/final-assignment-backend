@@ -8,9 +8,9 @@ public abstract class Product {
 
 
         @Column(name = "selling_price")
-        @NotNull(message = "the selling price should be between 1 and 500 euro")
-        @Min(value = 1, message = "the selling price should be 1 or above")
-        @Max(value = 500, message = "the selling price should be less then 500")
+        @NotNull(message = "the selling price should be between 1.0 and 500.0 euro")
+        @Min(value = 1, message = "the selling price should be 1.0 or above")
+        @Max(value = 500, message = "the selling price should be less then 500.0")
         private Double sellingPrice;
 
         @Column(name = "original_stock")
@@ -41,8 +41,8 @@ public abstract class Product {
 
         @Column(name = "purchase_price")
         @NotNull(message = "please fill in a valid purchase price")
-        @Min(value = 1, message = "purchase price should be at least 1")
-        @Max(value = 200, message = "purchase price cannot exceed 200")
+        @Min(value = 1, message = "purchase price should be at least 1.0")
+        @Max(value = 200, message = "purchase price cannot exceed 200.0")
         private Double purchasePrice;
 
         @Column(name = "current_stock")

@@ -9,9 +9,11 @@ public class GameInputDTO extends ProductInputDTO {
 
         private Long id;
 
+        @NotBlank(message = "please fill in the platforms suitable between 1 and 100 characters")
         @Size(min =1, max = 100, message = "please fill in the platforms suitable between 1 and 100 characters")
         private String platform;
 
+        @NotBlank(message = "please fill in the name of the publisher between 1 and 100 characters")
         @Size(min =3, max = 100, message = "please fill in the name of the publisher between 1 and 100 characters")
         private String publisher;
         @NotNull(message = "the playtime should be between 1 and 10000 minutes")

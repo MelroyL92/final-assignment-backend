@@ -1,5 +1,6 @@
 package nl.novi.finalAssignmentBackend.entities;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,14 @@ public class ShoppingList {
     private Double packagingCost;
 
     @Column(name = "at_home_delivery")
+    @NotNull(message = "please fill in either true or false for atHomeDelivery")
     private Boolean atHomeDelivery;
 
     @Column(name = "delivery_cost")
     private Integer deliveryCost;
 
     @Column(name = "create_pdf")
+    @NotNull(message = "please fill in either true or false for the creation of a pdf")
     private Boolean createPdf;
 
     @ManyToMany()

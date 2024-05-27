@@ -5,6 +5,7 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.entities.Game;
 import nl.novi.finalAssignmentBackend.entities.Movie;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
+import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -72,5 +73,15 @@ public class ShoppingListHelpers {
 
         shoppingList.setPackagingCost(packagingCost);
         shoppingListRepository.save(shoppingList);
+    }
+
+    public void TypeCheck(ShoppingListModel shoppingListModel, ShoppingList existingShoppingList) {
+        if (shoppingListModel.getType() != null &&
+                (shoppingListModel.getType().equalsIgnoreCase("wishlist") ||
+                        shoppingListModel.getType().equalsIgnoreCase("shoppinglist"))) {
+            existingShoppingList.setType(shoppingListModel.getType().toLowerCase());
+        } else {
+            throw new EntityNotFoundException("please fill in a correct type, either shoppinglist or wishlist");
+        }
     }
 }
