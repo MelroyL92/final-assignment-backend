@@ -6,10 +6,7 @@ import nl.novi.finalAssignmentBackend.Repository.ShoppingListRepository;
 import nl.novi.finalAssignmentBackend.Repository.UserRepository;
 import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
-import nl.novi.finalAssignmentBackend.entities.Game;
-import nl.novi.finalAssignmentBackend.entities.Movie;
-import nl.novi.finalAssignmentBackend.entities.ShoppingList;
-import nl.novi.finalAssignmentBackend.entities.User;
+import nl.novi.finalAssignmentBackend.entities.*;
 import nl.novi.finalAssignmentBackend.exceptions.NoUserAssignedException;
 import nl.novi.finalAssignmentBackend.exceptions.RecordNotFoundException;
 import nl.novi.finalAssignmentBackend.helper.*;
@@ -240,6 +237,10 @@ public class ShoppingListService {
     }
 
     public void deleteShoppingList(Long id){
+        Optional<ShoppingList>optionalShoppinglist = shoppingListRepository.findById(id);
+        if(optionalShoppinglist.isEmpty()) {
+            throw new RecordNotFoundException("Order with id " + id + " does not exist!");
+        }
         shoppingListRepository.deleteById(id);
     }
 

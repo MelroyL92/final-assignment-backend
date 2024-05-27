@@ -215,7 +215,12 @@ public class OrderService {
     }
 
     public void deleteOrder(Long id){
+        Optional<Order>optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isEmpty()){
+            throw new RecordNotFoundException("Order with id " + id + " does not exist!");
+        }
         orderRepository.deleteById(id);
+
     }
 
 }
