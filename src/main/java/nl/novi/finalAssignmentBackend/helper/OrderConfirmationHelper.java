@@ -7,6 +7,8 @@ import nl.novi.finalAssignmentBackend.entities.Order;
 import nl.novi.finalAssignmentBackend.entities.ShoppingList;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class OrderConfirmationHelper {
@@ -23,11 +25,17 @@ public class OrderConfirmationHelper {
         ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
                 .orElseThrow(() -> new EntityNotFoundException("Shopping list not found with id: " + shoppingListId));
 
-        return orderRepository.findAll().stream()
-                .filter(order -> order.getOrderConfirmation())
-                .flatMap(order -> order.getShoppingList().stream())
-                .anyMatch(list -> list.getId().equals(shoppingList.getId()));
+        List<Order> orders = orderRepository.findAll();
+
+        for (Order order : orders) {
+            List<ShoppingList> orderShoppingLists = order.getShoppingList();
+
+            for (ShoppingList orderShoppingList : orderShoppingLists) {
+                if (orderShoppingList.getId().equals(shoppingListId) && order.getOrderConfirmation()) {
+                    return true;
+                }
+            }
+        }
+    return  false;
     }
-
-
 }

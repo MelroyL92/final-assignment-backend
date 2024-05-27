@@ -10,7 +10,6 @@ import nl.novi.finalAssignmentBackend.dtos.game.GameResponseDTO;
 import nl.novi.finalAssignmentBackend.dtos.movie.MovieResponseDTO;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.ShoppingListMapper.ShoppingListDTOMapper;
-import nl.novi.finalAssignmentBackend.model.ShoppingListModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,11 +67,12 @@ public class ShoppingListController {
              return new ResponseEntity<>(movieInList,HttpStatus.OK);
         }
 
-    @PostMapping("")
-    public ResponseEntity<ShoppingListModel>createShoppingList(@Valid @RequestBody ShoppingListInputDTO shoppingListInputDto){
+    @PostMapping("/{username}")
+    public ResponseEntity<ShoppingListResponseDTO>createShoppingList(@Valid @RequestBody ShoppingListInputDTO shoppingListInputDto, @PathVariable String username){
         var shoppingListModel = shoppingListDTOMapper.createShoppingListModel(shoppingListInputDto);
-        var newShoppingList = shoppingListService.createShoppingList(shoppingListModel);
-        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newShoppingList.getId())).body(newShoppingList);
+        var newShoppingList = shoppingListService.createShoppingList(shoppingListModel,username);
+        var shoppingListDto = shoppingListDTOMapper.toShoppingListDto(newShoppingList);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, shoppingListDto.getId())).body(shoppingListDto);
 
     }
 

@@ -16,7 +16,15 @@ public class OrderInputDTO {
 
     private Double totalPrice;
 
-    private boolean createPdf;
+    private Boolean createPdf;
+
+    public Boolean getCreatePdf() {
+        return createPdf;
+    }
+
+    public void setCreatePdf(Boolean createPdf) {
+        this.createPdf = createPdf;
+    }
 
     private LocalDate deliveryDate;
 
@@ -88,14 +96,6 @@ public class OrderInputDTO {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public boolean isCreatePdf() {
-        return createPdf;
-    }
-
-    public void setCreatePdf(boolean createPdf) {
-        this.createPdf = createPdf;
     }
 
     public LocalDate getDeliveryDate() {

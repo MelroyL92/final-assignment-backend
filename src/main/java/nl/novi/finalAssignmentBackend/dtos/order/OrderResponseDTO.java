@@ -16,7 +16,7 @@ public class OrderResponseDTO {
     private LocalDate deliveryDate;
     private Boolean hasPaid;
     private Double totalPrice;
-    private boolean createPdf;
+    private Boolean createPdf;
 
 
 
@@ -73,11 +73,11 @@ public class OrderResponseDTO {
         this.user = user;
     }
 
-    public boolean isCreatePdf() {
+    public Boolean getCreatePdf() {
         return createPdf;
     }
 
-    public void setCreatePdf(boolean createPdf) {
+    public void setCreatePdf(Boolean createPdf) {
         this.createPdf = createPdf;
     }
 

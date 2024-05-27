@@ -9,8 +9,13 @@ public class UploadOrder {
     @GeneratedValue
     private Long id;
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "content_type")
     private String contentType;
     @Lob
     byte[] contents;

@@ -7,36 +7,46 @@ import jakarta.validation.constraints.*;
 public abstract class Product {
 
 
-        @NotNull(message = "the selling price should be at least 25% lower then the buy-in price")
-        @Min(1)
-        @Max(500)
+        @Column(name = "selling_price")
+        @NotNull(message = "the selling price should be between 1.0 and 500.0 euro")
+        @Min(value = 1, message = "the selling price should be 1.0 or above")
+        @Max(value = 500, message = "the selling price should be less then 500.0")
         private Double sellingPrice;
 
         @Column(name = "original_stock")
+        @NotNull(message = "the original stock should be set to 0 or above")
+        @Min(value = 0 ,message = "the original stock should be at least 0")
+        @Max(value = 5000, message = "the original stock should be less then 5000")
         private Integer originalStock;
 
+        @Column(name = "description")
         @NotBlank(message = "please fill in a description for this product")
         @Size(min =10, max = 300, message = "please fill in a description between 3 and 300 characters")
         private String description;
 
+        @Column(name = "name")
         @NotBlank(message = "name must not be empty")
         private String name;
 
         @Column(name = "amount_sold")
-        @Min(0)
+        @Min(value = 0, message = "the amount sold should be set to 0 or above")
         private Integer amountSold;
 
-        @NotNull(message = "has to be between 1970 and 2100")
-        @Min(1970)
-        @Max(2100)
+
         @Column(name = "year_of_release")
+        @NotNull
+        @Min(value = 1970, message = "the year of release is at least 1970")
+        @Max(value = 2100, message = "check the year of release, cant be set above 2100")
         private Integer yearOfRelease;
 
+        @Column(name = "purchase_price")
         @NotNull(message = "please fill in a valid purchase price")
-        @Min(1)
-        @Max(200)
+        @Min(value = 1, message = "purchase price should be at least 1.0")
+        @Max(value = 200, message = "purchase price cannot exceed 200.0")
         private Double purchasePrice;
 
+        @Column(name = "current_stock")
+        @Min(value = 0, message = "current stock should be set to 0 or above")
         private Integer currentStock;
 
         public Integer getYearOfRelease() {

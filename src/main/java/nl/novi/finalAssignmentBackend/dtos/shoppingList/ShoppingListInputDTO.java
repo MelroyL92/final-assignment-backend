@@ -1,6 +1,7 @@
 package nl.novi.finalAssignmentBackend.dtos.shoppingList;
 
 
+import jakarta.validation.constraints.NotNull;
 import nl.novi.finalAssignmentBackend.model.GameModel;
 import nl.novi.finalAssignmentBackend.model.MovieModel;
 import nl.novi.finalAssignmentBackend.model.UserModel;
@@ -13,12 +14,17 @@ public class ShoppingListInputDTO {
         private String type;
         private Double subtotal;
 
+        @NotNull(message = "please fill in either true or false for packaging")
         private Boolean packaging;
+
+        @NotNull(message = "please fill in either true or false for atHomeDelivery")
         private Boolean atHomeDelivery;
+
         private Integer deliveryCost;
 
         private Double packagingCost;
 
+        @NotNull(message = "please fill in either true or false for the creation of a pdf")
         private Boolean createPdf;
 
 

@@ -84,7 +84,7 @@ public class DeliveryTimeCalculator {
                     .orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + movieId));
 
             MovieModel movieModel = movieMapper.fromEntity(movie);
-            if (movie.getCurrentStock() < movieQuantity) {
+            if (movieModel.getCurrentStock() < movieQuantity) {
                 throw new InsufficientStockException("movie", movie.getName());
 
             }

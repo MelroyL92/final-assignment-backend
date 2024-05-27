@@ -12,7 +12,7 @@ public class NoUserAssignedException extends RuntimeException {
     }
 
     public NoUserAssignedException(String type, String username){
-        super( "the list of type : " + type + " the user with id " + username + " is trying to delete does not contain a user and therefore cannot be deleted");
+        super( "the list of type : " + type + ", the user with username " + username + " is trying to delete does not contain a user and therefore cannot be deleted");
     }
 }
 

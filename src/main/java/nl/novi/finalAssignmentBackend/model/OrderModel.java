@@ -80,9 +80,6 @@ public class OrderModel {
     }
 
     public Boolean getCreatePdf() {
-        if (createPdf == null){
-            setCreatePdf(false);
-        }
         return createPdf;
     }
 

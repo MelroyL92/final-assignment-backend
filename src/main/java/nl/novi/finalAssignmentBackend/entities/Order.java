@@ -15,18 +15,28 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
 
+    @Column(name = "date_ordered")
     private LocalDate dateOrdered;
 
+    @Column(name = "order_confirmation")
     private Boolean orderConfirmation;
 
+    @Column(name = "status")
     private String status;
 
+    @Column(name = "delivery_date")
     private LocalDate deliveryDate;
+
+    @Column(name = "profit")
     private Double profit;
+
+    @Column(name = "total_price")
     private Double totalPrice;
 
+    @Column(name = "has_paid")
     private Boolean hasPaid;
 
+    @Column(name = "create_pdf")
     private Boolean createPdf;
 
 

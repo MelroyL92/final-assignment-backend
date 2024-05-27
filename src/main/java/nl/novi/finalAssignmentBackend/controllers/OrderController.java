@@ -8,7 +8,6 @@ import nl.novi.finalAssignmentBackend.dtos.order.OrderResponseDTO;
 import nl.novi.finalAssignmentBackend.helper.UrlHelper;
 import nl.novi.finalAssignmentBackend.mappers.OrderMapper.ExtendeOrderDTOMapper;
 import nl.novi.finalAssignmentBackend.mappers.OrderMapper.OrderDTOMapper;
-import nl.novi.finalAssignmentBackend.model.OrderModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,10 +61,11 @@ public class OrderController {
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
-    public ResponseEntity<OrderModel>createOrder(){
-        var newOrder = orderService.createOrder();
-        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, newOrder.getOrderNumber())).body(newOrder);
+    @PostMapping("/{username}")
+    public ResponseEntity<OrderResponseDTO>createOrder(@PathVariable String username){
+        var newOrder = orderService.createOrder(username);
+        var orderDTO = orderDtoMapper.toOrderDTO(newOrder);
+        return ResponseEntity.created(UrlHelper.getCurrentURLWithId(request, orderDTO.getOrderNumber())).body(orderDTO);
     }
 
 
@@ -78,8 +78,8 @@ public class OrderController {
     @PutMapping("/{id}/user/{username}")
     public ResponseEntity<OrderResponseDTO>updateOrder(@PathVariable Long id, @PathVariable String username, @RequestBody OrderInputDTO orderInputDto){
         var updateOrder = orderService.updateOrder(id, username,  orderDtoMapper.createOrderModel(orderInputDto));
-        var invoiceDto = orderDtoMapper.toOrderDTO(updateOrder);
-        return new ResponseEntity<>(invoiceDto, HttpStatus.OK);
+        var orderDTO = orderDtoMapper.toOrderDTO(updateOrder);
+        return new ResponseEntity<>(orderDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}/user/{username}")
